@@ -1,26 +1,420 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Modern iOS-inspired colors (iOS 17/18 style) */
+  --ios-blue: #0A84FF;
+  --ios-blue-dark: #0055D4;
+  --ios-green: #30D158;
+  --ios-mint: #63E6E2;
+  --ios-teal: #40CBE0;
+  --ios-cyan: #64D2FF;
+  --ios-indigo: #5E5CE6;
+  --ios-purple: #BF5AF2;
+  --ios-pink: #FF375F;
+  --ios-orange: #FF9F0A;
+  --ios-yellow: #FFD60A;
+  --ios-red: #FF453A;
+  
+  /* iOS Gray Scale (Light Mode) */
+  --ios-gray: #8E8E93;
+  --ios-gray-2: #AEAEB2;
+  --ios-gray-3: #C7C7CC;
+  --ios-gray-4: #D1D1D6;
+  --ios-gray-5: #E5E5EA;
+  --ios-gray-6: #F2F2F7;
+  
+  /* Backgrounds */
+  --background: #F2F2F7;
+  --card-background: #FFFFFF;
+  --elevated-background: #FFFFFF;
+  --foreground: #000000;
+  --secondary-foreground: #3C3C43;
+  
+  /* iOS Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.15);
+  
+  /* Safe area insets for notch/Dynamic Island */
+  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-bottom: env(safe-area-inset-bottom);
+  --safe-area-left: env(safe-area-inset-left);
+  --safe-area-right: env(safe-area-inset-right);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark mode colors */
+    --background: #000000;
+    --card-background: #1C1C1E;
+    --elevated-background: #2C2C2E;
+    --foreground: #FFFFFF;
+    --secondary-foreground: #EBEBF5;
+    
+    --ios-gray: #8E8E93;
+    --ios-gray-2: #636366;
+    --ios-gray-3: #48484A;
+    --ios-gray-4: #3A3A3C;
+    --ios-gray-5: #2C2C2E;
+    --ios-gray-6: #1C1C1E;
+    
+    /* Darker shadows for dark mode */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.6);
   }
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* iOS-style smooth scrolling with momentum */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* iOS-style animations */
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes slide-up-ios {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-ios {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-ios {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+/* Animation classes */
+.animate-bounce-gentle {
+  animation: bounce-gentle 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-slide-up-ios {
+  animation: slide-up-ios 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-fade-in-ios {
+  animation: fade-in-ios 0.3s ease-out;
+}
+
+.animate-pulse-ios {
+  animation: pulse-ios 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* iOS-style card */
+.ios-card {
+  background: var(--card-background);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.ios-card-elevated {
+  background: var(--elevated-background);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* iOS-style button */
+.ios-button {
+  background: var(--ios-blue);
+  color: white;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-weight: 600;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-button:active {
+  transform: scale(0.96);
+  box-shadow: var(--shadow-sm);
+}
+
+.ios-button:hover {
+  background: var(--ios-blue-dark);
+  box-shadow: var(--shadow-md);
+}
+
+/* iOS-style segmented control */
+.ios-segment {
+  background: var(--ios-gray-6);
+  border-radius: 10px;
+  padding: 2px;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.ios-segment-item {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.ios-segment-item.active {
+  background: white;
+  color: var(--foreground);
+  box-shadow: var(--shadow-sm);
+}
+
+/* iOS-style list item */
+.ios-list-item {
+  background: var(--card-background);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-list-item:active {
+  transform: scale(0.98);
+  background: var(--ios-gray-6);
+}
+
+/* Glassmorphism (modern iOS style) */
+.glass-modern {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  .glass-modern {
+    background: rgba(28, 28, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* iOS-style safe area padding */
+.safe-top {
+  padding-top: max(20px, var(--safe-area-top));
+}
+
+.safe-bottom {
+  padding-bottom: max(20px, var(--safe-area-bottom));
+}
+
+.safe-left {
+  padding-left: max(16px, var(--safe-area-left));
+}
+
+.safe-right {
+  padding-right: max(16px, var(--safe-area-right));
+}
+
+/* iOS-style focus states */
+*:focus-visible {
+  outline: 3px solid var(--ios-blue);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Better scrollbar (webkit only) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ios-gray-3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ios-gray-2);
+}
+
+/* iOS-style badge */
+.ios-badge {
+  background: var(--ios-red);
+  color: white;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* iOS-style divider */
+.ios-divider {
+  height: 1px;
+  background: var(--ios-gray-4);
+  margin: 16px 0;
+}
+
+/* Loading shimmer effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--ios-gray-5) 0%,
+    var(--ios-gray-4) 50%,
+    var(--ios-gray-5) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* iOS haptic-like spring animation */
+@keyframes spring-bounce {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(0.94);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  75% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-spring {
+  animation: spring-bounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Touch-friendly minimum size */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Hide scrollbar but keep functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Modern gradient overlays */
+.gradient-overlay-top {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+}
+
+.gradient-overlay-bottom {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 100%);
+}
+
+/* iOS-style input */
+input, textarea {
+  background: var(--card-background);
+  border: 1px solid var(--ios-gray-4);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 17px;
+  font-family: inherit;
+  color: var(--foreground);
+  transition: all 0.2s ease;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: var(--ios-blue);
+  box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.1);
+}
+
+/* Better touch interaction */
+.touch-manipulation {
+  touch-action: manipulation;
+}
+
+/* Modern gradient backgrounds */
+.gradient-blue-purple {
+  background: linear-gradient(135deg, #0A84FF 0%, #5E5CE6 100%);
+}
+
+.gradient-green-teal {
+  background: linear-gradient(135deg, #30D158 0%, #40CBE0 100%);
+}
+
+.gradient-orange-pink {
+  background: linear-gradient(135deg, #FF9F0A 0%, #FF375F 100%);
+}
+
+.gradient-purple-pink {
+  background: linear-gradient(135deg, #BF5AF2 0%, #FF375F 100%);
+}
+
+/* iOS-style status bar space */
+.status-bar-space {
+  height: max(44px, calc(var(--safe-area-top) + 44px));
 }

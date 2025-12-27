@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" fill="#3b82f6" rx="80"/>
+  <g transform="translate(100, 100)">
+    <!-- Heart + Activity icon -->
+    <path d="M156 100 Q 156 60, 126 60 Q 96 60, 96 100 Q 96 140, 156 200 Q 216 140, 216 100 Q 216 60, 186 60 Q 156 60, 156 100" 
+          fill="white" stroke="white" stroke-width="8"/>
+    <path d="M 50 230 L 80 230 L 100 200 L 130 260 L 160 200 L 180 230 L 210 230" 
+          fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
