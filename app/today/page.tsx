@@ -48,15 +48,18 @@ export default function TodayPage() {
         
         // Calculate stats
         if (todayWorkout) {
-          const totalEx = todayWorkout.blocks.reduce(
-            (sum, b) => sum + b.exercises.length,
-            0
+          const trackableIds = todayWorkout.blocks.flatMap((b) =>
+            b.exercises
+              .filter((ex) => ex.category !== "Guidance")
+              .map((ex) => ex.id)
           );
+          const trackableSet = new Set(trackableIds);
+          const totalEx = trackableIds.length;
           setTotalExercises(totalEx);
-          
-          // Get today's completions
+
+          // Get today's completions (excluding Guidance items)
           const completions = await getCompletionsByDate(todayWorkout.date);
-          const completed = completions.filter((c) => c.completed).length;
+          const completed = completions.filter((c) => c.completed && trackableSet.has(c.exerciseId)).length;
           const progress = totalEx > 0 ? Math.round((completed / totalEx) * 100) : 0;
           setTodayProgress(progress);
         }

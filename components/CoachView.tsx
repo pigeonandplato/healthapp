@@ -76,9 +76,35 @@ export default function CoachView({ workout }: CoachViewProps) {
         </p>
       </div>
 
+      {/* Program Rules (Quick) */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md border border-gray-200 dark:border-gray-700">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Program Rules (Quick)</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          These are not tracked—just follow them.
+        </p>
+        <div className="space-y-3">
+          {workout.blocks
+            .flatMap((b) => b.exercises)
+            .filter((ex) => ex.category === "Guidance")
+            .map((ex) => (
+              <div key={ex.id} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                <div className="font-semibold text-gray-900 dark:text-gray-100">{ex.name}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">{ex.description}</div>
+                <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 mt-2 space-y-1">
+                  {ex.instructions.slice(0, 4).map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+        </div>
+      </div>
+
       {/* Blocks */}
       {workout.blocks.map((block) => {
-        const exerciseIds = block.exercises.map((e) => e.id);
+        const trackable = block.exercises.filter((e) => e.category !== "Guidance");
+        if (trackable.length === 0) return null;
+        const exerciseIds = trackable.map((e) => e.id);
         const progress = calculateProgress(exerciseIds);
 
         return (
@@ -136,7 +162,9 @@ export default function CoachView({ workout }: CoachViewProps) {
 
             {/* Exercises */}
             <div className="space-y-5">
-              {block.exercises.map((exercise) => (
+              {block.exercises
+                .filter((exercise) => exercise.category !== "Guidance")
+                .map((exercise) => (
                 <ExerciseCard
                   key={exercise.id}
                   exercise={exercise}
@@ -159,7 +187,9 @@ export default function CoachView({ workout }: CoachViewProps) {
           <div>
             <p className="text-sm text-gray-600 dark:text-gray-400">Total Exercises</p>
             <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              {workout.blocks.reduce((sum, b) => sum + b.exercises.length, 0)}
+              {workout.blocks
+                .flatMap((b) => b.exercises)
+                .filter((e) => e.category !== "Guidance").length}
             </p>
           </div>
           <div>

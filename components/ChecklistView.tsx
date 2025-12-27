@@ -44,7 +44,9 @@ export default function ChecklistView({ workout }: ChecklistViewProps) {
 
   const handlePushToTomorrow = async () => {
     const allExerciseIds = workout.blocks.flatMap((block) =>
-      block.exercises.map((ex) => ex.id)
+      block.exercises
+        .filter((ex) => ex.category !== "Guidance")
+        .map((ex) => ex.id)
     );
     
     const incompleteIds = allExerciseIds.filter(
@@ -90,7 +92,9 @@ export default function ChecklistView({ workout }: ChecklistViewProps) {
   };
 
   const calculateProgress = () => {
-    const allExercises = workout.blocks.flatMap((b) => b.exercises);
+    const allExercises = workout.blocks
+      .flatMap((b) => b.exercises)
+      .filter((ex) => ex.category !== "Guidance");
     const completed = allExercises.filter((ex) => completions[ex.id]).length;
     return {
       completed,
@@ -136,10 +140,36 @@ export default function ChecklistView({ workout }: ChecklistViewProps) {
         </p>
       </div>
 
+      {/* Program Rules (Quick) */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg p-5 shadow-md border border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Program Rules (Quick)</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+          These items are not tracked—just follow them.
+        </p>
+        <ul className="space-y-2">
+          {workout.blocks
+            .flatMap((b) => b.exercises)
+            .filter((ex) => ex.category === "Guidance")
+            .map((ex) => (
+              <li key={ex.id} className="bg-gray-50 dark:bg-gray-900 rounded-md p-3 border border-gray-200 dark:border-gray-700">
+                <div className="font-semibold text-gray-900 dark:text-gray-100">{ex.name}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">{ex.description}</div>
+                <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 mt-2 space-y-1">
+                  {ex.instructions.slice(0, 4).map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+        </ul>
+      </div>
+
       {/* Blocks */}
       {workout.blocks.map((block) => {
-        const blockCompleted = block.exercises.filter((ex) => completions[ex.id]).length;
-        const blockTotal = block.exercises.length;
+        const trackable = block.exercises.filter((ex) => ex.category !== "Guidance");
+        if (trackable.length === 0) return null;
+        const blockCompleted = trackable.filter((ex) => completions[ex.id]).length;
+        const blockTotal = trackable.length;
 
         return (
           <div
@@ -165,7 +195,9 @@ export default function ChecklistView({ workout }: ChecklistViewProps) {
 
             {/* Exercise List */}
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
-              {block.exercises.map((exercise) => {
+              {block.exercises
+                .filter((exercise) => exercise.category !== "Guidance")
+                .map((exercise) => {
                 const isCompleted = completions[exercise.id] || false;
 
                 return (

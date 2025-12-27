@@ -2,10 +2,88 @@
 // Addresses: L4-L5 disc + old ACL knee + ulnar nerve (hand) + aerobic base
 // Progressive phases P1-P5 with A/B/C day rotation
 
-import { Exercise, ExerciseBlock, Phase, ProgramPhase, DayRotation } from "./types";
+import { Exercise, ExerciseBlock, Phase, ProgramPhase, DayRotation, ProgramMeta } from "./types";
 import { exerciseMediaMap } from "./exerciseMedia";
 
 // ==================== DAILY FOUNDATION (ALL PHASES, EVERY DAY) ====================
+
+// ==================== GLOBAL RULES (ALL PHASES, EVERY DAY) ====================
+// Guidance items are excluded from progress/completion in UI (category: "Guidance").
+const globalRulesBlock: ExerciseBlock = {
+  id: "rules-global",
+  name: "Rules (Read Once, Follow Daily)",
+  description: "Auto-progression rules + safety cues (kept short on purpose)",
+  estimatedMinutes: 1,
+  exercises: [
+    {
+      id: "rules-load-management",
+      name: "Load Rules (Auto-Progression)",
+      description: "How to progress without flare-ups",
+      phase: Phase.PHASE_0,
+      media: exerciseMediaMap["generic-exercise"],
+      prescription: { description: "Read (10 seconds)" },
+      instructions: [
+        "Pain during exercise should stay ≤ 2–3/10.",
+        "24-hour rule: tomorrow should NOT be worse.",
+        "If tomorrow is worse: reduce range/height first, then sets.",
+        "If 2 good sessions in a row: progress ONE thing (reps OR height OR range).",
+      ],
+      commonMistakes: ["Progressing reps + range + load at the same time", "Pushing through sharp pain"],
+      stopConditions: ["Sharp pain", "New numbness/weakness", "Symptoms worse next day"],
+      category: "Guidance",
+    },
+    {
+      id: "rules-knee-ladder",
+      name: "Knee Ladder (Single-Leg Capacity)",
+      description: "Build single-leg strength slowly (your knee is fine for cardio)",
+      phase: Phase.PHASE_0,
+      media: exerciseMediaMap["generic-exercise"],
+      prescription: { description: "Read (15 seconds)" },
+      instructions: [
+        "Order: double-leg → supported single-leg → unsupported single-leg.",
+        "Order: shallow range → deeper range → load.",
+        "Don’t test deep single-leg squats daily (test weekly).",
+        "Weekly check: 5 slow step-down reps/side from 4–6\" with good control.",
+      ],
+      commonMistakes: ["Jumping straight to deep single-leg squats", "Letting knee cave in"],
+      stopConditions: ["Deep pain rising quickly", "Giving-way sensation"],
+      category: "Guidance",
+    },
+    {
+      id: "rules-spine-hygiene",
+      name: "Spine Hygiene (Disc-Friendly)",
+      description: "Keep your back calm while you build capacity",
+      phase: Phase.PHASE_0,
+      media: exerciseMediaMap["generic-exercise"],
+      prescription: { description: "Read (15 seconds)" },
+      instructions: [
+        "Avoid repeated loaded bending (especially first thing in the morning).",
+        "Use a neutral hip hinge to pick things up.",
+        "Brace + exhale on sneezes/coughs (don’t bend forward).",
+        "If symptoms flare: reduce range, swap to walking/elliptical that day.",
+      ],
+      commonMistakes: ["Stretching aggressively into pain", "High-rep spine flexion"],
+      stopConditions: ["Leg symptoms increasing", "New numbness/weakness"],
+      category: "Guidance",
+    },
+    {
+      id: "rules-ulnar-ergonomics",
+      name: "Ulnar Nerve Ergonomics",
+      description: "Micro-breaks matter as much as the glide",
+      phase: Phase.PHASE_0,
+      media: exerciseMediaMap["generic-exercise"],
+      prescription: { description: "Read (10 seconds)" },
+      instructions: [
+        "Every 30–45 min: stand up 30–60s, shake hands out, reset posture.",
+        "Avoid leaning on elbows and prolonged deep elbow flexion.",
+        "Nerve glides should feel gentle—stop if tingling ramps.",
+      ],
+      commonMistakes: ["Forcing the glide", "Ignoring workstation positioning"],
+      stopConditions: ["Symptoms increase and persist >5 minutes"],
+      category: "Guidance",
+    },
+  ],
+};
 
 const dailyHipBlock: ExerciseBlock = {
   id: "daily-hip",
@@ -235,6 +313,56 @@ const p1_dayB: ExerciseBlock[] = [
         instructions: ["Use low step", "Push through heel", "Control down slowly"],
         commonMistakes: ["Step too high too soon", "Knee caving in"],
         stopConditions: ["Knee pain >3/10", "Giving-way feeling"],
+        category: "Lower Body",
+      },
+      {
+        id: "p1-split-squat-supported",
+        name: "Split Squat (Supported, Small Range)",
+        description: "Build single-leg strength without deep knee angles",
+        phase: Phase.PHASE_0,
+        media: exerciseMediaMap["split-squat"],
+        prescription: { sets: 3, reps: 6, description: "3 × 6–8 per leg, hands supported, SMALL range" },
+        instructions: [
+          "Hold wall/rail for balance",
+          "Short range only (stop before deep knee discomfort)",
+          "Knee tracks over mid-foot",
+          "Slow 3-second lower",
+        ],
+        commonMistakes: ["Dropping too deep too soon", "Knee collapsing inward"],
+        stopConditions: ["Deep pain rising quickly", "Giving-way sensation"],
+        category: "Lower Body",
+      },
+      {
+        id: "p1-step-down-low",
+        name: "Step-Down (Low 4-6\")",
+        description: "Eccentric control for stairs + single-leg confidence",
+        phase: Phase.PHASE_0,
+        media: exerciseMediaMap["sit-to-stand"],
+        prescription: { sets: 2, reps: 6, description: "2 × 6 per leg, slow 3–4s down (Weeks 3–4)" },
+        instructions: [
+          "Step down slowly and softly",
+          "Light heel tap on the floor",
+          "Keep knee tracking over toes (no cave-in)",
+        ],
+        commonMistakes: ["Dropping fast", "Hip dropping", "Knee collapsing inward"],
+        stopConditions: ["Deep pain >3/10", "Instability"],
+        category: "Lower Body",
+      },
+      {
+        id: "p1-sl-squat-to-box-high",
+        name: "Single-Leg Squat to Box (High)",
+        description: "Re-introduce single-leg squat safely (high surface + support)",
+        phase: Phase.PHASE_0,
+        media: exerciseMediaMap["sit-to-stand"],
+        prescription: { sets: 2, reps: 5, description: "2 × 5 per leg to HIGH box (Weeks 3–4)" },
+        instructions: [
+          "Use a high chair/bench behind you",
+          "Light fingertip support on wall/rail",
+          "Sit back under control, stand smoothly",
+          "Stop before deep discomfort",
+        ],
+        commonMistakes: ["Going too low", "Knee collapsing inward", "Dropping into the seat"],
+        stopConditions: ["Deep pain rising quickly", "Giving-way sensation"],
         category: "Lower Body",
       },
       {
@@ -1140,13 +1268,104 @@ const p5_dayC: ExerciseBlock[] = [
 
 // ==================== EXPORT STRUCTURE ====================
 
+function withRules(blocks: ExerciseBlock[]): ExerciseBlock[] {
+  return [globalRulesBlock, ...blocks];
+}
+
 export const programBlocks: Record<ProgramPhase, Record<DayRotation, ExerciseBlock[]>> = {
-  P1: { A: p1_dayA, B: p1_dayB, C: p1_dayC },
-  P2: { A: p2_dayA, B: p2_dayB, C: p2_dayC },
-  P3: { A: p3_dayA, B: p3_dayB, C: p3_dayC },
-  P4: { A: p4_dayA, B: p4_dayB, C: p4_dayC },
-  P5: { A: p5_dayA, B: p5_dayB, C: p5_dayC },
+  P1: { A: withRules(p1_dayA), B: withRules(p1_dayB), C: withRules(p1_dayC) },
+  P2: { A: withRules(p2_dayA), B: withRules(p2_dayB), C: withRules(p2_dayC) },
+  P3: { A: withRules(p3_dayA), B: withRules(p3_dayB), C: withRules(p3_dayC) },
+  P4: { A: withRules(p4_dayA), B: withRules(p4_dayB), C: withRules(p4_dayC) },
+  P5: { A: withRules(p5_dayA), B: withRules(p5_dayB), C: withRules(p5_dayC) },
 };
+
+function deepCloneBlocks(blocks: ExerciseBlock[]): ExerciseBlock[] {
+  const sc = globalThis.structuredClone as unknown as ((v: unknown) => unknown) | undefined;
+  if (typeof sc === "function") return sc(blocks) as ExerciseBlock[];
+  return JSON.parse(JSON.stringify(blocks)) as ExerciseBlock[];
+}
+
+function findExercise(blocks: ExerciseBlock[], exerciseId: string): Exercise | undefined {
+  for (const b of blocks) {
+    const ex = b.exercises.find((e) => e.id === exerciseId);
+    if (ex) return ex;
+  }
+  return undefined;
+}
+
+function removeExercise(blocks: ExerciseBlock[], exerciseId: string) {
+  for (const b of blocks) {
+    b.exercises = b.exercises.filter((e) => e.id !== exerciseId);
+  }
+}
+
+// Day-by-day generation with progression rules (phaseWeek-aware).
+export function getBlocksForProgramMeta(meta: ProgramMeta): ExerciseBlock[] {
+  const base = programBlocks[meta.phase]?.[meta.day] || programBlocks.P1.A;
+  const blocks = deepCloneBlocks(base);
+
+  // P1 knee ladder (Weeks 1–4): Week 1–2 = simpler, Week 3–4 = add step-down + SL box squat and progress step-up.
+  if (meta.phase === "P1" && meta.day === "B") {
+    if (meta.phaseWeek <= 2) {
+      removeExercise(blocks, "p1-step-down-low");
+      removeExercise(blocks, "p1-sl-squat-to-box-high");
+    } else {
+      const stepUp = findExercise(blocks, "p1-step-up-low");
+      if (stepUp) {
+        stepUp.name = "Step-Up (Progressed 6–8\")";
+        stepUp.prescription = { sets: 3, reps: 10, description: "3 × 10 per leg, 6–8\" step (slow down)" };
+        stepUp.instructions = ["Use 6–8\" step", "Push through heel", "Control down slowly (3s)"];
+      }
+    }
+  }
+
+  // P3 run-walk progression (Weeks 9–12): only progress if no knee/back flare within 24–48h.
+  if (meta.phase === "P3" && meta.day === "A") {
+    const runwalk = findExercise(blocks, "p3-runwalk");
+    if (runwalk) {
+      const plan = [
+        "1 min run / 2 min walk × 6–8 rounds (20–25 min total)",
+        "1 min run / 1 min walk × 10 rounds (20 min total)",
+        "2 min run / 1 min walk × 8 rounds (24 min total)",
+        "3 min run / 1 min walk × 6 rounds (24 min total)",
+      ];
+      const idx = Math.max(0, Math.min(3, meta.phaseWeek - 1));
+      runwalk.prescription = { minutes: 25, description: plan[idx] };
+      runwalk.instructions = [
+        "Warm up 5 min walk first",
+        "Run EASY (conversational pace)",
+        "Progress ONLY if no knee/back flare within 24–48h",
+        "If flare: repeat last week or regress 1 step",
+      ];
+    }
+  }
+
+  // P4 continuous run minutes (Weeks 13–18).
+  if (meta.phase === "P4") {
+    const easyRun = findExercise(blocks, "p4-easy-run");
+    const longRun = findExercise(blocks, "p4-long-run");
+    if (easyRun) {
+      const mins = [15, 18, 20, 22, 25, 30][Math.max(0, Math.min(5, meta.phaseWeek - 1))];
+      easyRun.prescription = { minutes: mins, description: mins + " min easy continuous run (walk breaks OK)" };
+    }
+    if (longRun) {
+      const mins = [20, 22, 25, 28, 30, 35][Math.max(0, Math.min(5, meta.phaseWeek - 1))];
+      longRun.prescription = { minutes: mins, description: mins + " min easy long run (walk breaks OK)" };
+    }
+  }
+
+  // P5 long run minutes (Weeks 19–24).
+  if (meta.phase === "P5") {
+    const long5k = findExercise(blocks, "p5-long-run-5k");
+    if (long5k) {
+      const mins = [30, 32, 35, 35, 38, 40][Math.max(0, Math.min(5, meta.phaseWeek - 1))];
+      long5k.prescription = { minutes: mins, description: mins + " min easy long run (aiming toward comfortable 5K)" };
+    }
+  }
+
+  return blocks;
+}
 
 export const allExercises: Exercise[] = [];
 Object.values(programBlocks).forEach((phaseBlocks) => {

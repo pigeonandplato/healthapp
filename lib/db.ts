@@ -9,7 +9,7 @@ import {
   Phase,
   ProgramMeta,
 } from "./types";
-import { programBlocks, allExercises } from "./seedData";
+import { programBlocks, allExercises, getBlocksForProgramMeta } from "./seedData";
 import { getProgramMetaForDate } from "./program";
 
 interface HealthTrackerDB extends DBSchema {
@@ -105,7 +105,7 @@ async function createDefaultWorkout(date: string): Promise<WorkoutDay> {
   const db = await initDB();
   const programMeta: ProgramMeta = await getProgramMetaForDate(date);
   
-  const blocks = programBlocks[programMeta.phase]?.[programMeta.day] || programBlocks.P1.A;
+  const blocks = getBlocksForProgramMeta(programMeta);
 
   const workout: WorkoutDay = {
     id: `workout-${date}`,

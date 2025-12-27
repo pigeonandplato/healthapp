@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getProgramMetaForDate, PROGRAM_PHASES } from "@/lib/program";
-import { programBlocks } from "@/lib/seedData";
+import { getBlocksForProgramMeta } from "@/lib/seedData";
 import type { ProgramMeta } from "@/lib/types";
 import Link from "next/link";
 
@@ -75,7 +75,7 @@ export default function SchedulePage() {
   };
 
   const getDayDescription = (meta: ProgramMeta) => {
-    const blocks = programBlocks[meta.phase]?.[meta.day] || [];
+    const blocks = getBlocksForProgramMeta(meta);
     const totalMinutes = blocks.reduce((sum, b) => sum + b.estimatedMinutes, 0);
     const blockNames = blocks.map(b => b.name).join(', ');
     return { totalMinutes, blockNames, blockCount: blocks.length };
@@ -221,7 +221,7 @@ export default function SchedulePage() {
 
                         {isExpanded && (
                           <div className="px-4 pb-4 space-y-2 border-t border-gray-200 dark:border-gray-700 pt-2">
-                            {programBlocks[item.meta.phase]?.[item.meta.day]?.map((block) => (
+                            {getBlocksForProgramMeta(item.meta).filter((b) => b.id !== "rules-global").map((block) => (
                               <div
                                 key={block.id}
                                 className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-3"
