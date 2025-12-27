@@ -163,222 +163,90 @@ export default function TodayPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#F2F2F7] dark:bg-black">
-      {/* Modern iOS-Style Header */}
-      <header className="gradient-blue-purple text-white shadow-xl relative overflow-hidden">
-        {/* Animated background effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent pointer-events-none"></div>
-        
-        <div className="max-w-4xl mx-auto px-4 safe-top py-6 relative z-10">
-          {/* Greeting */}
-          <div className="mb-6 animate-slide-up-ios">
-            <h1 className="text-3xl font-black mb-1 drop-shadow-lg tracking-tight">
-              {getGreeting()}, Champion! 💪
-            </h1>
-            <p className="text-white/80 text-base font-medium">{todayDate}</p>
-            <div className="flex items-center gap-2 mt-3 flex-wrap">
-              <Link
-                href="/program"
-                className="glass-modern px-4 py-2 rounded-full text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-transform touch-target"
-              >
-                {programMeta ? `Week ${programMeta.week} • ${programMeta.phase} • Day ${programMeta.day}` : `Day ${dayRotation}`}
-              </Link>
-              <Link
-                href="/schedule"
-                className="glass-modern px-4 py-2 rounded-full text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-transform touch-target"
-              >
-                📅 Schedule
-              </Link>
-              <button
-                onClick={() => setShowMissedDayPrompt(!showMissedDayPrompt)}
-                className="glass-modern px-4 py-2 rounded-full text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-transform touch-target"
-              >
-                ⏭️ Missed Day?
-              </button>
-            </div>
-            {showMissedDayPrompt && (
-              <div className="mt-3 glass-modern rounded-2xl p-4 animate-slide-up-ios">
-                <p className="text-white text-sm mb-3 leading-relaxed">
-                  Missed today's workout? Push your entire program forward by 1 day so tomorrow shows today's exercises.
-                </p>
-                <button
-                  onClick={handlePushProgramOneDay}
-                  className="bg-white text-[#0A84FF] hover:bg-white/90 px-4 py-2.5 rounded-xl text-sm font-bold transition-all hover:scale-105 active:scale-95 touch-target w-full"
-                >
-                  ⏭️ Push Program Forward 1 Day
-                </button>
-              </div>
-            )}
-            <p className="text-white/70 text-sm mt-2">{getMotivationalMessage()}</p>
+    <div className="min-h-screen bg-white dark:bg-black">
+      {/* Minimal Header - Apple Health Style */}
+      <header className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="max-w-4xl mx-auto px-4 safe-top py-4">
+          {/* Top Navigation */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white">Today</h1>
+            <Link
+              href="/program"
+              className="text-[#8E8E93] hover:text-[#1C1C1E] dark:hover:text-white transition"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+              </svg>
+            </Link>
           </div>
 
-          {/* Stats Grid - iOS Card Style */}
-          <div className="grid grid-cols-3 gap-3 animate-fade-in-ios">
-            <StatsCard value={streak} label="Day Streak" icon="🔥" color="orange" />
+          {/* Date & Phase Info */}
+          <div className="mb-6">
+            <p className="text-base text-[#8E8E93] font-medium mb-1">{todayDate}</p>
+            {programMeta && (
+              <p className="text-sm text-[#8E8E93]">
+                Week {programMeta.week} · {programMeta.phase} · Day {programMeta.day}
+              </p>
+            )}
+          </div>
+
+          {/* Clean Stats Grid */}
+          <div className="grid grid-cols-3 gap-3">
+            <StatsCard value={streak} label="Streak" icon="🔥" color="orange" />
             <StatsCard
               value={`${todayProgress}%`}
-              label="Today"
-              icon="✅"
+              label="Progress"
+              icon="✓"
               color="green"
             />
             <StatsCard
               value={totalMinutes}
               label="Minutes"
-              icon="⏱️"
-              color="purple"
+              icon="⏱"
+              color="pink"
             />
           </div>
-
-          {/* Progress Circle */}
-          {todayProgress > 0 && (
-            <div className="mt-5 flex justify-center animate-bounce-gentle">
-              <CircularProgress percentage={todayProgress} size={90} strokeWidth={7} />
-            </div>
-          )}
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main Content - Minimal */}
       <main className="max-w-4xl mx-auto px-4 py-6 pb-32 safe-bottom">
-        {/* Quick Action Button - iOS Style */}
+        {/* Start Workout Button - Clean */}
         {viewMode === "checklist" && (
-          <div className="mb-6 animate-slide-up-ios">
-            <button
-              onClick={handleShowCoachView}
-              className="w-full gradient-blue-purple text-white font-bold py-5 px-6 rounded-2xl shadow-xl transition-all active:scale-[0.98] flex items-center justify-center gap-3 ios-button touch-target"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
-                />
-              </svg>
-              <span className="text-base">Show me my exercises for today</span>
-            </button>
-          </div>
-        )}
-
-        
-        {/* Quick Navigation */}
-        <div className="grid grid-cols-2 gap-3 mb-6">
-          <Link
-            href="/schedule"
-            className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl p-4 shadow-lg border-2 border-gray-200 dark:border-gray-700 hover:border-blue-500 transition flex items-center gap-3"
+          <button
+            onClick={handleShowCoachView}
+            className="w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-4 px-6 rounded-xl shadow-card transition-all active:scale-[0.98] mb-6 text-base"
           >
-            <div className="text-3xl">📅</div>
-            <div>
-              <div className="font-bold text-gray-900 dark:text-gray-100">Schedule</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">View full calendar</div>
-            </div>
-          </Link>
-          <Link
-            href="/program"
-            className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-xl p-4 shadow-lg border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 transition flex items-center gap-3"
-          >
-            <div className="text-3xl">🎯</div>
-            <div>
-              <div className="font-bold text-gray-900 dark:text-gray-100">Program</div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Phases & gates</div>
-            </div>
-          </Link>
-        </div>
-
-        {/* Tomorrow Preview */}
-        {tomorrowWorkout && (
-          <div className="bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl p-5 mb-6 border-2 border-indigo-300 dark:border-indigo-700">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                🔮 Tomorrow Preview
-              </h3>
-              <Link
-                href="/schedule"
-                className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline"
-              >
-                View full schedule →
-              </Link>
-            </div>
-            <div className="flex items-center gap-3">
-              <div className="text-4xl">
-                {tomorrowWorkout.program?.day === 'A' ? '💪' : 
-                 tomorrowWorkout.program?.day === 'B' ? '🏋️' : '🚴'}
-              </div>
-              <div className="flex-1">
-                <div className="font-semibold text-gray-900 dark:text-gray-100">
-                  Day {tomorrowWorkout.program?.day || 'A'}
-                  {tomorrowWorkout.program && (
-                    <span className="text-sm font-normal text-gray-600 dark:text-gray-400 ml-2">
-                      (Week {tomorrowWorkout.program.week})
-                    </span>
-                  )}
-                </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
-                  {tomorrowWorkout.blocks.length} blocks • ~
-                  {tomorrowWorkout.blocks.reduce((s, b) => s + b.estimatedMinutes, 0)} min
-                </div>
-                <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">
-                  {tomorrowWorkout.blocks.map(b => b.name).slice(0, 2).join(' • ')}
-                  {tomorrowWorkout.blocks.length > 2 && '...'}
-                </div>
-              </div>
-            </div>
-          </div>
+            Start Today's Workout
+          </button>
         )}
-
-        {/* View Toggle */}
-        <div className="flex justify-center mb-6">
-          <ViewToggle currentView={viewMode} onViewChange={handleViewChange} />
-        </div>
 
         {/* View Content */}
-        <div>
+        <div className="animate-fade-in">
           {viewMode === "checklist" ? (
             <ChecklistView workout={workout} />
           ) : (
             <CoachView workout={workout} />
           )}
         </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white mt-12 shadow-2xl">
-        <div className="max-w-4xl mx-auto px-4 py-8 text-center">
-          <div className="mb-4">
-            <h3 className="text-2xl font-black mb-2">Health Tracker PWA</h3>
-            <p className="text-blue-100 text-sm">
-              Your personal fitness companion • Always offline-ready
-            </p>
-          </div>
-          
-          {/* Quick Stats */}
-          <div className="flex justify-center gap-6 text-sm">
-            <div>
-              <div className="font-bold text-lg">{totalExercises}</div>
-              <div className="text-blue-200">Exercises</div>
-            </div>
-            <div>
-              <div className="font-bold text-lg">{workout?.blocks.length || 0}</div>
-              <div className="text-blue-200">Blocks</div>
-            </div>
-            <div>
-              <div className="font-bold text-lg">{streak}</div>
-              <div className="text-blue-200">Day Streak</div>
-            </div>
-          </div>
-          
-          <div className="mt-4 pt-4 border-t border-white/20">
-            <p className="text-xs text-blue-200">
-              Made with 💙 • Version 1.0.0
-            </p>
-          </div>
+        {/* Quick Links - Minimal */}
+        <div className="mt-12 flex justify-center gap-4 pb-8">
+          <Link
+            href="/schedule"
+            className="text-[#007AFF] hover:text-[#0051D5] text-sm font-medium transition"
+          >
+            View Schedule
+          </Link>
+          <span className="text-[#E5E5EA]">·</span>
+          <Link
+            href="/program"
+            className="text-[#007AFF] hover:text-[#0051D5] text-sm font-medium transition"
+          >
+            View Program
+          </Link>
         </div>
-      </footer>
+      </main>
     </div>
   );
 }
