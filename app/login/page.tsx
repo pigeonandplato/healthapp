@@ -48,20 +48,33 @@ export default function LoginPage() {
       } else if (isSignUp) {
         const { error } = await signUp(email, password);
         if (error) {
-          setError(error.message);
+          if (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed to fetch')) {
+            setError("Network error: Check your internet connection and Supabase configuration");
+          } else {
+            setError(error.message);
+          }
         } else {
           setMessage("Check your email to confirm your account!");
         }
       } else {
         const { error } = await signIn(email, password);
         if (error) {
-          setError(error.message);
+          if (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('Failed to fetch')) {
+            setError("Network error: Check your internet connection and Supabase configuration");
+          } else {
+            setError(error.message);
+          }
         } else {
           router.push("/today");
         }
       }
-    } catch (err) {
-      setError("An unexpected error occurred");
+    } catch (err: any) {
+      console.error('Login error:', err);
+      if (err?.message?.includes('fetch') || err?.message?.includes('network') || err?.message?.includes('Failed to fetch')) {
+        setError("Network error: Unable to connect to Supabase. Please check your configuration.");
+      } else {
+        setError(err?.message || "An unexpected error occurred");
+      }
     } finally {
       setLoading(false);
     }
