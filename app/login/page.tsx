@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
 import { supabase } from "@/lib/supabase";
 
@@ -16,7 +16,6 @@ export default function LoginPage() {
   
   const { signIn, signUp } = useAuth();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   // Handle password reset callback
   useEffect(() => {
