@@ -45,3 +45,5 @@ All images downloaded from: https://www.pexels.com/
 24 high-quality exercise photos (~1.5MB total)
 All images optimized for web and offline use.
 
+
+

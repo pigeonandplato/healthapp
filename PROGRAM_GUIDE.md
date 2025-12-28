@@ -277,3 +277,5 @@ Then start Week 1, Day A! 💪🔥
 
 *Remember: This is a marathon, not a sprint. Your body needs time to adapt. Stick to the gates, do the daily hip work, and you'll be running that 5K safely in 6 months!*
 
+
+

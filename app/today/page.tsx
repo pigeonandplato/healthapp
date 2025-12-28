@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode } from "@/lib/types";
 import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate } from "@/lib/db";
@@ -166,25 +164,12 @@ export default function TodayPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black">
-      {/* Minimal Header - Apple Health Style */}
-      <header className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
-        <div className="max-w-4xl mx-auto px-4 safe-top py-4">
-          {/* Top Navigation */}
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white">Today</h1>
-            <Link
-              href="/program"
-              className="text-[#8E8E93] hover:text-[#1C1C1E] dark:hover:text-white transition"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-              </svg>
-            </Link>
-          </div>
-
+    <div className="bg-white dark:bg-black">
+      {/* Stats Section */}
+      <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="max-w-4xl mx-auto px-4 py-4">
           {/* Date & Phase Info */}
-          <div className="mb-6">
+          <div className="mb-4">
             <p className="text-base text-[#8E8E93] font-medium mb-1">{todayDate}</p>
             {programMeta && (
               <p className="text-sm text-[#8E8E93]">
@@ -210,10 +195,10 @@ export default function TodayPage() {
             />
           </div>
         </div>
-      </header>
+      </section>
 
       {/* Main Content - Minimal */}
-      <main className="max-w-4xl mx-auto px-4 py-6 pb-32 safe-bottom">
+      <main className="max-w-4xl mx-auto px-4 py-6">
         {/* Start Workout Button - Clean */}
         {viewMode === "checklist" && (
           <button
@@ -233,22 +218,6 @@ export default function TodayPage() {
           )}
         </div>
 
-        {/* Quick Links - Minimal */}
-        <div className="mt-12 flex justify-center gap-4 pb-8">
-          <Link
-            href="/schedule"
-            className="text-[#007AFF] hover:text-[#0051D5] text-sm font-medium transition"
-          >
-            View Schedule
-          </Link>
-          <span className="text-[#E5E5EA]">·</span>
-          <Link
-            href="/program"
-            className="text-[#007AFF] hover:text-[#0051D5] text-sm font-medium transition"
-          >
-            View Program
-          </Link>
-        </div>
       </main>
     </div>
   );

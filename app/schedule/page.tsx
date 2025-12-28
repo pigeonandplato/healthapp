@@ -82,32 +82,16 @@ export default function SchedulePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
-      <header className="bg-gradient-to-br from-green-600 via-blue-600 to-indigo-600 text-white shadow-2xl">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-4">
-            <Link
-              href="/today"
-              className="text-white/80 hover:text-white transition flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Today
-            </Link>
-            <Link
-              href="/program"
-              className="text-white/80 hover:text-white transition text-sm"
-            >
-              View Full Program
-            </Link>
-          </div>
-          <h1 className="text-4xl font-black mb-2">📅 Your Schedule</h1>
-          <p className="text-blue-100">Day-by-day workout plan • Next {viewWeeks} weeks</p>
+    <div className="bg-white dark:bg-black">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-[#34C759] via-[#30D158] to-[#007AFF] text-white">
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          <h2 className="text-2xl font-bold mb-1">📅 Your Schedule</h2>
+          <p className="text-white/90 text-sm">Day-by-day workout plan • Next {viewWeeks} weeks</p>
         </div>
-      </header>
+      </section>
 
-      <main className="max-w-4xl mx-auto px-4 py-8 pb-24">
+      <main className="max-w-4xl mx-auto px-4 py-6">
         {/* View Controls */}
         <div className="flex justify-center gap-2 mb-6">
           <button
@@ -271,4 +255,6 @@ export default function SchedulePage() {
     </div>
   );
 }
+
+
 

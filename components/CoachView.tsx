@@ -204,3 +204,5 @@ export default function CoachView({ workout }: CoachViewProps) {
   );
 }
 
+
+

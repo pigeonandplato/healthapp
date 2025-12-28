@@ -208,3 +208,5 @@ npm run build
 ✅ Dark mode supported  
 ✅ No external API calls or image hosting required
 
+
+

@@ -164,3 +164,5 @@ curl -L -o "exercise-name.jpg" "URL_TO_IMAGE"
 
 Enjoy your upgraded Health Tracker! 💪
 
+
+

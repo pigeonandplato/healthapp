@@ -1,14 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import AppShell from "@/components/AppShell";
 
 export const metadata: Metadata = {
-  title: "5K Trainer",
-  description: "Your personal 24-week journey to running 5K injury-free",
+  title: "Health Tracker",
+  description: "Your personal wellness companion for fitness and health",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "5K Trainer",
+    title: "Health Tracker",
   },
   formatDetection: {
     telephone: false,
@@ -20,7 +21,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: "#0A84FF",
+  themeColor: "#FF2D55",
   viewportFit: "cover",
 };
 
@@ -40,7 +41,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased overflow-x-hidden touch-manipulation">
-        {children}
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

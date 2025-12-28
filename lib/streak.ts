@@ -50,3 +50,5 @@ export function getMotivationalMessage(): string {
   return messages[Math.floor(Math.random() * messages.length)];
 }
 
+
+

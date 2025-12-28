@@ -247,3 +247,5 @@ export async function deleteCompletion(exerciseId: string, date: string): Promis
   await db.delete("completions", `${exerciseId}-${date}`);
 }
 
+
+

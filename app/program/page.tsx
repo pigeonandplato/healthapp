@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { getProgramMetaForDate, PROGRAM_PHASES, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
-import Link from "next/link";
 
 export default function ProgramPage() {
   const [program, setProgram] = useState<ProgramMeta | null>(null);
@@ -47,36 +46,22 @@ export default function ProgramPage() {
   const currentPhase = PROGRAM_PHASES.find((p) => p.phase === program?.phase);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
-      <header className="bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-600 text-white shadow-2xl">
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="flex items-center justify-between mb-4">
-            <Link
-              href="/today"
-              className="text-white/80 hover:text-white transition flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Back to Today
-            </Link>
+    <div className="bg-white dark:bg-black">
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-[#FF2D55] via-[#FF6482] to-[#FF9500] text-white">
+        <div className="max-w-4xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-2xl font-bold">Your 5K Program 🎯</h2>
             <button
               onClick={() => setShowReset(!showReset)}
-              className="text-sm bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg transition"
+              className="text-sm bg-white/20 hover:bg-white/30 px-3 py-1.5 rounded-lg transition font-medium"
             >
-              Settings
+              ⚙️ Settings
             </button>
           </div>
-          <h1 className="text-4xl font-black mb-2">Your 5K Program 🎯</h1>
-          <p className="text-blue-100">24-week journey to running a safe 5K</p>
-          <Link
-            href="/schedule"
-            className="inline-block mt-2 text-sm text-blue-100 hover:text-white underline"
-          >
-            📅 View Day-by-Day Schedule
-          </Link>
+          <p className="text-white/90 text-sm">24-week journey to running a safe 5K</p>
         </div>
-      </header>
+      </section>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* Current Status Card */}
@@ -249,14 +234,6 @@ export default function ProgramPage() {
           </div>
         )}
 
-        <div className="mt-8 text-center">
-          <Link
-            href="/today"
-            className="inline-block bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition"
-          >
-            Back to Today's Workout →
-          </Link>
-        </div>
       </main>
     </div>
   );

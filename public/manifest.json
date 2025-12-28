@@ -1,7 +1,7 @@
 {
-  "name": "5K Trainer",
-  "short_name": "5K Trainer",
-  "description": "Your personal 24-week journey to running 5K injury-free",
+  "name": "Health Tracker",
+  "short_name": "Health Tracker",
+  "description": "Your personal wellness companion for fitness and health",
   "start_url": "/today",
   "display": "standalone",
   "background_color": "#F2F2F7",

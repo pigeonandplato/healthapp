@@ -25,3 +25,5 @@ convert -background none -resize 512x512 icon.svg icon-512x512.png
 
 For development, the app will fall back to the SVG icon if PNGs are not available. For production, generate proper PNG icons using the methods above.
 
+
+
