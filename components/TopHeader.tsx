@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth-context";
 
 const menuItems = [
   { href: "/today", label: "Today's Workout", icon: "🏠" },
@@ -13,7 +14,9 @@ const menuItems = [
 export default function TopHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const menuRef = useRef<HTMLDivElement>(null);
+  const { user, signOut } = useAuth();
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -42,6 +45,11 @@ export default function TopHeader() {
       document.body.style.overflow = "";
     };
   }, [isOpen]);
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/login");
+  };
 
   const getPageTitle = () => {
     switch (pathname) {
@@ -128,6 +136,16 @@ export default function TopHeader() {
             </div>
           </div>
 
+          {/* User Info */}
+          {user && (
+            <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-xl p-3 mb-4">
+              <p className="text-xs text-[#8E8E93] mb-1">Signed in as</p>
+              <p className="text-sm font-medium text-[#1C1C1E] dark:text-white truncate">
+                {user.email}
+              </p>
+            </div>
+          )}
+
           {/* Divider */}
           <div className="h-px bg-[#E5E5EA] dark:bg-[#38383A] mb-4" />
 
@@ -154,14 +172,23 @@ export default function TopHeader() {
             })}
           </nav>
 
+          {/* Sign Out Button */}
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 mt-4"
+          >
+            <span className="text-xl">🚪</span>
+            <span className="font-medium">Sign Out</span>
+          </button>
+
           {/* Footer */}
-          <div className="mt-auto pt-4 border-t border-[#E5E5EA] dark:border-[#38383A]">
+          <div className="mt-4 pt-4 border-t border-[#E5E5EA] dark:border-[#38383A]">
             <div className="text-center">
               <p className="text-xs text-[#8E8E93]">
                 Track your wellness journey
               </p>
               <p className="text-[10px] text-[#C7C7CC] mt-1">
-                Data stored locally on device
+                Data synced to cloud
               </p>
             </div>
           </div>
