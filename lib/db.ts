@@ -157,6 +157,7 @@ export async function saveBlockTimer(timer: BlockTimerState): Promise<void> {
       date: timer.date,
       elapsed_seconds: timer.elapsedSeconds,
       is_running: timer.isRunning,
+      last_updated: timer.lastUpdated || new Date().toISOString(),
     });
   
   if (error) {
@@ -182,6 +183,7 @@ export async function getBlockTimer(blockId: string, date: string): Promise<Bloc
     date: data.date,
     elapsedSeconds: data.elapsed_seconds,
     isRunning: data.is_running,
+    lastUpdated: data.last_updated || new Date().toISOString(),
   };
 }
 
@@ -202,6 +204,7 @@ export async function getBlockTimersByDate(date: string): Promise<BlockTimerStat
     date: t.date,
     elapsedSeconds: t.elapsed_seconds,
     isRunning: t.is_running,
+    lastUpdated: t.last_updated || new Date().toISOString(),
   }));
 }
 
