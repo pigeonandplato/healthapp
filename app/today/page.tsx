@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate } from "@/lib/db";
+import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo } from "@/lib/db";
 import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
 import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
@@ -11,6 +11,10 @@ import CoachView from "@/components/CoachView";
 import ViewToggle from "@/components/ViewToggle";
 import StatsCard from "@/components/StatsCard";
 import CircularProgress from "@/components/CircularProgress";
+import StickyProgressBar from "@/components/StickyProgressBar";
+import FloatingActionButton from "@/components/FloatingActionButton";
+import SpotifyEmbedPlayer from "@/components/SpotifyEmbedPlayer";
+import { StatsSkeleton } from "@/components/SkeletonLoader";
 
 export default function TodayPage() {
   const [workout, setWorkout] = useState<WorkoutDay | null>(null);
@@ -23,6 +27,7 @@ export default function TodayPage() {
   const [tomorrowWorkout, setTomorrowWorkout] = useState<WorkoutDay | null>(null);
   const [programMeta, setProgramMeta] = useState<ProgramMeta | null>(null);
   const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
+  const [youtubeVideo, setYoutubeVideo] = useState<string | null>(null);
 
   // Load view preference from localStorage
   useEffect(() => {
@@ -76,6 +81,10 @@ export default function TodayPage() {
         const tomorrowDate = tomorrow.toISOString().split("T")[0];
         const tomorrowW = await getWorkoutByDate(tomorrowDate);
         setTomorrowWorkout(tomorrowW || null);
+        
+        // Load YouTube video
+        const videoUrl = await getYouTubeVideo();
+        setYoutubeVideo(videoUrl);
       } catch (error) {
         console.error("Failed to load workout:", error);
       } finally {
@@ -109,11 +118,19 @@ export default function TodayPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-gray-400">Loading your workout...</p>
-        </div>
+      <div className="min-h-screen bg-white dark:bg-black">
+        <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <StatsSkeleton />
+          </div>
+        </section>
+        <main className="max-w-4xl mx-auto px-4 py-6">
+          <div className="animate-pulse space-y-4">
+            <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
+            <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
+            <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-2xl"></div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -165,6 +182,9 @@ export default function TodayPage() {
 
   return (
     <div className="bg-white dark:bg-black">
+      {/* Sticky Progress Bar */}
+      <StickyProgressBar progress={todayProgress} />
+      
       {/* Stats Section */}
       <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -199,6 +219,27 @@ export default function TodayPage() {
 
       {/* Main Content - Minimal */}
       <main className="max-w-4xl mx-auto px-4 py-6">
+        {/* YouTube Motivation Video */}
+        {youtubeVideo && (
+          <div className="mb-6 bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+            <h3 className="text-sm font-semibold text-[#1C1C1E] dark:text-white mb-3">
+              💪 Stay Motivated
+            </h3>
+            <div className="aspect-video rounded-xl overflow-hidden bg-[#E5E5EA] dark:bg-[#38383A]">
+              <iframe
+                src={youtubeVideo}
+                title="Motivation Video"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <p className="text-xs text-[#8E8E93] mt-2 text-center">
+              Edit video in <a href="/settings" className="text-[#FF2D55] underline">Settings</a>
+            </p>
+          </div>
+        )}
+        
         {/* Start Workout Button - Clean */}
         {viewMode === "checklist" && (
           <button
@@ -219,6 +260,22 @@ export default function TodayPage() {
         </div>
 
       </main>
+      
+      {/* Floating Action Button - Only show in Coach View */}
+      {viewMode === "coach" && (
+        <FloatingActionButton
+          onQuickComplete={() => {
+            // Find first incomplete exercise and complete it
+            const allExercises = workout.blocks.flatMap(b => 
+              b.exercises.filter(e => e.category !== "Guidance")
+            );
+            // This would need to be implemented with exercise state
+          }}
+        />
+      )}
+      
+      {/* Spotify Music Player */}
+      <SpotifyEmbedPlayer />
     </div>
   );
 }

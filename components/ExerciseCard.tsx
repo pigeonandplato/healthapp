@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Exercise, ExerciseCompletion } from "@/lib/types";
 import { saveCompletion } from "@/lib/db";
+import { triggerCompletion } from "@/utils/haptics";
 
 interface ExerciseCardProps {
   exercise: Exercise;
@@ -25,6 +26,12 @@ export default function ExerciseCard({
   const [showVideo, setShowVideo] = useState(true);
   const [videoError, setVideoError] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  
+  // Swipe gesture state
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
 
   // Lazy loading using Intersection Observer
   useEffect(() => {
@@ -58,6 +65,46 @@ export default function ExerciseCard({
     setIsCompleted(newCompleted);
     await saveCompletion(exercise.id, date, newCompleted, notes);
     onCompletionChange(exercise.id, newCompleted);
+    if (newCompleted) {
+      triggerCompletion();
+    }
+  };
+
+  // Swipe gesture handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    setIsSwiping(true);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isSwiping) return;
+    
+    const deltaX = e.touches[0].clientX - touchStartX.current;
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
+    
+    // Only allow horizontal swipe (not vertical scrolling)
+    if (deltaY > 30) {
+      setIsSwiping(false);
+      setSwipeOffset(0);
+      return;
+    }
+    
+    // Only allow right swipe (to complete)
+    if (deltaX > 0 && !isCompleted) {
+      setSwipeOffset(Math.min(deltaX, 120));
+    } else {
+      setSwipeOffset(0);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (swipeOffset > 80 && !isCompleted) {
+      // Swiped enough to complete
+      handleToggleComplete();
+    }
+    setSwipeOffset(0);
+    setIsSwiping(false);
   };
 
   const handleNotesChange = async (value: string) => {
@@ -81,10 +128,38 @@ export default function ExerciseCard({
   return (
     <div
       ref={cardRef}
-      className={`group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden transition-all duration-300 hover:shadow-3xl hover:scale-[1.01] hover:-translate-y-1 ${
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      className={`group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden transition-all duration-300 hover:shadow-3xl hover:scale-[1.01] hover:-translate-y-1 touch-pan-y ${
         isCompleted ? "ring-4 ring-green-400/50" : ""
       }`}
+      style={{
+        transform: `translateX(${swipeOffset}px)`,
+        transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
+      }}
     >
+      {/* Swipe indicator */}
+      {swipeOffset > 20 && !isCompleted && (
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-30">
+          <div className="w-12 h-12 rounded-full bg-[#34C759] flex items-center justify-center text-white shadow-lg">
+            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          </div>
+        </div>
+      )}
+      
+      {/* Quick Complete Button - Always visible, large */}
+      {!isCompleted && (
+        <button
+          onClick={handleToggleComplete}
+          className="absolute bottom-4 right-4 w-14 h-14 bg-[#FF2D55] rounded-full shadow-2xl flex items-center justify-center text-white text-2xl z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
+          aria-label="Complete exercise"
+        >
+          ✓
+        </button>
+      )}
       {/* Completion Badge - Top Left Corner */}
       {isCompleted && (
         <div className="absolute top-4 left-4 z-20">
@@ -209,7 +284,7 @@ export default function ExerciseCard({
           {/* Complete Toggle - Larger and More Prominent */}
           <button
             onClick={handleToggleComplete}
-            className={`flex-shrink-0 w-16 h-16 rounded-2xl border-3 flex items-center justify-center transition-all shadow-xl ${
+            className={`flex-shrink-0 w-16 h-16 rounded-2xl border-3 flex items-center justify-center transition-all shadow-xl touch-manipulation ${
               isCompleted
                 ? "bg-gradient-to-r from-green-400 to-emerald-500 border-green-300 scale-110"
                 : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:border-green-400 hover:scale-105"

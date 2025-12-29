@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { WorkoutDay, ExerciseCompletion } from "@/lib/types";
 import { getCompletionsByDate, saveCompletion, pushToTomorrow } from "@/lib/db";
+import { WorkoutSkeleton } from "./SkeletonLoader";
 
 interface ChecklistViewProps {
   workout: WorkoutDay;
@@ -106,11 +107,7 @@ export default function ChecklistView({ workout }: ChecklistViewProps) {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
-      </div>
-    );
+    return <WorkoutSkeleton />;
   }
 
   const progress = calculateProgress();

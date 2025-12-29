@@ -10,6 +10,7 @@ import {
 import { allExercises, getBlocksForProgramMeta } from "./seedData";
 import { getProgramMetaForDate } from "./program";
 import { supabase } from "./supabase";
+import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
 // Helper to get current user ID
 async function getUserId(): Promise<string | null> {
@@ -104,6 +105,54 @@ export async function deleteCompletion(exerciseId: string, date: string): Promis
   if (error) {
     console.error("Error deleting completion:", error);
   }
+}
+
+// Get all completions for progress tracking
+export async function getAllCompletions(): Promise<ExerciseCompletion[]> {
+  const userId = await getUserId();
+  if (!userId) return [];
+
+  const { data, error } = await supabase
+    .from("completions")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("completed", true)
+    .order("date", { ascending: false });
+  
+  if (error || !data) return [];
+  
+  return data.map((c) => ({
+    exerciseId: c.exercise_id,
+    date: c.date,
+    completed: c.completed,
+    notes: c.notes,
+    completedAt: c.completed_at,
+  }));
+}
+
+// Get completions by date range
+export async function getCompletionsByDateRange(startDate: string, endDate: string): Promise<ExerciseCompletion[]> {
+  const userId = await getUserId();
+  if (!userId) return [];
+
+  const { data, error } = await supabase
+    .from("completions")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("completed", true)
+    .gte("date", startDate)
+    .lte("date", endDate)
+    .order("date", { ascending: true });
+  
+  if (error || !data) return [];
+  
+  return data.map((c) => ({
+    exerciseId: c.exercise_id,
+    date: c.date,
+    completed: c.completed,
+    notes: c.notes,
+    completedAt: c.completed_at,
+  }));
 }
 
 // ============================================
@@ -218,16 +267,49 @@ export async function getTodayWorkout(): Promise<WorkoutDay | undefined> {
 }
 
 export async function getWorkoutByDate(date: string): Promise<WorkoutDay | undefined> {
-  // Workouts are generated from program meta, not stored
+  // Try cache first for faster loading
+  try {
+    const cached = await getCachedWorkout(date);
+    if (cached) {
+      // Also check if we need to cache exercises
+      const cachedExercises = await getCachedExercises();
+      if (cachedExercises.length === 0) {
+        const exercises = await getAllExercises();
+        await cacheExercises(exercises);
+      }
+      return cached;
+    }
+  } catch (error) {
+    console.error("Error reading from cache:", error);
+  }
+
+  // Generate workout if not cached
   const programMeta: ProgramMeta = await getProgramMetaForDate(date);
   const blocks = getBlocksForProgramMeta(programMeta);
 
-  return {
+  const workout: WorkoutDay = {
     id: `workout-${date}`,
     date,
     blocks,
     program: programMeta,
   };
+
+  // Cache for future use
+  try {
+    await cacheWorkout(workout);
+    await cacheProgramMeta(date, programMeta);
+    
+    // Cache exercises if not already cached
+    const cachedExercises = await getCachedExercises();
+    if (cachedExercises.length === 0) {
+      const exercises = await getAllExercises();
+      await cacheExercises(exercises);
+    }
+  } catch (error) {
+    console.error("Error caching workout:", error);
+  }
+
+  return workout;
 }
 
 export async function saveWorkoutDay(workout: WorkoutDay): Promise<void> {
@@ -275,7 +357,93 @@ export function getDayRotation(date?: string): 'A' | 'B' | 'C' {
   return rotation[daysSinceStart % 3];
 }
 
+// ============================================
+// YOUTUBE VIDEO SETTINGS
+// ============================================
+
+export async function getYouTubeVideo(): Promise<string | null> {
+  return await getSetting("youtube_video_url");
+}
+
+export async function saveYouTubeVideo(url: string): Promise<void> {
+  await saveSetting("youtube_video_url", url);
+}
+
+// ============================================
+// OFFLINE CACHING - IndexedDB for local storage
+// ============================================
+
+interface CacheDB extends DBSchema {
+  workouts: {
+    key: string; // date string
+    value: WorkoutDay;
+  };
+  exercises: {
+    key: string; // exercise id
+    value: Exercise;
+  };
+  programMeta: {
+    key: string; // date string
+    value: ProgramMeta;
+  };
+}
+
+let cacheDB: IDBPDatabase<CacheDB> | null = null;
+
+async function getCacheDB(): Promise<IDBPDatabase<CacheDB>> {
+  if (cacheDB) return cacheDB;
+  
+  cacheDB = await openDB<CacheDB>('health-tracker-cache', 1, {
+    upgrade(db) {
+      if (!db.objectStoreNames.contains('workouts')) {
+        db.createObjectStore('workouts');
+      }
+      if (!db.objectStoreNames.contains('exercises')) {
+        db.createObjectStore('exercises');
+      }
+      if (!db.objectStoreNames.contains('programMeta')) {
+        db.createObjectStore('programMeta');
+      }
+    },
+  });
+  
+  return cacheDB;
+}
+
+export async function cacheWorkout(workout: WorkoutDay): Promise<void> {
+  const db = await getCacheDB();
+  await db.put('workouts', workout, workout.date);
+}
+
+export async function getCachedWorkout(date: string): Promise<WorkoutDay | undefined> {
+  const db = await getCacheDB();
+  return await db.get('workouts', date);
+}
+
+export async function cacheExercises(exercises: Exercise[]): Promise<void> {
+  const db = await getCacheDB();
+  const tx = db.transaction('exercises', 'readwrite');
+  await Promise.all(exercises.map(ex => tx.store.put(ex, ex.id)));
+  await tx.done;
+}
+
+export async function getCachedExercises(): Promise<Exercise[]> {
+  const db = await getCacheDB();
+  return await db.getAll('exercises');
+}
+
+export async function cacheProgramMeta(date: string, meta: ProgramMeta): Promise<void> {
+  const db = await getCacheDB();
+  await db.put('programMeta', meta, date);
+}
+
+export async function getCachedProgramMeta(date: string): Promise<ProgramMeta | undefined> {
+  const db = await getCacheDB();
+  return await db.get('programMeta', date);
+}
+
 // Legacy function - no longer needed with Supabase
 export async function initDB(): Promise<void> {
-  // No-op - Supabase doesn't need initialization
+  // Initialize cache DB
+  await getCacheDB();
 }

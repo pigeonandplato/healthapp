@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import TopHeader from "./TopHeader";
 import BottomNav from "./BottomNav";
@@ -18,6 +18,13 @@ export default function AppShell({ children }: AppShellProps) {
   if (isLoginPage) {
     return <>{children}</>;
   }
+
+  // Initialize cache DB on mount
+  useEffect(() => {
+    import("@/lib/db").then(({ initDB }) => {
+      initDB().catch(console.error);
+    });
+  }, []);
 
   return (
     <ProtectedRoute>

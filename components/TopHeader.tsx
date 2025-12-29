@@ -8,7 +8,9 @@ import { useAuth } from "@/lib/auth-context";
 const menuItems = [
   { href: "/today", label: "Today's Workout", icon: "🏠" },
   { href: "/schedule", label: "Schedule", icon: "📅" },
+  { href: "/progress", label: "Progress", icon: "📊" },
   { href: "/program", label: "Program Overview", icon: "📈" },
+  { href: "/settings", label: "Settings", icon: "⚙️" },
 ];
 
 export default function TopHeader() {
@@ -58,8 +60,12 @@ export default function TopHeader() {
         return "Health Tracker";
       case "/schedule":
         return "Schedule";
+      case "/progress":
+        return "Progress";
       case "/program":
         return "Program";
+      case "/settings":
+        return "Settings";
       default:
         return "Health Tracker";
     }

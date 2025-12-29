@@ -5,6 +5,7 @@ import { WorkoutDay, ExerciseCompletion } from "@/lib/types";
 import { getCompletionsByDate } from "@/lib/db";
 import ExerciseCard from "./ExerciseCard";
 import BlockTimer from "./BlockTimer";
+import { WorkoutSkeleton } from "./SkeletonLoader";
 
 interface CoachViewProps {
   workout: WorkoutDay;
@@ -58,11 +59,7 @@ export default function CoachView({ workout }: CoachViewProps) {
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
-      </div>
-    );
+    return <WorkoutSkeleton />;
   }
 
   return (
