@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Exercise, ExerciseCompletion } from "@/lib/types";
-import { saveCompletion } from "@/lib/db";
+import { saveCompletion, getCustomExerciseVideo, saveCustomExerciseVideo, deleteCustomExerciseVideo, getMasterExerciseVideo, saveMasterExerciseVideo, getUserEmail } from "@/lib/db";
 import { triggerCompletion } from "@/utils/haptics";
 
 interface ExerciseCardProps {
@@ -25,6 +25,13 @@ export default function ExerciseCard({
   const [isVisible, setIsVisible] = useState(false);
   const [showVideo, setShowVideo] = useState(true);
   const [videoError, setVideoError] = useState(false);
+  const [customVideoUrl, setCustomVideoUrl] = useState<string | null>(null);
+  const [masterVideoUrl, setMasterVideoUrl] = useState<string | null>(null);
+  const [isEditingVideo, setIsEditingVideo] = useState(false);
+  const [editVideoInput, setEditVideoInput] = useState("");
+  const [savingVideo, setSavingVideo] = useState(false);
+  const [videoEditError, setVideoEditError] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
   // Swipe gesture state
@@ -59,6 +66,113 @@ export default function ExerciseCard({
     setIsCompleted(completion?.completed || false);
     setNotes(completion?.notes || "");
   }, [completion]);
+
+  // Load custom video and master video on mount, check if admin
+  useEffect(() => {
+    async function loadVideos() {
+      if (exercise.media.type === "video") {
+        // Check if user is admin
+        const email = await getUserEmail();
+        const admin = email === "gilljugnu1@gmail.com";
+        setIsAdmin(admin);
+        
+        // Load master video (for all users)
+        const master = await getMasterExerciseVideo(exercise.id);
+        setMasterVideoUrl(master);
+        
+        // Load custom video (user-specific override)
+        const custom = await getCustomExerciseVideo(exercise.id);
+        setCustomVideoUrl(custom);
+      }
+    }
+    loadVideos();
+  }, [exercise.id, exercise.media.type]);
+
+  // Get the video URL to use (priority: custom > master > default)
+  const getVideoUrl = (): string | null => {
+    if (customVideoUrl) return customVideoUrl;
+    if (masterVideoUrl) return masterVideoUrl;
+    return exercise.media.videoUrl || null;
+  };
+
+  // Extract YouTube video ID from URL
+  const extractVideoId = (url: string): string | null => {
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /^([a-zA-Z0-9_-]{11})$/,
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) return match[1];
+    }
+    return null;
+  };
+
+  // Handle video editing
+  const handleStartEditVideo = () => {
+    const currentUrl = getVideoUrl();
+    setEditVideoInput(currentUrl?.replace("/embed/", "/watch?v=") || "");
+    setIsEditingVideo(true);
+    setVideoEditError("");
+  };
+
+  const handleSaveVideo = async () => {
+    setVideoEditError("");
+    
+    if (!editVideoInput.trim()) {
+      setVideoEditError("Please enter a YouTube URL");
+      return;
+    }
+
+    const videoId = extractVideoId(editVideoInput.trim());
+    if (!videoId) {
+      setVideoEditError("Invalid YouTube URL. Please enter a valid YouTube link.");
+      return;
+    }
+
+    setSavingVideo(true);
+    try {
+      const embedUrl = `https://www.youtube.com/embed/${videoId}`;
+      
+      // If admin, save to master video (affects all users)
+      if (isAdmin) {
+        await saveMasterExerciseVideo(exercise.id, embedUrl);
+        setMasterVideoUrl(embedUrl);
+        // Also clear any custom video for admin
+        setCustomVideoUrl(null);
+      } else {
+        // Regular user: save to custom video (only affects this user)
+        await saveCustomExerciseVideo(exercise.id, embedUrl);
+        setCustomVideoUrl(embedUrl);
+      }
+      
+      setShowVideo(true);
+      setVideoError(false);
+      setIsEditingVideo(false);
+    } catch (err) {
+      setVideoEditError("Failed to save video. Please try again.");
+      console.error("Error saving video:", err);
+    } finally {
+      setSavingVideo(false);
+    }
+  };
+
+  const handleDeleteCustomVideo = async () => {
+    setSavingVideo(true);
+    try {
+      await deleteCustomExerciseVideo(exercise.id);
+      setCustomVideoUrl(null);
+      setShowVideo(true);
+      setVideoError(false);
+      setIsEditingVideo(false);
+    } catch (err) {
+      setVideoEditError("Failed to delete custom video. Please try again.");
+      console.error("Error deleting video:", err);
+    } finally {
+      setSavingVideo(false);
+    }
+  };
 
   const handleToggleComplete = async () => {
     const newCompleted = !isCompleted;
@@ -179,10 +293,10 @@ export default function ExerciseCard({
       {isVisible && (
         <div className="relative overflow-hidden bg-black">
           {/* YouTube Video Embed */}
-          {exercise.media.type === "video" && exercise.media.videoUrl && showVideo && !videoError ? (
+          {exercise.media.type === "video" && getVideoUrl() && showVideo && !videoError ? (
             <div className="relative">
               <iframe
-                src={exercise.media.videoUrl}
+                src={getVideoUrl()!}
                 className="w-full h-64 bg-black"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
@@ -190,8 +304,18 @@ export default function ExerciseCard({
                 onError={() => setVideoError(true)}
               />
               <div className="absolute top-2 right-2 flex gap-2 z-10">
+                <button
+                  onClick={handleStartEditVideo}
+                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                  title="Edit video"
+                >
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                  </svg>
+                  Edit
+                </button>
                 <a
-                  href={exercise.media.videoUrl.replace("/embed/", "/watch?v=")}
+                  href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
@@ -221,10 +345,20 @@ export default function ExerciseCard({
                 className="w-full h-56 object-cover"
                 loading="lazy"
               />
-              {exercise.media.type === "video" && exercise.media.videoUrl && (
+              {exercise.media.type === "video" && getVideoUrl() && (
                 <div className="absolute top-2 right-2 flex gap-2 z-10">
+                  <button
+                    onClick={handleStartEditVideo}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                    title="Edit video"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    Edit
+                  </button>
                   <a
-                    href={exercise.media.videoUrl.replace("/embed/", "/watch?v=")}
+                    href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
@@ -433,6 +567,80 @@ export default function ExerciseCard({
           />
         </div>
       </div>
+
+      {/* Video Editor Modal */}
+      {isEditingVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 max-w-md w-full shadow-2xl">
+            <h3 className="text-lg font-bold mb-4 text-[#1C1C1E] dark:text-white">
+              Edit Video for {exercise.name}
+            </h3>
+            {isAdmin && (
+              <div className="mb-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3">
+                <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">
+                  ⚡ Admin Mode: This will update the master video for all users
+                </p>
+              </div>
+            )}
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-[#1C1C1E] dark:text-white mb-2">
+                  YouTube Video URL
+                </label>
+                <input
+                  type="text"
+                  value={editVideoInput}
+                  onChange={(e) => {
+                    setEditVideoInput(e.target.value);
+                    setVideoEditError("");
+                  }}
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  className="w-full px-4 py-3 rounded-xl border border-[#E5E5EA] dark:border-[#38383A] focus:border-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55]/20 outline-none transition text-[#1C1C1E] dark:text-white bg-white dark:bg-[#1C1C1E]"
+                />
+                <p className="text-xs text-[#8E8E93] mt-2">
+                  Enter a YouTube URL or video ID. Examples: youtube.com/watch?v=..., youtu.be/..., or just the video ID
+                </p>
+              </div>
+
+              {videoEditError && (
+                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+                  {videoEditError}
+                </div>
+              )}
+
+              <div className="flex gap-3">
+                <button
+                  onClick={handleSaveVideo}
+                  disabled={savingVideo}
+                  className="flex-1 bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {savingVideo ? "Saving..." : "Save Video"}
+                </button>
+                {customVideoUrl && (
+                  <button
+                    onClick={handleDeleteCustomVideo}
+                    disabled={savingVideo}
+                    className="px-4 bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
+                  >
+                    Reset
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setIsEditingVideo(false);
+                    setVideoEditError("");
+                  }}
+                  disabled={savingVideo}
+                  className="px-4 bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
