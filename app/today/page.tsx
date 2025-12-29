@@ -12,7 +12,6 @@ import ViewToggle from "@/components/ViewToggle";
 import StatsCard from "@/components/StatsCard";
 import CircularProgress from "@/components/CircularProgress";
 import StickyProgressBar from "@/components/StickyProgressBar";
-import FloatingActionButton from "@/components/FloatingActionButton";
 import SpotifyEmbedPlayer from "@/components/SpotifyEmbedPlayer";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 
@@ -260,19 +259,6 @@ export default function TodayPage() {
         </div>
 
       </main>
-      
-      {/* Floating Action Button - Only show in Coach View */}
-      {viewMode === "coach" && (
-        <FloatingActionButton
-          onQuickComplete={() => {
-            // Find first incomplete exercise and complete it
-            const allExercises = workout.blocks.flatMap(b => 
-              b.exercises.filter(e => e.category !== "Guidance")
-            );
-            // This would need to be implemented with exercise state
-          }}
-        />
-      )}
       
       {/* Spotify Music Player */}
       <SpotifyEmbedPlayer />

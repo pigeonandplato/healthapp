@@ -3,45 +3,128 @@
 import { useState, useEffect } from "react";
 import { getSetting, saveSetting } from "@/lib/db";
 
+type SpotifyType = 'track' | 'album' | 'playlist' | 'artist';
+
+interface SpotifyContent {
+  type: SpotifyType;
+  id: string;
+}
+
 export default function SpotifyEmbedPlayer() {
-  const [playlistId, setPlaylistId] = useState("");
+  const [input, setInput] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [savedPlaylistId, setSavedPlaylistId] = useState<string | null>(null);
+  const [savedContent, setSavedContent] = useState<SpotifyContent | null>(null);
+  const [error, setError] = useState("");
 
-  // Load saved playlist on mount
+  // Load saved content on mount
   useEffect(() => {
-    async function loadPlaylist() {
-      const saved = await getSetting("spotify_playlist_id");
-      if (saved) {
-        setSavedPlaylistId(saved);
-        setPlaylistId(saved);
+    async function loadContent() {
+      const savedType = await getSetting("spotify_content_type");
+      const savedId = await getSetting("spotify_content_id");
+      if (savedId && savedType) {
+        setSavedContent({ type: savedType as SpotifyType, id: savedId });
+        setInput(savedId);
       }
     }
-    loadPlaylist();
+    loadContent();
   }, []);
 
-  const handleSave = async () => {
-    if (!playlistId.trim()) return;
+  const extractSpotifyContent = (input: string): SpotifyContent | null => {
+    const trimmed = input.trim();
     
-    // Extract playlist ID from URL if full URL provided
-    let extractedId = playlistId.trim();
-    const urlMatch = playlistId.match(/playlist\/([a-zA-Z0-9]+)/);
-    if (urlMatch) {
-      extractedId = urlMatch[1];
+    // Remove query parameters (like ?si=...)
+    const cleanInput = trimmed.split('?')[0];
+    
+    // Check if it's already just an ID (22 characters)
+    if (/^[a-zA-Z0-9]{22}$/.test(trimmed)) {
+      // Default to playlist if just ID provided
+      return { type: 'playlist', id: trimmed };
     }
     
-    await saveSetting("spotify_playlist_id", extractedId);
-    setSavedPlaylistId(extractedId);
+    // Extract from URL - handle both /track/ and /embed/track/ formats
+    const urlPatterns = [
+      { type: 'track' as SpotifyType, regex: /(?:^|\/)(?:embed\/)?track\/([a-zA-Z0-9]{22})/ },
+      { type: 'album' as SpotifyType, regex: /(?:^|\/)(?:embed\/)?album\/([a-zA-Z0-9]{22})/ },
+      { type: 'playlist' as SpotifyType, regex: /(?:^|\/)(?:embed\/)?playlist\/([a-zA-Z0-9]{22})/ },
+      { type: 'artist' as SpotifyType, regex: /(?:^|\/)(?:embed\/)?artist\/([a-zA-Z0-9]{22})/ },
+    ];
+    
+    // Also handle Spotify URI format: spotify:track:xxx
+    const uriPatterns = [
+      { type: 'track' as SpotifyType, regex: /spotify:track:([a-zA-Z0-9]{22})/ },
+      { type: 'album' as SpotifyType, regex: /spotify:album:([a-zA-Z0-9]{22})/ },
+      { type: 'playlist' as SpotifyType, regex: /spotify:playlist:([a-zA-Z0-9]{22})/ },
+      { type: 'artist' as SpotifyType, regex: /spotify:artist:([a-zA-Z0-9]{22})/ },
+    ];
+    
+    // Try URL patterns first
+    for (const { type, regex } of urlPatterns) {
+      const match = cleanInput.match(regex);
+      if (match && match[1]) {
+        return { type, id: match[1] };
+      }
+    }
+    
+    // Try URI patterns
+    for (const { type, regex } of uriPatterns) {
+      const match = trimmed.match(regex);
+      if (match && match[1]) {
+        return { type, id: match[1] };
+      }
+    }
+    
+    return null;
+  };
+
+  const handleSave = async () => {
+    if (!input.trim()) {
+      setError("Please enter a Spotify URL or ID");
+      return;
+    }
+    
+    const content = extractSpotifyContent(input);
+    
+    if (!content) {
+      setError("Invalid Spotify URL. Please use a track, album, playlist, or artist link.");
+      return;
+    }
+    
+    // Validate ID is 22 characters
+    if (content.id.length !== 22) {
+      setError("Invalid ID format. Spotify IDs are 22 characters.");
+      return;
+    }
+    
+    setError("");
+    await saveSetting("spotify_content_type", content.type);
+    await saveSetting("spotify_content_id", content.id);
+    setSavedContent(content);
     setIsEditing(false);
   };
 
   const handleEdit = () => {
     setIsEditing(true);
     setIsMinimized(false);
+    setError("");
   };
 
-  if (!savedPlaylistId && !isEditing) {
+  const getEmbedUrl = (content: SpotifyContent): string => {
+    // Remove query parameters and use clean embed URL
+    return `https://open.spotify.com/embed/${content.type}/${content.id}?utm_source=generator&theme=0`;
+  };
+
+  const getTypeLabel = (type: SpotifyType): string => {
+    const labels = {
+      track: 'Track',
+      album: 'Album',
+      playlist: 'Playlist',
+      artist: 'Artist',
+    };
+    return labels[type];
+  };
+
+  if (!savedContent && !isEditing) {
     return (
       <button
         onClick={handleEdit}
@@ -59,18 +142,24 @@ export default function SpotifyEmbedPlayer() {
         <div className="space-y-3">
           <div>
             <label className="block text-white text-sm font-medium mb-2">
-              Spotify Playlist URL or ID
+              Spotify URL (Track, Album, Playlist, or Artist)
             </label>
             <input
               type="text"
-              value={playlistId}
-              onChange={(e) => setPlaylistId(e.target.value)}
-              placeholder="https://open.spotify.com/playlist/... or playlist ID"
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value);
+                setError("");
+              }}
+              placeholder="https://open.spotify.com/track/7zTa8koyemfmBv8r4Jy2ti"
               className="w-full px-4 py-2 rounded-xl bg-white/10 text-white placeholder-gray-400 border border-white/20 focus:border-[#1DB954] focus:ring-2 focus:ring-[#1DB954]/20 outline-none"
             />
             <p className="text-xs text-gray-400 mt-1">
-              Paste a Spotify playlist URL or just the playlist ID
+              Supports tracks, albums, playlists, and artists. Some tracks may not be embeddable.
             </p>
+            {error && (
+              <p className="text-xs text-red-400 mt-1">{error}</p>
+            )}
           </div>
           <div className="flex gap-2">
             <button
@@ -79,11 +168,12 @@ export default function SpotifyEmbedPlayer() {
             >
               Save
             </button>
-            {savedPlaylistId && (
+            {savedContent && (
               <button
                 onClick={() => {
                   setIsEditing(false);
-                  setPlaylistId(savedPlaylistId);
+                  setInput(savedContent.id);
+                  setError("");
                 }}
                 className="px-4 bg-white/10 hover:bg-white/20 text-white font-medium py-2 rounded-xl transition-all"
               >
@@ -112,7 +202,9 @@ export default function SpotifyEmbedPlayer() {
     <div className="fixed bottom-24 left-4 right-4 z-30">
       <div className="bg-black/95 backdrop-blur-xl rounded-2xl p-3 shadow-2xl">
         <div className="flex items-center justify-between mb-2">
-          <h3 className="text-white text-sm font-semibold">🎵 Workout Music</h3>
+          <h3 className="text-white text-sm font-semibold">
+            🎵 {savedContent ? getTypeLabel(savedContent.type) : 'Workout'} Music
+          </h3>
           <div className="flex items-center gap-2">
             <button
               onClick={handleEdit}
@@ -128,16 +220,18 @@ export default function SpotifyEmbedPlayer() {
             </button>
           </div>
         </div>
-        <iframe
-          src={`https://open.spotify.com/embed/playlist/${savedPlaylistId}?utm_source=generator&theme=0&t=0`}
-          width="100%"
-          height="152"
-          frameBorder="0"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          className="rounded-xl"
-        />
+        {savedContent && (
+          <iframe
+            src={getEmbedUrl(savedContent)}
+            width="100%"
+            height="152"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            className="rounded-xl"
+            title={`Spotify ${getTypeLabel(savedContent.type)}`}
+          />
+        )}
       </div>
     </div>
   );
 }
-
