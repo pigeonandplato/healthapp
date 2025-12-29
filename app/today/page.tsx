@@ -15,6 +15,8 @@ import StickyProgressBar from "@/components/StickyProgressBar";
 import SpotifyEmbedPlayer from "@/components/SpotifyEmbedPlayer";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
+import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
+import { saveYouTubeVideo } from "@/lib/db";
 
 export default function TodayPage() {
   const [selectedDate, setSelectedDate] = useState<string>(() => {
@@ -31,6 +33,7 @@ export default function TodayPage() {
   const [programMeta, setProgramMeta] = useState<ProgramMeta | null>(null);
   const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
   const [youtubeVideo, setYoutubeVideo] = useState<string | null>(null);
+  const [isEditingVideo, setIsEditingVideo] = useState(false);
 
   // Load view preference from localStorage
   useEffect(() => {
@@ -241,23 +244,62 @@ export default function TodayPage() {
       {/* Main Content - Minimal */}
       <main className="max-w-4xl mx-auto px-4 py-6">
         {/* YouTube Motivation Video */}
-        {youtubeVideo && (
+        {(youtubeVideo || isEditingVideo) && (
           <div className="mb-6 bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
-            <h3 className="text-sm font-semibold text-[#1C1C1E] dark:text-white mb-3">
-              💪 Stay Motivated
-            </h3>
-            <div className="aspect-video rounded-xl overflow-hidden bg-[#E5E5EA] dark:bg-[#38383A]">
-              <iframe
-                src={youtubeVideo}
-                title="Motivation Video"
-                className="w-full h-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-semibold text-[#1C1C1E] dark:text-white">
+                💪 Stay Motivated
+              </h3>
+              {!isEditingVideo && youtubeVideo && (
+                <button
+                  onClick={() => setIsEditingVideo(true)}
+                  className="text-xs text-[#FF2D55] hover:text-[#FF6482] font-medium px-3 py-1 rounded-lg hover:bg-[#FF2D55]/10 transition-all"
+                >
+                  Edit
+                </button>
+              )}
             </div>
-            <p className="text-xs text-[#8E8E93] mt-2 text-center">
-              Edit video in <a href="/settings" className="text-[#FF2D55] underline">Settings</a>
-            </p>
+            
+            {isEditingVideo ? (
+              <YouTubeVideoEditor
+                initialUrl={youtubeVideo || ""}
+                onSave={async (url) => {
+                  await saveYouTubeVideo(url);
+                  setYoutubeVideo(url);
+                  setIsEditingVideo(false);
+                }}
+              />
+            ) : youtubeVideo ? (
+              <>
+                <div className="aspect-video rounded-xl overflow-hidden bg-[#E5E5EA] dark:bg-[#38383A]">
+                  <iframe
+                    src={youtubeVideo}
+                    title="Motivation Video"
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+                <p className="text-xs text-[#8E8E93] mt-2 text-center">
+                  Video not working? <button onClick={() => setIsEditingVideo(true)} className="text-[#FF2D55] underline">Edit it here</button> or go to <a href="/settings" className="text-[#FF2D55] underline">Settings</a>
+                </p>
+              </>
+            ) : null}
+          </div>
+        )}
+        
+        {/* Add Video Button - if no video exists */}
+        {!youtubeVideo && !isEditingVideo && (
+          <div className="mb-6 bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+            <div className="text-center py-4">
+              <p className="text-sm text-[#8E8E93] mb-3">Add a motivation video to stay focused</p>
+              <button
+                onClick={() => setIsEditingVideo(true)}
+                className="bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-2 px-6 rounded-xl transition-all"
+              >
+                + Add Video
+              </button>
+            </div>
           </div>
         )}
         
