@@ -14,8 +14,12 @@ import CircularProgress from "@/components/CircularProgress";
 import StickyProgressBar from "@/components/StickyProgressBar";
 import SpotifyEmbedPlayer from "@/components/SpotifyEmbedPlayer";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
+import DatePicker from "@/components/DatePicker";
 
 export default function TodayPage() {
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    return new Date().toISOString().split("T")[0];
+  });
   const [workout, setWorkout] = useState<WorkoutDay | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("checklist");
   const [loading, setLoading] = useState(true);
@@ -36,21 +40,21 @@ export default function TodayPage() {
     }
   }, []);
 
-  // Load today's workout and stats
+  // Load workout for selected date
   useEffect(() => {
     async function loadWorkout() {
       setLoading(true);
       try {
-        const todayWorkout = await getTodayWorkout();
-        setWorkout(todayWorkout || null);
+        const selectedWorkout = await getWorkoutByDate(selectedDate);
+        setWorkout(selectedWorkout || null);
         
-        // Get today's day rotation
-        const rotation = getDayRotation();
+        // Get selected date's day rotation
+        const rotation = getDayRotation(selectedDate);
         setDayRotation(rotation);
         
         // Calculate stats
-        if (todayWorkout) {
-          const trackableIds = todayWorkout.blocks.flatMap((b) =>
+        if (selectedWorkout) {
+          const trackableIds = selectedWorkout.blocks.flatMap((b) =>
             b.exercises
               .filter((ex) => ex.category !== "Guidance")
               .map((ex) => ex.id)
@@ -59,22 +63,22 @@ export default function TodayPage() {
           const totalEx = trackableIds.length;
           setTotalExercises(totalEx);
 
-          // Get today's completions (excluding Guidance items)
-          const completions = await getCompletionsByDate(todayWorkout.date);
+          // Get selected date's completions (excluding Guidance items)
+          const completions = await getCompletionsByDate(selectedWorkout.date);
           const completed = completions.filter((c) => c.completed && trackableSet.has(c.exerciseId)).length;
           const progress = totalEx > 0 ? Math.round((completed / totalEx) * 100) : 0;
           setTodayProgress(progress);
         }
         
-        // Calculate streak
+        // Calculate streak (always based on today)
         const currentStreak = await calculateStreak();
         setStreak(currentStreak);
         
-        // Get program meta
-        const meta = await getProgramMetaForDate();
+        // Get program meta for selected date
+        const meta = await getProgramMetaForDate(selectedDate);
         setProgramMeta(meta);
         
-        // Load tomorrow's workout for preview
+        // Load tomorrow's workout for preview (always tomorrow from today)
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         const tomorrowDate = tomorrow.toISOString().split("T")[0];
@@ -92,7 +96,7 @@ export default function TodayPage() {
     }
 
     loadWorkout();
-  }, []);
+  }, [selectedDate]);
 
   const handleViewChange = (newView: ViewMode) => {
     setViewMode(newView);
@@ -162,11 +166,14 @@ export default function TodayPage() {
     );
   }
 
-  const todayDate = new Date().toLocaleDateString("en-US", {
+  const selectedDateObj = new Date(selectedDate);
+  const todayDate = selectedDateObj.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
   });
+  
+  const isToday = selectedDate === new Date().toISOString().split("T")[0];
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -187,14 +194,29 @@ export default function TodayPage() {
       {/* Stats Section */}
       <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          {/* Date & Phase Info */}
-          <div className="mb-4">
-            <p className="text-base text-[#8E8E93] font-medium mb-1">{todayDate}</p>
-            {programMeta && (
-              <p className="text-sm text-[#8E8E93]">
-                Week {programMeta.week} · {programMeta.phase} · Day {programMeta.day}
-              </p>
-            )}
+          {/* Date Picker & Info */}
+          <div className="mb-4 flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <p className="text-base text-[#8E8E93] font-medium">{todayDate}</p>
+                {!isToday && (
+                  <span className="text-xs bg-[#FF9500] text-white px-2 py-0.5 rounded-full font-medium">
+                    {selectedDateObj < new Date() ? "Past" : "Future"}
+                  </span>
+                )}
+              </div>
+              {programMeta && (
+                <p className="text-sm text-[#8E8E93]">
+                  Week {programMeta.week} · {programMeta.phase} · Day {programMeta.day}
+                </p>
+              )}
+            </div>
+            <DatePicker
+              selectedDate={selectedDate}
+              onDateChange={(date) => {
+                setSelectedDate(date);
+              }}
+            />
           </div>
 
           {/* Clean Stats Grid */}
@@ -245,7 +267,7 @@ export default function TodayPage() {
             onClick={handleShowCoachView}
             className="w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-4 px-6 rounded-xl shadow-card transition-all active:scale-[0.98] mb-6 text-base"
           >
-            Start Today's Workout
+            {isToday ? "Start Today's Workout" : `Start ${todayDate} Workout`}
           </button>
         )}
 
