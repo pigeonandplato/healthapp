@@ -1,10 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <rect width="512" height="512" fill="#3b82f6" rx="80"/>
-  <g transform="translate(100, 100)">
-    <!-- Heart + Activity icon -->
-    <path d="M156 100 Q 156 60, 126 60 Q 96 60, 96 100 Q 96 140, 156 200 Q 216 140, 216 100 Q 216 60, 186 60 Q 156 60, 156 100" 
-          fill="white" stroke="white" stroke-width="8"/>
-    <path d="M 50 230 L 80 230 L 100 200 L 130 260 L 160 200 L 180 230 L 210 230" 
-          fill="none" stroke="white" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF2D55;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#007AFF;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded square background with gradient -->
+  <rect width="512" height="512" rx="120" fill="url(#bgGradient)"/>
+  
+  <!-- Health/Fitness Icon - Heart with Activity Lines -->
+  <g transform="translate(256, 256)">
+    <!-- Heart shape -->
+    <path d="M 0 -80 C -40 -120, -80 -100, -80 -60 C -80 -30, -50 -10, 0 40 C 50 -10, 80 -30, 80 -60 C 80 -100, 40 -120, 0 -80 Z" 
+          fill="white" opacity="0.95"/>
+    
+    <!-- Activity/Heartbeat lines -->
+    <path d="M -120 60 L -100 60 L -80 20 L -60 100 L -40 40 L -20 80 L 0 60 L 20 80 L 40 40 L 60 100 L 80 20 L 100 60 L 120 60" 
+          stroke="white" 
+          stroke-width="16" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          fill="none"
+          opacity="0.9"/>
+    
+    <!-- Small accent dots -->
+    <circle cx="-140" cy="60" r="6" fill="white" opacity="0.7"/>
+    <circle cx="140" cy="60" r="6" fill="white" opacity="0.7"/>
   </g>
 </svg>
