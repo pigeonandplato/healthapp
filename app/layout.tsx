@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import AppShell from "@/components/AppShell";
+import AuthWrapper from "@/components/AuthWrapper";
 
 export const metadata: Metadata = {
   title: "5K Trainer",
@@ -41,7 +42,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased overflow-x-hidden touch-manipulation">
-        <AppShell>{children}</AppShell>
+        <AuthWrapper>
+          <AppShell>{children}</AppShell>
+        </AuthWrapper>
       </body>
     </html>
   );

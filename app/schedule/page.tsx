@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getProgramMetaForDate, PROGRAM_PHASES } from "@/lib/program";
+import { getProgramMetaForDateSync, PROGRAM_PHASES, ensureProgramInitialized } from "@/lib/program";
 import { getBlocksForProgramMeta } from "@/lib/seedData";
 import type { ProgramMeta } from "@/lib/types";
 import Link from "next/link";
@@ -23,27 +23,39 @@ export default function SchedulePage() {
   useEffect(() => {
     async function loadSchedule() {
       setLoading(true);
-      const items: ScheduleDay[] = [];
       const today = new Date().toISOString().split('T')[0];
       
+      // Get program start date ONCE before the loop
+      const { startDate, planId } = await ensureProgramInitialized();
+      
+      // Create all date strings first
+      const dateStrings: string[] = [];
+      const dates: Date[] = [];
       for (let i = 0; i < viewWeeks * 7; i++) {
         const date = new Date();
         date.setDate(date.getDate() + i);
-        const dateStr = date.toISOString().split('T')[0];
-        const meta = await getProgramMetaForDate(dateStr);
-        const dayName = date.toLocaleDateString('en-US', { 
+        dates.push(date);
+        dateStrings.push(date.toISOString().split('T')[0]);
+      }
+      
+      // Calculate all program metas in parallel (synchronous now!)
+      const metas = dateStrings.map(dateStr => 
+        getProgramMetaForDateSync(dateStr, startDate, planId)
+      );
+      
+      // Build schedule items (all synchronous operations)
+      const items: ScheduleDay[] = dateStrings.map((dateStr, i) => ({
+        date: dateStr,
+        meta: metas[i],
+        dayName: dates[i].toLocaleDateString('en-US', { 
           weekday: 'short', 
           month: 'short', 
           day: 'numeric' 
-        });
-        items.push({ 
-          date: dateStr, 
-          meta, 
-          dayName,
-          isToday: dateStr === today,
-          isPast: dateStr < today,
-        });
-      }
+        }),
+        isToday: dateStr === today,
+        isPast: dateStr < today,
+      }));
+      
       setSchedule(items);
       setLoading(false);
     }

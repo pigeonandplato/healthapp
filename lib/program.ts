@@ -119,9 +119,13 @@ export async function setProgramStartDate(startDateIso: string): Promise<void> {
   await saveSetting(PROGRAM_PLAN_ID_KEY, PROGRAM_PLAN_ID);
 }
 
-export async function getProgramMetaForDate(dateIso?: string): Promise<ProgramMeta> {
-  const { startDate, planId } = await ensureProgramInitialized();
-  const target = dateIso ? new Date(dateIso) : new Date();
+// Optimized version that accepts startDate and planId to avoid repeated DB calls
+export function getProgramMetaForDateSync(
+  dateIso: string,
+  startDate: string,
+  planId: string
+): ProgramMeta {
+  const target = new Date(dateIso);
   const start = new Date(startDate);
 
   const diffDays = Math.floor((target.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
@@ -140,4 +144,10 @@ export async function getProgramMetaForDate(dateIso?: string): Promise<ProgramMe
     phaseWeek,
     day: dayRotation,
   };
+}
+
+export async function getProgramMetaForDate(dateIso?: string): Promise<ProgramMeta> {
+  const { startDate, planId } = await ensureProgramInitialized();
+  const targetDate = dateIso || new Date().toISOString().split('T')[0];
+  return getProgramMetaForDateSync(targetDate, startDate, planId);
 }
