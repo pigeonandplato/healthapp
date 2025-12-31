@@ -73,30 +73,6 @@ export default function CoachView({ workout }: CoachViewProps) {
         </p>
       </div>
 
-      {/* Program Rules (Quick) */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md border border-gray-200 dark:border-gray-700">
-        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">Program Rules (Quick)</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
-          These are not tracked—just follow them.
-        </p>
-        <div className="space-y-3">
-          {workout.blocks
-            .flatMap((b) => b.exercises)
-            .filter((ex) => ex.category === "Guidance")
-            .map((ex) => (
-              <div key={ex.id} className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
-                <div className="font-semibold text-gray-900 dark:text-gray-100">{ex.name}</div>
-                <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">{ex.description}</div>
-                <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-300 mt-2 space-y-1">
-                  {ex.instructions.slice(0, 4).map((line, i) => (
-                    <li key={i}>{line}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-        </div>
-      </div>
-
       {/* Blocks */}
       {workout.blocks.map((block) => {
         const trackable = block.exercises.filter((e) => e.category !== "Guidance");
@@ -107,7 +83,7 @@ export default function CoachView({ workout }: CoachViewProps) {
         return (
           <div
             key={block.id}
-            className="bg-gray-50 dark:bg-gray-900 rounded-lg p-5 space-y-4"
+            className="bg-gray-50 dark:bg-gray-900 rounded-lg p-5 space-y-4 w-full"
           >
             {/* Block Header */}
             <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
@@ -158,7 +134,7 @@ export default function CoachView({ workout }: CoachViewProps) {
             </div>
 
             {/* Exercises */}
-            <div className="space-y-5">
+            <div className="space-y-5 w-full">
               {block.exercises
                 .filter((exercise) => exercise.category !== "Guidance")
                 .map((exercise) => (
