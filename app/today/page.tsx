@@ -12,7 +12,6 @@ import ViewToggle from "@/components/ViewToggle";
 import StatsCard from "@/components/StatsCard";
 import CircularProgress from "@/components/CircularProgress";
 import StickyProgressBar from "@/components/StickyProgressBar";
-import SpotifyEmbedPlayer from "@/components/SpotifyEmbedPlayer";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
@@ -324,8 +323,53 @@ export default function TodayPage() {
 
       </main>
       
-      {/* Spotify Music Player */}
-      <SpotifyEmbedPlayer />
+      {/* Program Rules Section */}
+      <section className="max-w-4xl mx-auto px-4 py-8 pb-24">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+          <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-4">
+            📋 Program Rules
+          </h2>
+          
+          <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
+            <div>
+              <h3 className="font-semibold mb-2 text-[#FF2D55]">🟢 Green Light (Progress Normally)</h3>
+              <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                <li>Pain ≤ 2/10 during exercise</li>
+                <li>Back to baseline by next morning</li>
+                <li>No symptom increase</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-2 text-[#FF9500]">🟡 Yellow (Hold Current Level)</h3>
+              <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                <li>Pain 3–4/10 or stiffness into next day</li>
+                <li>Keep same intensity 1 more week</li>
+                <li>Don't progress yet</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-2 text-[#FF3B30]">🔴 Red (Reduce Volume/Intensity)</h3>
+              <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                <li>Pain ≥ 5/10</li>
+                <li>Sharp/radiating pain</li>
+                <li>Increased tingling/numbness</li>
+                <li>Pain lasting &gt;24–48h</li>
+                <li>→ Drop volume/intensity 30–50%, reassess</li>
+              </ul>
+            </div>
+            
+            <div className="pt-2 border-t border-[#E5E5EA] dark:border-[#38383A]">
+              <h3 className="font-semibold mb-2">💡 Progression Rule</h3>
+              <p className="text-[#8E8E93] dark:text-[#8E8E93]">
+                If 2 good sessions in a row: progress ONE thing (reps OR height OR range). 
+                Increase total weekly running time by ≤10%.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

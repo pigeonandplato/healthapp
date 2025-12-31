@@ -1,16 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/lib/auth-context";
 import AppShell from "@/components/AppShell";
 
 export const metadata: Metadata = {
-  title: "Health Tracker",
-  description: "Your personal wellness companion for fitness and health",
+  title: "5K Trainer",
+  description: "Your personal 24-week journey to running 5K injury-free",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Health Tracker",
+    title: "5K Trainer",
   },
   formatDetection: {
     telephone: false,
@@ -42,9 +41,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased overflow-x-hidden touch-manipulation">
-        <AuthProvider>
-          <AppShell>{children}</AppShell>
-        </AuthProvider>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
