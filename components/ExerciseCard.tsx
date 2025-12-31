@@ -403,8 +403,7 @@ export default function ExerciseCard({
         {/* Header with Number Badge */}
         <div className="flex items-center gap-4 mb-4">
           <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-xl shadow-xl">
-            {/* Exercise number would go here - for now showing checkmark */}
-            {isCompleted ? "✓" : "○"}
+            💪
           </div>
           <div className="flex-1">
             <h3 className="text-2xl font-black text-gray-900 dark:text-gray-100 mb-1">

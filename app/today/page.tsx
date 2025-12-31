@@ -321,10 +321,8 @@ export default function TodayPage() {
           )}
         </div>
 
-      </main>
-      
-      {/* Program Rules Section */}
-      <section className="max-w-4xl mx-auto px-4 py-8 pb-24">
+        {/* Program Rules Section - At bottom of main content */}
+        <section className="mt-12 mb-8">
         <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
           <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-4">
             📋 Program Rules
@@ -369,7 +367,8 @@ export default function TodayPage() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </main>
     </div>
   );
 }
