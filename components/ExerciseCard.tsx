@@ -268,10 +268,12 @@ export default function ExerciseCard({
       {!isCompleted && (
         <button
           onClick={handleToggleComplete}
-          className="absolute bottom-4 right-4 w-14 h-14 bg-[#FF2D55] rounded-full shadow-2xl flex items-center justify-center text-white text-2xl z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
+          className="absolute bottom-4 right-4 w-14 h-14 bg-[#FF2D55] rounded-full shadow-2xl flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
           aria-label="Complete exercise"
         >
-          ✓
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+          </svg>
         </button>
       )}
       {/* Completion Badge - Top Left Corner */}

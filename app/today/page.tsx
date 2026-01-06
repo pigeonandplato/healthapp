@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo } from "@/lib/db";
+import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache } from "@/lib/db";
 import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
 import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
@@ -118,7 +118,32 @@ export default function TodayPage() {
     startDate.setDate(startDate.getDate() - 1); // Push forward by moving start back
     const newStartDate = startDate.toISOString().split("T")[0];
     await setProgramStartDate(newStartDate);
-    window.location.reload();
+    
+    // Clear cache to force regeneration with new start date
+    await clearWorkoutCache();
+    
+    // Reload workout with new program start date
+    const updatedMeta = await getProgramMetaForDate(selectedDate);
+    setProgramMeta(updatedMeta);
+    const selectedWorkout = await getWorkoutByDate(selectedDate);
+    setWorkout(selectedWorkout || null);
+    
+    // Recalculate progress
+    if (selectedWorkout) {
+      const trackableIds = selectedWorkout.blocks.flatMap((b) =>
+        b.exercises
+          .filter((ex) => ex.category !== "Guidance")
+          .map((ex) => ex.id)
+      );
+      const trackableSet = new Set(trackableIds);
+      const totalEx = trackableIds.length;
+      setTotalExercises(totalEx);
+
+      const completions = await getCompletionsByDate(selectedWorkout.date);
+      const completed = completions.filter((c) => c.completed && trackableSet.has(c.exerciseId)).length;
+      const progress = totalEx > 0 ? Math.round((completed / totalEx) * 100) : 0;
+      setTodayProgress(progress);
+    }
   };
 
   if (loading) {
@@ -302,15 +327,13 @@ export default function TodayPage() {
           </div>
         )}
         
-        {/* Start Workout Button - Clean */}
-        {viewMode === "checklist" && (
-          <button
-            onClick={handleShowCoachView}
-            className="w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-4 px-6 rounded-xl shadow-card transition-all active:scale-[0.98] mb-6 text-base"
-          >
-            {isToday ? "Start Today's Workout" : `Start ${todayDate} Workout`}
-          </button>
-        )}
+        {/* Start Workout Button - Always show */}
+        <button
+          onClick={handleShowCoachView}
+          className="w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-4 px-6 rounded-xl shadow-card transition-all active:scale-[0.98] mb-6 text-base"
+        >
+          {isToday ? "Start Today's Workout" : `Start ${todayDate} Workout`}
+        </button>
 
         {/* View Content */}
         <div className="animate-fade-in">

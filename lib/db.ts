@@ -267,10 +267,18 @@ export async function getTodayWorkout(): Promise<WorkoutDay | undefined> {
 }
 
 export async function getWorkoutByDate(date: string): Promise<WorkoutDay | undefined> {
-  // Try cache first for faster loading
+  // Get current program meta first to validate cache
+  const programMeta: ProgramMeta = await getProgramMetaForDate(date);
+  
+  // Check if cached workout matches current program meta
   try {
     const cached = await getCachedWorkout(date);
-    if (cached) {
+    const cachedMeta = await getCachedProgramMeta(date);
+    
+    // Only use cache if program meta matches (same start date and plan)
+    if (cached && cachedMeta && 
+        cachedMeta.startDate === programMeta.startDate && 
+        cachedMeta.planId === programMeta.planId) {
       // Also check if we need to cache exercises
       const cachedExercises = await getCachedExercises();
       if (cachedExercises.length === 0) {
@@ -283,8 +291,7 @@ export async function getWorkoutByDate(date: string): Promise<WorkoutDay | undef
     console.error("Error reading from cache:", error);
   }
 
-  // Generate workout if not cached
-  const programMeta: ProgramMeta = await getProgramMetaForDate(date);
+  // Generate workout if not cached or cache is stale
   const blocks = getBlocksForProgramMeta(programMeta);
 
   const workout: WorkoutDay = {
@@ -513,6 +520,22 @@ export async function cacheProgramMeta(date: string, meta: ProgramMeta): Promise
 export async function getCachedProgramMeta(date: string): Promise<ProgramMeta | undefined> {
   const db = await getCacheDB();
   return await db.get('programMeta', date);
+}
+
+// Clear workout cache when program start date changes
+export async function clearWorkoutCache(): Promise<void> {
+  try {
+    const db = await getCacheDB();
+    const tx = db.transaction('workouts', 'readwrite');
+    await tx.store.clear();
+    await tx.done;
+    
+    const metaTx = db.transaction('programMeta', 'readwrite');
+    await metaTx.store.clear();
+    await metaTx.done;
+  } catch (error) {
+    console.error("Error clearing cache:", error);
+  }
 }
 
 // Legacy function - no longer needed with Supabase
