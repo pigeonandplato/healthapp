@@ -438,7 +438,9 @@ export async function setGymProgramStartDate(startDate: string): Promise<void> {
 }
 
 export function getGymDayForDate(dateIso: string): { isGymDay: boolean; day: DayRotation; dayName: string } {
-  const date = new Date(dateIso);
+  // Parse as local date to avoid timezone issues
+  const [year, month, day] = dateIso.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
   const dayOfWeek = date.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
   
   // Gym days: Monday=A, Wednesday=B, Friday=C
@@ -460,10 +462,16 @@ export async function getGymWorkoutByDate(date: string): Promise<WorkoutDay | nu
   const startDate = await getGymProgramStartDate();
   const blocks = getGymBlocksForDay(dayRotation);
   
+  // Parse dates as local to avoid timezone issues
+  const [y1, m1, d1] = date.split('-').map(Number);
+  const [y2, m2, d2] = startDate.split('-').map(Number);
+  const targetDate = new Date(y1, m1 - 1, d1);
+  const start = new Date(y2, m2 - 1, d2);
+  
   const gymMeta: ProgramMeta = {
     planId: GYM_PROGRAM_ID,
     startDate,
-    week: Math.floor((new Date(date).getTime() - new Date(startDate).getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1,
+    week: Math.floor((targetDate.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1,
     phase: "P1",
     phaseWeek: 1,
     day: dayRotation,
