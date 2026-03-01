@@ -425,17 +425,27 @@ export async function setGymProgramStartDate(startDate: string): Promise<void> {
   await clearWorkoutCache();
 }
 
-export function getGymDayRotation(dateIso: string, startDate: string): DayRotation {
-  const target = new Date(dateIso);
-  const start = new Date(startDate);
-  const diffDays = Math.floor((target.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
-  const rotation: DayRotation[] = ['A', 'B', 'C'];
-  return rotation[((diffDays % 3) + 3) % 3];
+export function getGymDayForDate(dateIso: string): { isGymDay: boolean; day: DayRotation; dayName: string } {
+  const date = new Date(dateIso);
+  const dayOfWeek = date.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+  
+  // Gym days: Monday=A, Wednesday=B, Friday=C
+  if (dayOfWeek === 1) return { isGymDay: true, day: 'A', dayName: 'Monday' };
+  if (dayOfWeek === 3) return { isGymDay: true, day: 'B', dayName: 'Wednesday' };
+  if (dayOfWeek === 5) return { isGymDay: true, day: 'C', dayName: 'Friday' };
+  
+  return { isGymDay: false, day: 'A', dayName: '' };
 }
 
-export async function getGymWorkoutByDate(date: string): Promise<WorkoutDay> {
+export async function getGymWorkoutByDate(date: string): Promise<WorkoutDay | null> {
+  const { isGymDay, day: dayRotation } = getGymDayForDate(date);
+  
+  // Return null for rest days (not Mon/Wed/Fri)
+  if (!isGymDay) {
+    return null;
+  }
+  
   const startDate = await getGymProgramStartDate();
-  const dayRotation = getGymDayRotation(date, startDate);
   const blocks = getGymBlocksForDay(dayRotation);
   
   const gymMeta: ProgramMeta = {

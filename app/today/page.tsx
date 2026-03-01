@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode, ProgramType } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate } from "@/lib/db";
+import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate, getGymDayForDate } from "@/lib/db";
 import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
 import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
@@ -16,7 +16,6 @@ import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import { saveYouTubeVideo } from "@/lib/db";
-import ProgramSelector from "@/components/ProgramSelector";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -46,7 +45,8 @@ export default function TodayPage() {
   const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
   const [youtubeVideo, setYoutubeVideo] = useState<string | null>(null);
   const [isEditingVideo, setIsEditingVideo] = useState(false);
-  const [activeProgram, setActiveProgram] = useState<ProgramType>("running");
+  const [activeProgram, setActiveProgramState] = useState<ProgramType>("running");
+  const [isRestDay, setIsRestDay] = useState(false);
 
   // Load view preference from localStorage
   useEffect(() => {
@@ -63,13 +63,16 @@ export default function TodayPage() {
       try {
         // Get active program first
         const currentProgram = await getActiveProgram();
-        setActiveProgram(currentProgram);
+        setActiveProgramState(currentProgram);
         
         // Load workout based on active program
-        let selectedWorkout: WorkoutDay | undefined;
+        let selectedWorkout: WorkoutDay | null | undefined;
         if (currentProgram === "gym") {
+          const gymInfo = getGymDayForDate(selectedDate);
+          setIsRestDay(!gymInfo.isGymDay);
           selectedWorkout = await getGymWorkoutByDate(selectedDate);
         } else {
+          setIsRestDay(false);
           selectedWorkout = await getWorkoutByDate(selectedDate);
         }
         setWorkout(selectedWorkout || null);
@@ -94,6 +97,9 @@ export default function TodayPage() {
           const completed = completions.filter((c) => c.completed && trackableSet.has(c.exerciseId)).length;
           const progress = totalEx > 0 ? Math.round((completed / totalEx) * 100) : 0;
           setTodayProgress(progress);
+        } else {
+          setTotalExercises(0);
+          setTodayProgress(0);
         }
         
         // Calculate streak (always based on today)
@@ -103,9 +109,11 @@ export default function TodayPage() {
         // Get program meta for selected date
         if (selectedWorkout?.program) {
           setProgramMeta(selectedWorkout.program);
-        } else {
+        } else if (currentProgram === "running") {
           const meta = await getProgramMetaForDate(selectedDate);
           setProgramMeta(meta);
+        } else {
+          setProgramMeta(null);
         }
         
         // Load tomorrow's workout for preview (always tomorrow from today)
@@ -128,7 +136,7 @@ export default function TodayPage() {
     }
 
     loadWorkout();
-  }, [selectedDate, activeProgram]);
+  }, [selectedDate]);
 
   const handleViewChange = (newView: ViewMode) => {
     setViewMode(newView);
@@ -140,10 +148,6 @@ export default function TodayPage() {
     localStorage.setItem("preferredView", "coach");
     // Smooth scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleProgramChange = (program: ProgramType) => {
-    setActiveProgram(program);
   };
 
   const handlePushProgramOneDay = async () => {
@@ -200,6 +204,40 @@ export default function TodayPage() {
   }
 
   if (!workout) {
+    // Check if it's a gym rest day
+    if (activeProgram === "gym" && isRestDay) {
+      const selectedDateObj = parseLocalDate(selectedDate);
+      const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" });
+      return (
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full text-center shadow-lg">
+            <div className="text-6xl mb-4">😴</div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+              Rest Day!
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
+              {dayName} is a recovery day. Gym workouts are on <strong>Monday, Wednesday, and Friday</strong>.
+            </p>
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 text-left">
+              <p className="text-sm text-blue-800 dark:text-blue-200 font-medium mb-2">Recovery Tips:</p>
+              <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                <li>• Stay hydrated</li>
+                <li>• Get 7-9 hours of sleep</li>
+                <li>• Light stretching or walking</li>
+                <li>• Eat protein-rich meals</li>
+              </ul>
+            </div>
+            <a 
+              href="/program" 
+              className="inline-block mt-6 bg-[#FF2D55] text-white font-semibold py-3 px-6 rounded-xl"
+            >
+              View Program Schedule
+            </a>
+          </div>
+        </div>
+      );
+    }
+    
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full text-center shadow-lg">
@@ -255,9 +293,12 @@ export default function TodayPage() {
       {/* Stats Section */}
       <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          {/* Program Selector */}
-          <div className="mb-4">
-            <ProgramSelector onProgramChange={handleProgramChange} compact />
+          {/* Active Program Badge */}
+          <div className="mb-3">
+            <a href="/program" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF2D55]/10 dark:bg-[#FF2D55]/20 rounded-full text-sm font-medium text-[#FF2D55] hover:bg-[#FF2D55]/20 transition-colors">
+              {activeProgram === "running" ? "🏃 5K Running" : "🏋️ Gym PPL"}
+              <span className="text-xs opacity-70">Change →</span>
+            </a>
           </div>
           
           {/* Date Picker & Info */}
