@@ -17,9 +17,21 @@ import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import { saveYouTubeVideo } from "@/lib/db";
 
+function toLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function parseLocalDate(dateStr: string): Date {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 export default function TodayPage() {
   const [selectedDate, setSelectedDate] = useState<string>(() => {
-    return new Date().toISOString().split("T")[0];
+    return toLocalDateString(new Date());
   });
   const [workout, setWorkout] = useState<WorkoutDay | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("checklist");
@@ -83,7 +95,7 @@ export default function TodayPage() {
         // Load tomorrow's workout for preview (always tomorrow from today)
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDate = tomorrow.toISOString().split("T")[0];
+        const tomorrowDate = toLocalDateString(tomorrow);
         const tomorrowW = await getWorkoutByDate(tomorrowDate);
         setTomorrowWorkout(tomorrowW || null);
         
@@ -114,9 +126,9 @@ export default function TodayPage() {
 
   const handlePushProgramOneDay = async () => {
     if (!programMeta) return;
-    const startDate = new Date(programMeta.startDate);
+    const startDate = parseLocalDate(programMeta.startDate);
     startDate.setDate(startDate.getDate() - 1); // Push forward by moving start back
-    const newStartDate = startDate.toISOString().split("T")[0];
+    const newStartDate = toLocalDateString(startDate);
     await setProgramStartDate(newStartDate);
     
     // Clear cache to force regeneration with new start date
@@ -193,14 +205,14 @@ export default function TodayPage() {
     );
   }
 
-  const selectedDateObj = new Date(selectedDate);
+  const selectedDateObj = parseLocalDate(selectedDate);
   const todayDate = selectedDateObj.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
     day: "numeric",
   });
   
-  const isToday = selectedDate === new Date().toISOString().split("T")[0];
+  const isToday = selectedDate === toLocalDateString(new Date());
 
   const getGreeting = () => {
     const hour = new Date().getHours();

@@ -9,15 +9,29 @@ interface DatePickerProps {
   maxDate?: string; // Optional maximum date
 }
 
+function toLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function parseLocalDate(dateStr: string): Date {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
 export default function DatePicker({ selectedDate, onDateChange, minDate, maxDate }: DatePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [tempDate, setTempDate] = useState(selectedDate);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateString(new Date());
   const defaultMinDate = minDate || "2024-01-01";
-  const defaultMaxDate = maxDate || new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split("T")[0];
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  const defaultMaxDate = maxDate || toLocalDateString(nextYear);
 
   // Update tempDate when selectedDate changes
   useEffect(() => {
@@ -51,25 +65,24 @@ export default function DatePicker({ selectedDate, onDateChange, minDate, maxDat
   }, [isOpen]);
 
   const formatDisplayDate = (dateStr: string): string => {
-    const date = new Date(dateStr);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const dateOnly = new Date(date);
-    dateOnly.setHours(0, 0, 0, 0);
+    const date = parseLocalDate(dateStr);
+    const todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
     
-    if (dateOnly.getTime() === today.getTime()) {
+    if (date.getTime() === todayDate.getTime()) {
       return "Today";
     }
     
-    const tomorrow = new Date(today);
+    const tomorrow = new Date(todayDate);
     tomorrow.setDate(tomorrow.getDate() + 1);
-    if (dateOnly.getTime() === tomorrow.getTime()) {
+    if (date.getTime() === tomorrow.getTime()) {
       return "Tomorrow";
     }
     
-    const yesterday = new Date(today);
+    const yesterday = new Date(todayDate);
     yesterday.setDate(yesterday.getDate() - 1);
-    if (dateOnly.getTime() === yesterday.getTime()) {
+    if (date.getTime() === yesterday.getTime()) {
       return "Yesterday";
     }
     
@@ -77,7 +90,7 @@ export default function DatePicker({ selectedDate, onDateChange, minDate, maxDat
       weekday: "short", 
       month: "short", 
       day: "numeric",
-      year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined
+      year: date.getFullYear() !== todayDate.getFullYear() ? "numeric" : undefined
     });
   };
 
@@ -90,7 +103,7 @@ export default function DatePicker({ selectedDate, onDateChange, minDate, maxDat
   const handleQuickSelect = (daysOffset: number) => {
     const date = new Date();
     date.setDate(date.getDate() + daysOffset);
-    const dateStr = date.toISOString().split("T")[0];
+    const dateStr = toLocalDateString(date);
     handleDateSelect(dateStr);
   };
 

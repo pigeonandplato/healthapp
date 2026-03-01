@@ -12,6 +12,13 @@ import { getProgramMetaForDate } from "./program";
 import { supabase } from "./supabase";
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
+function toLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 // Helper to get current user ID
 async function getUserId(): Promise<string | null> {
   const { data: { user } } = await supabase.auth.getUser();
@@ -262,7 +269,7 @@ export async function getBlockTimersByDate(date: string): Promise<BlockTimerStat
 // ============================================
 
 export async function getTodayWorkout(): Promise<WorkoutDay | undefined> {
-  const today = new Date().toISOString().split("T")[0];
+  const today = toLocalDateString(new Date());
   return getWorkoutByDate(today);
 }
 
@@ -347,7 +354,7 @@ export async function getExerciseById(id: string): Promise<Exercise | undefined>
 // ============================================
 
 export function getTodayDateString(): string {
-  return new Date().toISOString().split("T")[0];
+  return toLocalDateString(new Date());
 }
 
 export function formatTime(seconds: number): string {

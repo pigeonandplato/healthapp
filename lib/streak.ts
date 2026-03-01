@@ -1,6 +1,13 @@
 // Streak tracking utility
 import { getCompletionsByDate } from "./db";
 
+function toLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export async function calculateStreak(): Promise<number> {
   let streak = 0;
   const today = new Date();
@@ -9,7 +16,7 @@ export async function calculateStreak(): Promise<number> {
   for (let i = 0; i < 365; i++) {
     const checkDate = new Date(today);
     checkDate.setDate(checkDate.getDate() - i);
-    const dateString = checkDate.toISOString().split("T")[0];
+    const dateString = toLocalDateString(checkDate);
     
     const completions = await getCompletionsByDate(dateString);
     const hasCompletions = completions.some((c) => c.completed);
