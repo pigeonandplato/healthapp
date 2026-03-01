@@ -69,6 +69,7 @@ export default function TodayPage() {
         let selectedWorkout: WorkoutDay | null | undefined;
         if (currentProgram === "gym") {
           const gymInfo = getGymDayForDate(selectedDate);
+          console.log('[LoadWorkout]', { selectedDate, gymInfo, currentProgram });
           setIsRestDay(!gymInfo.isGymDay);
           selectedWorkout = await getGymWorkoutByDate(selectedDate);
         } else {
@@ -76,6 +77,7 @@ export default function TodayPage() {
           selectedWorkout = await getWorkoutByDate(selectedDate);
         }
         setWorkout(selectedWorkout || null);
+        console.log('[LoadWorkout Result]', { hasWorkout: !!selectedWorkout, isRestDay: !selectedWorkout });
         
         // Get selected date's day rotation
         const rotation = getDayRotation(selectedDate);
@@ -224,7 +226,9 @@ export default function TodayPage() {
     if (daysToAdd <= 0) daysToAdd += 7; // Next week if already passed
     const targetDate = new Date(today);
     targetDate.setDate(today.getDate() + daysToAdd);
-    setSelectedDate(toLocalDateString(targetDate));
+    const dateStr = toLocalDateString(targetDate);
+    console.log('[JumpToWeekday]', { targetDay, currentDay, daysToAdd, dateStr, targetDateDay: targetDate.getDay() });
+    setSelectedDate(dateStr);
   };
 
   if (!workout) {

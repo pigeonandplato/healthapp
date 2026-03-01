@@ -439,9 +439,14 @@ export async function setGymProgramStartDate(startDate: string): Promise<void> {
 
 export function getGymDayForDate(dateIso: string): { isGymDay: boolean; day: DayRotation; dayName: string } {
   // Parse as local date to avoid timezone issues
-  const [year, month, day] = dateIso.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
+  const parts = dateIso.split('-');
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10);
+  const dayNum = parseInt(parts[2], 10);
+  const date = new Date(year, month - 1, dayNum);
   const dayOfWeek = date.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+  
+  console.log('[GymDay Debug]', { dateIso, year, month, dayNum, dayOfWeek, dateStr: date.toString() });
   
   // Gym days: Monday=A, Wednesday=B, Friday=C
   if (dayOfWeek === 1) return { isGymDay: true, day: 'A', dayName: 'Monday' };
