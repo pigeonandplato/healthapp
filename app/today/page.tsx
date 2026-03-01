@@ -203,36 +203,109 @@ export default function TodayPage() {
     );
   }
 
+  // Helper to find the next gym day from a given date
+  const getNextGymDay = (fromDate: Date): { date: Date; day: string; workout: string } => {
+    const d = new Date(fromDate);
+    for (let i = 1; i <= 7; i++) {
+      d.setDate(d.getDate() + 1);
+      const dow = d.getDay();
+      if (dow === 1) return { date: new Date(d), day: 'Monday', workout: '💪 Day A: Chest' };
+      if (dow === 3) return { date: new Date(d), day: 'Wednesday', workout: '🔙 Day B: Back + Biceps' };
+      if (dow === 5) return { date: new Date(d), day: 'Friday', workout: '🦵 Day C: Shoulders + Legs' };
+    }
+    return { date: d, day: 'Monday', workout: '💪 Day A: Chest' };
+  };
+
+  // Helper to jump to a specific weekday
+  const jumpToWeekday = (targetDay: number) => { // 1=Mon, 3=Wed, 5=Fri
+    const today = new Date();
+    const currentDay = today.getDay();
+    let daysToAdd = targetDay - currentDay;
+    if (daysToAdd <= 0) daysToAdd += 7; // Next week if already passed
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + daysToAdd);
+    setSelectedDate(toLocalDateString(targetDate));
+  };
+
   if (!workout) {
     // Check if it's a gym rest day
     if (activeProgram === "gym" && isRestDay) {
       const selectedDateObj = parseLocalDate(selectedDate);
       const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" });
+      const nextGym = getNextGymDay(selectedDateObj);
+      const nextGymDateStr = toLocalDateString(nextGym.date);
+      
       return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-md w-full text-center shadow-lg">
-            <div className="text-6xl mb-4">😴</div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-              Rest Day!
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
-              {dayName} is a recovery day. Gym workouts are on <strong>Monday, Wednesday, and Friday</strong>.
-            </p>
-            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 text-left">
-              <p className="text-sm text-blue-800 dark:text-blue-200 font-medium mb-2">Recovery Tips:</p>
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+          <div className="max-w-md mx-auto pt-8">
+            {/* Rest Day Header */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg mb-4">
+              <div className="text-5xl mb-3">😴</div>
+              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+                Rest Day - {dayName}
+              </h2>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                Recovery is part of the program
+              </p>
+            </div>
+
+            {/* Next Workout Preview */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg mb-4">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">NEXT WORKOUT</h3>
+              <button
+                onClick={() => setSelectedDate(nextGymDateStr)}
+                className="w-full bg-gradient-to-r from-[#FF2D55] to-[#FF6482] rounded-xl p-4 text-left text-white hover:opacity-90 transition-opacity"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="font-bold text-lg">{nextGym.day}</div>
+                    <div className="text-white/80 text-sm">{nextGym.workout}</div>
+                  </div>
+                  <div className="text-2xl">→</div>
+                </div>
+              </button>
+            </div>
+
+            {/* Quick Jump Buttons */}
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg mb-4">
+              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">JUMP TO WORKOUT</h3>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  onClick={() => jumpToWeekday(1)}
+                  className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl p-3 text-center hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                >
+                  <div className="text-xl mb-1">💪</div>
+                  <div className="text-xs font-bold text-red-700 dark:text-red-300">Monday</div>
+                  <div className="text-[10px] text-red-600 dark:text-red-400">Chest</div>
+                </button>
+                <button
+                  onClick={() => jumpToWeekday(3)}
+                  className="bg-blue-50 dark:bg-blue-900/20 border-2 border-blue-200 dark:border-blue-800 rounded-xl p-3 text-center hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                >
+                  <div className="text-xl mb-1">🔙</div>
+                  <div className="text-xs font-bold text-blue-700 dark:text-blue-300">Wednesday</div>
+                  <div className="text-[10px] text-blue-600 dark:text-blue-400">Back+Biceps</div>
+                </button>
+                <button
+                  onClick={() => jumpToWeekday(5)}
+                  className="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-xl p-3 text-center hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
+                >
+                  <div className="text-xl mb-1">🦵</div>
+                  <div className="text-xs font-bold text-green-700 dark:text-green-300">Friday</div>
+                  <div className="text-[10px] text-green-600 dark:text-green-400">Shoulders+Legs</div>
+                </button>
+              </div>
+            </div>
+
+            {/* Recovery Tips */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">💡 Recovery Tips</h3>
               <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
                 <li>• Stay hydrated</li>
                 <li>• Get 7-9 hours of sleep</li>
                 <li>• Light stretching or walking</li>
-                <li>• Eat protein-rich meals</li>
               </ul>
             </div>
-            <a 
-              href="/program" 
-              className="inline-block mt-6 bg-[#FF2D55] text-white font-semibold py-3 px-6 rounded-xl"
-            >
-              View Program Schedule
-            </a>
           </div>
         </div>
       );
