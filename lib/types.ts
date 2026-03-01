@@ -14,6 +14,17 @@ export type DayRotation = "A" | "B" | "C";
 // 24-week program phases (6 months)
 export type ProgramPhase = "P1" | "P2" | "P3" | "P4" | "P5";
 
+// Program types available in the app
+export type ProgramType = "running" | "gym";
+
+export type ProgramInfo = {
+  id: string;
+  type: ProgramType;
+  name: string;
+  description: string;
+  icon: string;
+};
+
 export type ProgramMeta = {
   planId: string;
   startDate: string; // ISO date (YYYY-MM-DD)

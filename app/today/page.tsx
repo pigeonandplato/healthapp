@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { WorkoutDay, ViewMode } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache } from "@/lib/db";
+import { WorkoutDay, ViewMode, ProgramType } from "@/lib/types";
+import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate } from "@/lib/db";
 import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
 import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
@@ -16,6 +16,7 @@ import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import { saveYouTubeVideo } from "@/lib/db";
+import ProgramSelector from "@/components/ProgramSelector";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -45,6 +46,7 @@ export default function TodayPage() {
   const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
   const [youtubeVideo, setYoutubeVideo] = useState<string | null>(null);
   const [isEditingVideo, setIsEditingVideo] = useState(false);
+  const [activeProgram, setActiveProgram] = useState<ProgramType>("running");
 
   // Load view preference from localStorage
   useEffect(() => {
@@ -59,7 +61,17 @@ export default function TodayPage() {
     async function loadWorkout() {
       setLoading(true);
       try {
-        const selectedWorkout = await getWorkoutByDate(selectedDate);
+        // Get active program first
+        const currentProgram = await getActiveProgram();
+        setActiveProgram(currentProgram);
+        
+        // Load workout based on active program
+        let selectedWorkout: WorkoutDay | undefined;
+        if (currentProgram === "gym") {
+          selectedWorkout = await getGymWorkoutByDate(selectedDate);
+        } else {
+          selectedWorkout = await getWorkoutByDate(selectedDate);
+        }
         setWorkout(selectedWorkout || null);
         
         // Get selected date's day rotation
@@ -89,14 +101,20 @@ export default function TodayPage() {
         setStreak(currentStreak);
         
         // Get program meta for selected date
-        const meta = await getProgramMetaForDate(selectedDate);
-        setProgramMeta(meta);
+        if (selectedWorkout?.program) {
+          setProgramMeta(selectedWorkout.program);
+        } else {
+          const meta = await getProgramMetaForDate(selectedDate);
+          setProgramMeta(meta);
+        }
         
         // Load tomorrow's workout for preview (always tomorrow from today)
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         const tomorrowDate = toLocalDateString(tomorrow);
-        const tomorrowW = await getWorkoutByDate(tomorrowDate);
+        const tomorrowW = currentProgram === "gym" 
+          ? await getGymWorkoutByDate(tomorrowDate)
+          : await getWorkoutByDate(tomorrowDate);
         setTomorrowWorkout(tomorrowW || null);
         
         // Load YouTube video
@@ -110,7 +128,7 @@ export default function TodayPage() {
     }
 
     loadWorkout();
-  }, [selectedDate]);
+  }, [selectedDate, activeProgram]);
 
   const handleViewChange = (newView: ViewMode) => {
     setViewMode(newView);
@@ -122,6 +140,10 @@ export default function TodayPage() {
     localStorage.setItem("preferredView", "coach");
     // Smooth scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleProgramChange = (program: ProgramType) => {
+    setActiveProgram(program);
   };
 
   const handlePushProgramOneDay = async () => {
@@ -233,6 +255,11 @@ export default function TodayPage() {
       {/* Stats Section */}
       <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
         <div className="max-w-4xl mx-auto px-4 py-4">
+          {/* Program Selector */}
+          <div className="mb-4">
+            <ProgramSelector onProgramChange={handleProgramChange} compact />
+          </div>
+          
           {/* Date Picker & Info */}
           <div className="mb-4 flex items-center justify-between gap-4">
             <div className="flex-1">
@@ -246,7 +273,12 @@ export default function TodayPage() {
               </div>
               {programMeta && (
                 <p className="text-sm text-[#8E8E93]">
-                  Week {programMeta.week} · {programMeta.phase} · Day {programMeta.day}
+                  {activeProgram === "running" ? `Week ${programMeta.week} · ${programMeta.phase} · ` : ""}Day {programMeta.day}
+                  {activeProgram === "gym" && (
+                    <span className="ml-2">
+                      {programMeta.day === "A" ? "💪 Chest" : programMeta.day === "B" ? "🔙 Back + Biceps" : "🦵 Shoulders + Legs"}
+                    </span>
+                  )}
                 </p>
               )}
             </div>
@@ -358,50 +390,82 @@ export default function TodayPage() {
 
         {/* Program Rules Section - At bottom of main content */}
         <section className="mt-12 mb-8">
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
-          <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-4">
-            📋 Program Rules
-          </h2>
-          
-          <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
-            <div>
-              <h3 className="font-semibold mb-2 text-[#FF2D55]">🟢 Green Light (Progress Normally)</h3>
-              <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                <li>Pain ≤ 2/10 during exercise</li>
-                <li>Back to baseline by next morning</li>
-                <li>No symptom increase</li>
-              </ul>
-            </div>
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+            <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-4">
+              📋 {activeProgram === "gym" ? "Gym Training Tips" : "Program Rules"}
+            </h2>
             
-            <div>
-              <h3 className="font-semibold mb-2 text-[#FF9500]">🟡 Yellow (Hold Current Level)</h3>
-              <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                <li>Pain 3–4/10 or stiffness into next day</li>
-                <li>Keep same intensity 1 more week</li>
-                <li>Don't progress yet</li>
-              </ul>
-            </div>
-            
-            <div>
-              <h3 className="font-semibold mb-2 text-[#FF3B30]">🔴 Red (Reduce Volume/Intensity)</h3>
-              <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                <li>Pain ≥ 5/10</li>
-                <li>Sharp/radiating pain</li>
-                <li>Increased tingling/numbness</li>
-                <li>Pain lasting &gt;24–48h</li>
-                <li>→ Drop volume/intensity 30–50%, reassess</li>
-              </ul>
-            </div>
-            
-            <div className="pt-2 border-t border-[#E5E5EA] dark:border-[#38383A]">
-              <h3 className="font-semibold mb-2">💡 Progression Rule</h3>
-              <p className="text-[#8E8E93] dark:text-[#8E8E93]">
-                If 2 good sessions in a row: progress ONE thing (reps OR height OR range). 
-                Increase total weekly running time by ≤10%.
-              </p>
-            </div>
+            {activeProgram === "gym" ? (
+              <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#007AFF]">💪 Rotation Schedule</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li><strong>Day A:</strong> Chest (Flat, Decline, Incline Press & Fly)</li>
+                    <li><strong>Day B:</strong> Back (Pulldowns, Rows) + Biceps (Curls)</li>
+                    <li><strong>Day C:</strong> Shoulders (Press, Shrugs, Fly) + Legs</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#34C759]">✅ Best Practices</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li>Warm up 5-10 min before lifting</li>
+                    <li>Control the weight - no swinging</li>
+                    <li>Full range of motion on each rep</li>
+                    <li>Rest 60-90 seconds between sets</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#FF9500]">📈 Progression</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li>Increase weight when 3×10 feels easy</li>
+                    <li>Add 5 lbs for upper body, 10 lbs for legs</li>
+                    <li>Track your lifts to see progress</li>
+                  </ul>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#FF2D55]">🟢 Green Light (Progress Normally)</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li>Pain ≤ 2/10 during exercise</li>
+                    <li>Back to baseline by next morning</li>
+                    <li>No symptom increase</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#FF9500]">🟡 Yellow (Hold Current Level)</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li>Pain 3–4/10 or stiffness into next day</li>
+                    <li>Keep same intensity 1 more week</li>
+                    <li>Don't progress yet</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#FF3B30]">🔴 Red (Reduce Volume/Intensity)</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li>Pain ≥ 5/10</li>
+                    <li>Sharp/radiating pain</li>
+                    <li>Increased tingling/numbness</li>
+                    <li>Pain lasting &gt;24–48h</li>
+                    <li>→ Drop volume/intensity 30–50%, reassess</li>
+                  </ul>
+                </div>
+                
+                <div className="pt-2 border-t border-[#E5E5EA] dark:border-[#38383A]">
+                  <h3 className="font-semibold mb-2">💡 Progression Rule</h3>
+                  <p className="text-[#8E8E93] dark:text-[#8E8E93]">
+                    If 2 good sessions in a row: progress ONE thing (reps OR height OR range). 
+                    Increase total weekly running time by ≤10%.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
         </section>
       </main>
     </div>
