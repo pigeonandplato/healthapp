@@ -20,6 +20,9 @@ export default function ExerciseCard({
 }: ExerciseCardProps) {
   const [isCompleted, setIsCompleted] = useState(completion?.completed || false);
   const [notes, setNotes] = useState(completion?.notes || "");
+  const [weight, setWeight] = useState<number | undefined>(completion?.weight);
+  const [reps, setReps] = useState<number | undefined>(completion?.reps);
+  const [sets, setSets] = useState<number | undefined>(completion?.sets);
   const [showMistakes, setShowMistakes] = useState(false);
   const [showStopConditions, setShowStopConditions] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -33,6 +36,9 @@ export default function ExerciseCard({
   const [videoEditError, setVideoEditError] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  
+  // Check if this is a gym exercise
+  const isGymExercise = exercise.id.startsWith("gym-exercise");
   
   // Swipe gesture state
   const [swipeOffset, setSwipeOffset] = useState(0);
@@ -65,6 +71,9 @@ export default function ExerciseCard({
   useEffect(() => {
     setIsCompleted(completion?.completed || false);
     setNotes(completion?.notes || "");
+    setWeight(completion?.weight);
+    setReps(completion?.reps);
+    setSets(completion?.sets);
   }, [completion]);
 
   // Load custom video and master video on mount, check if admin
@@ -177,7 +186,7 @@ export default function ExerciseCard({
   const handleToggleComplete = async () => {
     const newCompleted = !isCompleted;
     setIsCompleted(newCompleted);
-    await saveCompletion(exercise.id, date, newCompleted, notes);
+    await saveCompletion(exercise.id, date, newCompleted, notes, weight, reps, sets);
     onCompletionChange(exercise.id, newCompleted);
     if (newCompleted) {
       triggerCompletion();
@@ -223,7 +232,22 @@ export default function ExerciseCard({
 
   const handleNotesChange = async (value: string) => {
     setNotes(value);
-    await saveCompletion(exercise.id, date, isCompleted, value);
+    await saveCompletion(exercise.id, date, isCompleted, value, weight, reps, sets);
+  };
+
+  const handleWeightChange = async (value: number | undefined) => {
+    setWeight(value);
+    await saveCompletion(exercise.id, date, isCompleted, notes, value, reps, sets);
+  };
+
+  const handleRepsChange = async (value: number | undefined) => {
+    setReps(value);
+    await saveCompletion(exercise.id, date, isCompleted, notes, weight, value, sets);
+  };
+
+  const handleSetsChange = async (value: number | undefined) => {
+    setSets(value);
+    await saveCompletion(exercise.id, date, isCompleted, notes, weight, reps, value);
   };
 
   const formatPrescription = () => {
@@ -550,6 +574,58 @@ export default function ExerciseCard({
           )}
         </div>
 
+        {/* Gym Exercise Tracking - Weight/Reps/Sets */}
+        {isGymExercise && (
+          <div className="mb-4 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
+            <h4 className="font-bold text-purple-900 dark:text-purple-200 mb-3 flex items-center gap-2">
+              <span>📊</span> Log Your Lift
+            </h4>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">
+                  Weight (lbs)
+                </label>
+                <input
+                  type="number"
+                  value={weight || ""}
+                  onChange={(e) => handleWeightChange(e.target.value ? Number(e.target.value) : undefined)}
+                  placeholder="0"
+                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">
+                  Reps
+                </label>
+                <input
+                  type="number"
+                  value={reps || ""}
+                  onChange={(e) => handleRepsChange(e.target.value ? Number(e.target.value) : undefined)}
+                  placeholder="0"
+                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">
+                  Sets
+                </label>
+                <input
+                  type="number"
+                  value={sets || ""}
+                  onChange={(e) => handleSetsChange(e.target.value ? Number(e.target.value) : undefined)}
+                  placeholder="0"
+                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                />
+              </div>
+            </div>
+            {weight && reps && sets && (
+              <div className="mt-3 text-center text-sm font-medium text-purple-800 dark:text-purple-200 bg-purple-100 dark:bg-purple-900/40 rounded-lg py-2">
+                Total Volume: {weight * reps * sets} lbs
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Notes */}
         <div>
           <label
@@ -562,7 +638,7 @@ export default function ExerciseCard({
             id={`notes-${exercise.id}`}
             value={notes}
             onChange={(e) => handleNotesChange(e.target.value)}
-            placeholder="How did this feel? Any modifications?"
+            placeholder={isGymExercise ? "How did the lift feel? Form notes?" : "How did this feel? Any modifications?"}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             rows={2}
           />

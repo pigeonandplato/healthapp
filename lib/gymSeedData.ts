@@ -5,125 +5,148 @@
 
 import { Exercise, ExerciseBlock, ExerciseMedia } from "./types";
 
-// Gym exercise media mappings (Google Drive images)
+// Gym exercise media mappings (Google Drive images + YouTube videos)
 export const gymExerciseMediaMap: Record<string, ExerciseMedia> = {
   // Day A - Chest
   "gym-chest-press": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/VmB1G1K7v94",
     src: "https://drive.google.com/uc?id=1rTXUQ8vJgzRMnAjYa8UTbQtm9L450U1V",
     alt: "Dumbbell Plain Chest Press",
   },
   "gym-chest-fly": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/eozdVDA78K0",
     src: "https://drive.google.com/uc?id=1AeLQIO4HGZsS5gkWCDGM61Dyv5wzBayE",
     alt: "Dumbbell Plain Fly",
   },
   "gym-decline-press": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/0c8y4PGf5D0",
     src: "https://drive.google.com/uc?id=17yANdDfdDIrlk4Tj_Dw5I7eEpDAHvVX_",
     alt: "Dumbbell Decline Press",
   },
   "gym-decline-fly": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/oRXHIJGdUfE",
     src: "https://drive.google.com/uc?id=1kN-kIkzh5zpjmUWH3daO1YmDcJziLizR",
     alt: "Dumbbell Decline Fly",
   },
   "gym-incline-press": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/8iPEnn-ltC8",
     src: "https://drive.google.com/uc?id=1xCEWpDHU4Tntd-PtlsmlF_a_Kct90HK1",
     alt: "Dumbbell Incline Chest Press",
   },
   "gym-incline-fly": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/bDaIL_zKbGs",
     src: "https://drive.google.com/uc?id=11WfE1GOICVDyoOjrsSFv5w7pLhAwjYDS",
     alt: "Dumbbell Incline Fly",
   },
 
   // Day B - Back + Biceps
   "gym-wide-pulldown": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/CAwf7n6Luuc",
     src: "https://drive.google.com/uc?id=1A7fav4FB9Bhx0ni12x4PgimpUY33_1qT",
     alt: "Wide Pull Down",
   },
   "gym-narrow-pulldown": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/ecRF8ERf2q4",
     src: "https://drive.google.com/uc?id=140bfEMfQiK9ibGceCN1fuvaDHFwzkdxD",
     alt: "Narrow Pull Down",
   },
   "gym-seated-row": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/GZbfZ033f74",
     src: "https://drive.google.com/uc?id=1dkzJb17OgScV3wFgcP6SF27cI4UvbDNh",
     alt: "Seated Cable Row",
   },
   "gym-incline-row": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/p7U3n8STFvA",
     src: "https://drive.google.com/uc?id=159ggOCtKGDNl0phlafzen1o2d-fZoWPX",
     alt: "Dumbbell Inclined Row",
   },
   "gym-barbell-curl": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/LY1V6UbRHFM",
     src: "https://drive.google.com/uc?id=1juARGkM6MyUcedRbGjlTFMs6pTSfqu5v",
     alt: "Barbell Curl",
   },
   "gym-dumbbell-curl": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/ykJmrZ5v0Oo",
     src: "https://drive.google.com/uc?id=19CHCYdnY2kocdesSse0oh5xBxZv-Xvqg",
     alt: "Dumbbell Curl",
   },
   "gym-hammer-curl": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/zC3nLlEvin4",
     src: "https://drive.google.com/uc?id=1tYoa4yz3sUL9vRpsT1Egih50Jp4cLHpr",
     alt: "Dumbbell Hammer Curl",
   },
   "gym-mixed-curl": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/ykJmrZ5v0Oo",
     src: "https://drive.google.com/uc?id=1ktplvFCvb2M31X_A_q3MYNfR3iwNbWqy",
     alt: "Dumbbell Mixed Curl",
   },
 
   // Day C - Shoulders + Legs
   "gym-db-overhead-press": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/qEwKCR5JCog",
     src: "https://drive.google.com/uc?id=1H0rLGwzEaYu3dH-nJao_YDs7g7ajp2mr",
     alt: "Dumbbell Overhead Press",
   },
   "gym-bb-overhead-press": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/_RlRDWO2jfg",
     src: "https://drive.google.com/uc?id=1QShnKgVksffmFuHMQqw1qOotgYdkiPKV",
     alt: "Barbell Overhead Press",
   },
   "gym-shrugs": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/cJRVVxmytaM",
     src: "https://drive.google.com/uc?id=14gLHFxSSxecRJORb41XLlVDwWSpnw5Hv",
     alt: "Shoulder Shrugs",
   },
   "gym-shoulder-fly": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/3VcKaXpzqRo",
     src: "https://drive.google.com/uc?id=1HBZAywjrNUGrLvjFIPCYRGCEOWSAVTdd",
     alt: "Dumbbell Shoulder Fly",
   },
   "gym-squats": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/gcNh17Ckjgg",
     src: "https://drive.google.com/uc?id=1HotV5Ex_H9sBa1Miea2coslwxz46JHCc",
     alt: "Squats with Dumbbell",
   },
   "gym-walking-lunges": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/L8fvypPrzzs",
     src: "https://drive.google.com/uc?id=1RIKCIMinm7HF01byYtsCsMnfW8dZBV7C",
     alt: "Walking Lunges",
   },
   "gym-step-up": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/WCFCdxzFBa4",
     src: "https://drive.google.com/uc?id=1SimKDEpyjG13uNrp5M4fj6eQ_jrIBSDP",
     alt: "Step Up",
   },
   "gym-leg-extension": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/YyvSfVjQeL0",
     src: "https://drive.google.com/uc?id=1X72uo90YF-9Ke75jO4WE_zsLI7FHxPe4",
     alt: "Leg Extension",
   },
   "gym-leg-press": {
-    type: "image",
+    type: "video",
+    videoUrl: "https://www.youtube.com/embed/IZxyjW7MPJQ",
     src: "https://drive.google.com/uc?id=1_Qpo1EVZQl_IfGfqWJqTQmap_KxWUPr6",
     alt: "Leg Press",
   },

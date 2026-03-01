@@ -85,6 +85,10 @@ export type ExerciseCompletion = {
   completed: boolean;
   notes?: string;
   completedAt?: string; // ISO timestamp
+  // Gym tracking fields
+  weight?: number; // Weight in lbs
+  reps?: number; // Actual reps completed
+  sets?: number; // Actual sets completed
 };
 
 export type BlockTimerState = {

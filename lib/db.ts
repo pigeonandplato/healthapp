@@ -57,7 +57,10 @@ export async function saveCompletion(
   exerciseId: string,
   date: string,
   completed: boolean,
-  notes?: string
+  notes?: string,
+  weight?: number,
+  reps?: number,
+  sets?: number
 ): Promise<void> {
   const userId = await getUserId();
   if (!userId) return;
@@ -72,6 +75,9 @@ export async function saveCompletion(
       date,
       completed,
       notes,
+      weight,
+      reps,
+      sets,
       completed_at: completed ? new Date().toISOString() : null,
     });
   
@@ -99,6 +105,9 @@ export async function getCompletion(exerciseId: string, date: string): Promise<E
     completed: data.completed,
     notes: data.notes,
     completedAt: data.completed_at,
+    weight: data.weight,
+    reps: data.reps,
+    sets: data.sets,
   };
 }
 
@@ -120,6 +129,9 @@ export async function getCompletionsByDate(date: string): Promise<ExerciseComple
     completed: c.completed,
     notes: c.notes,
     completedAt: c.completed_at,
+    weight: c.weight,
+    reps: c.reps,
+    sets: c.sets,
   }));
 }
 
