@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 function DietSection({
   title,
   emoji,
@@ -33,17 +31,11 @@ function MealOption({ label, items }: { label: string; items: string[] }) {
   );
 }
 
-export default function DailyDietPage() {
+export default function DietPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-black pb-28">
       <section className="bg-gradient-to-br from-[#FF2D55] via-[#FF6482] to-[#FF9500] text-white">
         <div className="max-w-2xl mx-auto px-4 py-6">
-          <Link
-            href="/progress"
-            className="inline-flex items-center gap-1 text-white/90 text-sm font-medium hover:text-white mb-4"
-          >
-            <span aria-hidden>←</span> Back to Progress
-          </Link>
           <p className="text-sm font-medium text-white/90 uppercase tracking-wide mb-1">Daily diet</p>
           <h1 className="text-2xl font-bold leading-tight mb-2">
             High-protein 4-meal plan

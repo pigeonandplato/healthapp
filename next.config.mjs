@@ -1,12 +1,9 @@
-import type { NextConfig } from "next";
 import withPWA from "@ducanh2912/next-pwa";
 
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   devIndicators: false,
-  turbopack: {
-    // Empty config to silence Turbopack warning
-  },
+  turbopack: {},
 };
 
 export default withPWA({

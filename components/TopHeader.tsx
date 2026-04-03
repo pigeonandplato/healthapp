@@ -9,7 +9,7 @@ const menuItems = [
   { href: "/today", label: "Today's Workout", icon: "🏠" },
   { href: "/schedule", label: "Schedule", icon: "📅" },
   { href: "/progress", label: "Progress", icon: "📊" },
-  { href: "/progress/diet", label: "Daily diet", icon: "🥗" },
+  { href: "/diet", label: "Diet", icon: "🥗" },
   { href: "/program", label: "Program Overview", icon: "📈" },
   { href: "/settings", label: "Settings", icon: "⚙️" },
 ];
@@ -63,8 +63,8 @@ export default function TopHeader() {
         return "Schedule";
       case "/progress":
         return "Progress";
-      case "/progress/diet":
-        return "Daily diet";
+      case "/diet":
+        return "Diet";
       case "/program":
         return "Program";
       case "/settings":

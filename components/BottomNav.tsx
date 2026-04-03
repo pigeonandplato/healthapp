@@ -62,6 +62,15 @@ const navItems = [
     ),
   },
   {
+    href: "/diet",
+    label: "Diet",
+    icon: () => (
+      <span className="text-xl leading-none select-none" aria-hidden>
+        🥗
+      </span>
+    ),
+  },
+  {
     href: "/program",
     label: "Program",
     icon: (active: boolean) => (
@@ -87,19 +96,17 @@ export default function BottomNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-t border-[#E5E5EA] dark:border-[#38383A]">
-      <div className="flex items-center justify-around max-w-lg mx-auto px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2">
+      <div className="flex items-center justify-around max-w-xl mx-auto px-1 pb-[max(8px,env(safe-area-inset-bottom))] pt-2">
         {navItems.map((item) => {
           const isActive =
             item.href === "/today"
               ? pathname === "/today" || pathname === "/"
-              : item.href === "/progress"
-                ? pathname === "/progress" || pathname.startsWith("/progress/")
-                : pathname === item.href;
+              : pathname === item.href;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center py-1 px-4 rounded-xl transition-all duration-200 min-w-[72px] ${
+              className={`flex flex-col items-center justify-center py-1 px-2 sm:px-3 rounded-xl transition-all duration-200 flex-1 min-w-0 max-w-[20%] ${
                 isActive
                   ? "text-[#FF2D55]"
                   : "text-[#8E8E93] hover:text-[#1C1C1E] dark:hover:text-white"
@@ -108,7 +115,9 @@ export default function BottomNav() {
               <div className={`transition-transform duration-200 ${isActive ? "scale-110" : ""}`}>
                 {item.icon(isActive)}
               </div>
-              <span className={`text-[10px] mt-1 font-medium ${isActive ? "font-semibold" : ""}`}>
+              <span
+                className={`text-[9px] sm:text-[10px] mt-1 font-medium text-center leading-tight ${isActive ? "font-semibold" : ""}`}
+              >
                 {item.label}
               </span>
             </Link>
