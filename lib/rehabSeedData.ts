@@ -1,10 +1,81 @@
 // Rehab strength program (3-week progression + optional impact in week 3)
 // Source: rehab-strength-program.csv
 
-import { Exercise, ExerciseBlock, Phase, DayRotation } from "./types";
+import { Exercise, ExerciseBlock, ExerciseMedia, Phase, DayRotation } from "./types";
 import { exerciseMediaMap } from "./exerciseMedia";
 
 const genericMedia = exerciseMediaMap["generic-exercise"];
+
+/** Normalize watch / shorts / youtu.be links to embed URLs for iframes. */
+function embedFromYoutubeInput(url: string): string {
+  const u = url.trim();
+  const shortsMatch = u.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+  if (shortsMatch) return `https://www.youtube.com/embed/${shortsMatch[1]}`;
+  const vMatch = u.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+  if (vMatch) return `https://www.youtube.com/embed/${vMatch[1]}`;
+  const beMatch = u.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (beMatch) return `https://www.youtube.com/embed/${beMatch[1]}`;
+  return u;
+}
+
+function rehabVideo(watchOrShortUrl: string, alt: string): ExerciseMedia {
+  return {
+    type: "video",
+    videoUrl: embedFromYoutubeInput(watchOrShortUrl),
+    alt,
+  };
+}
+
+// YouTube demos per exercise (embed-ready sources — matches gym program pattern)
+export const rehabExerciseMediaMap: Record<string, ExerciseMedia> = {
+  "rehab-p1-a-01": rehabVideo("https://www.youtube.com/watch?v=V8k044BYU74", "McGill curl-up"),
+  "rehab-p1-a-02": rehabVideo("https://www.youtube.com/watch?v=xo7Qpb_NTKE", "Bird dog"),
+  "rehab-p1-a-03": rehabVideo("https://www.youtube.com/watch?v=iy1otMZC2C8", "Glute bridge"),
+  "rehab-p1-a-04": rehabVideo("https://www.youtube.com/shorts/wiekN4aIJ0g", "Romanian deadlift"),
+  "rehab-p1-a-05": rehabVideo("https://www.youtube.com/watch?v=xG-DtZqnRSY", "Terminal knee extension"),
+  "rehab-p1-a-06": rehabVideo("https://www.youtube.com/shorts/BnacvXdaxq8", "Leg press"),
+  "rehab-p1-a-07": rehabVideo("https://www.youtube.com/shorts/NrHJPauB01I", "Calf raise"),
+  "rehab-p1-a-08": rehabVideo("https://www.youtube.com/watch?v=3QZlgJ40LfU", "Forearm plank"),
+  "rehab-p1-b-01": rehabVideo("https://www.youtube.com/watch?v=gyqon2-RVEg", "Box squat"),
+  "rehab-p1-b-02": rehabVideo("https://www.youtube.com/watch?v=B6JvfdaOVAk", "Hip abduction"),
+  "rehab-p1-b-03": rehabVideo("https://www.youtube.com/watch?v=NYxEhiXA8lg", "Hamstring bridge"),
+  "rehab-p1-b-04": rehabVideo("https://www.youtube.com/watch?v=UcT6Pk42Jtw", "Single-leg balance"),
+  "rehab-p1-b-05": rehabVideo("https://www.youtube.com/watch?v=YhKtYPFUVwc", "Face pull"),
+  "rehab-p1-b-06": rehabVideo("https://www.youtube.com/shorts/NlqPTojlTlo", "Neutral-grip row"),
+  "rehab-p1-b-07": rehabVideo("https://www.youtube.com/watch?v=RHWRxiBe1iU", "Tibialis raise"),
+  "rehab-p1-c-01": rehabVideo("https://www.youtube.com/shorts/OnNUYu2m_uQ", "Split squat"),
+  "rehab-p1-c-02": rehabVideo("https://www.youtube.com/watch?v=RgTKgtV1ltk", "Step-down"),
+  "rehab-p1-c-03": rehabVideo("https://www.youtube.com/watch?v=pF17m_CXfL0", "Hip thrust"),
+  "rehab-p1-c-04": rehabVideo("https://www.youtube.com/watch?v=xeFp4MXad98", "Pallof press"),
+  "rehab-p1-c-05": rehabVideo("https://www.youtube.com/watch?v=lLAw6fUccKA", "Farmer carry"),
+  "rehab-p1-c-06": rehabVideo("https://www.youtube.com/watch?v=vS7N38XUJmU", "Foot doming"),
+  "rehab-p1-c-07": rehabVideo("https://www.youtube.com/watch?v=sV8TmXlHloA", "Towel scrunch"),
+
+  "rehab-p2-a-01": rehabVideo("https://www.youtube.com/shorts/LGrqWkwZ4Kg", "Dead bug"),
+  "rehab-p2-a-02": rehabVideo("https://www.youtube.com/watch?v=iy1otMZC2C8", "Glute bridge"),
+  "rehab-p2-a-03": rehabVideo("https://www.youtube.com/shorts/wiekN4aIJ0g", "Romanian deadlift"),
+  "rehab-p2-a-04": rehabVideo("https://www.youtube.com/watch?v=xG-DtZqnRSY", "Terminal knee extension"),
+  "rehab-p2-a-05": rehabVideo("https://www.youtube.com/shorts/BnacvXdaxq8", "Leg press"),
+  "rehab-p2-a-06": rehabVideo("https://www.youtube.com/shorts/NrHJPauB01I", "Calf raise"),
+  "rehab-p2-a-07": rehabVideo("https://www.youtube.com/watch?v=3QZlgJ40LfU", "Plank"),
+  "rehab-p2-b-01": rehabVideo("https://www.youtube.com/watch?v=gyqon2-RVEg", "Squat / box squat"),
+  "rehab-p2-b-02": rehabVideo("https://www.youtube.com/watch?v=B6JvfdaOVAk", "Hip abduction"),
+  "rehab-p2-b-03": rehabVideo("https://www.youtube.com/shorts/wiekN4aIJ0g", "Romanian deadlift"),
+  "rehab-p2-b-04": rehabVideo("https://www.youtube.com/watch?v=UcT6Pk42Jtw", "Single-leg balance"),
+  "rehab-p2-b-05": rehabVideo("https://www.youtube.com/shorts/NlqPTojlTlo", "Neutral-grip row"),
+  "rehab-p2-b-06": rehabVideo("https://www.youtube.com/watch?v=YhKtYPFUVwc", "Face pull"),
+  "rehab-p2-b-07": rehabVideo("https://www.youtube.com/shorts/O1J3dYHTs_E", "Copenhagen side plank"),
+  "rehab-p2-c-01": rehabVideo("https://www.youtube.com/shorts/CpjlS3doPkU", "Bulgarian split squat"),
+  "rehab-p2-c-02": rehabVideo("https://www.youtube.com/watch?v=RgTKgtV1ltk", "Step-down"),
+  "rehab-p2-c-03": rehabVideo("https://www.youtube.com/watch?v=pF17m_CXfL0", "Hip thrust"),
+  "rehab-p2-c-04": rehabVideo("https://www.youtube.com/watch?v=xeFp4MXad98", "Pallof press"),
+  "rehab-p2-c-05": rehabVideo("https://www.youtube.com/watch?v=lLAw6fUccKA", "Farmer carry"),
+  "rehab-p2-c-06": rehabVideo("https://www.youtube.com/watch?v=vS7N38XUJmU", "Foot doming"),
+  "rehab-p2-c-07": rehabVideo("https://www.youtube.com/watch?v=szca5qbIFdY", "Bent-knee calf raise"),
+
+  "rehab-p3-b-01": rehabVideo("https://www.youtube.com/watch?v=lz6BM6WyJ0k", "Pogo hops"),
+  "rehab-p3-c-01": rehabVideo("https://www.youtube.com/watch?v=lz6BM6WyJ0k", "Pogo hops"),
+};
 
 const REHAB_CSV = `Week,Day,Block Name,Exercise ID,Exercise Name,Sets,Reps,Hold Seconds,Minutes,Description
 1,A,Warm-up,rehab-p1-a-01,McGill curl-up or dead bug (small range),2,8,,,Stop if back ramps up; pick one pattern
@@ -131,12 +202,13 @@ function exerciseCategory(row: RehabRow): string {
 
 function rowToExercise(row: RehabRow): Exercise {
   const fullDescription = [row.name, row.description].filter(Boolean).join(". ") || row.name;
+  const media = rehabExerciseMediaMap[row.id] ?? genericMedia;
   return {
     id: row.id,
     name: row.name,
     description: fullDescription,
     phase: Phase.PHASE_0,
-    media: genericMedia,
+    media,
     prescription: {
       sets: row.sets,
       reps: row.reps,
