@@ -15,7 +15,7 @@ export type DayRotation = "A" | "B" | "C";
 export type ProgramPhase = "P1" | "P2" | "P3" | "P4" | "P5";
 
 // Program types available in the app
-export type ProgramType = "running" | "gym";
+export type ProgramType = "running" | "gym" | "rehab";
 
 export type ProgramInfo = {
   id: string;

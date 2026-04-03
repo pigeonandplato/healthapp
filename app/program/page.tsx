@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getProgramMetaForDate, PROGRAM_PHASES, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta, ProgramType } from "@/lib/types";
-import { getActiveProgram, setActiveProgram, AVAILABLE_PROGRAMS } from "@/lib/db";
+import { getActiveProgram, setActiveProgram, AVAILABLE_PROGRAMS, setRehabProgramStartDate, getTodayDateString } from "@/lib/db";
 
 export default function ProgramPage() {
   const [program, setProgram] = useState<ProgramMeta | null>(null);
@@ -78,7 +78,7 @@ export default function ProgramPage() {
         {/* Program Selector Cards */}
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Choose Active Program</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {AVAILABLE_PROGRAMS.map((prog) => (
               <button
                 key={prog.id}
@@ -261,6 +261,38 @@ export default function ProgramPage() {
               })}
             </div>
           </>
+        )}
+
+        {/* Rehab strength program */}
+        {activeProgram === "rehab" && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">🩹 Rehab strength</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Three-week progressive template: <strong>Monday / Wednesday / Friday</strong> (Day A / B / C).
+                Week 1 builds the base, week 2 progresses load and complexity, and from week 3 you keep week-2
+                sessions while optional low-impact pogo hops appear on B and C when you are ready.
+              </p>
+              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2 list-disc pl-5">
+                <li>Use <strong>Today</strong> on Mon/Wed/Fri to see the full block list for that day.</li>
+                <li>Week number counts 7-day blocks from your rehab start date (see button below).</li>
+                <li>Match the traffic-light symptom rules from the running program if pain spikes.</li>
+              </ul>
+              <button
+                type="button"
+                onClick={async () => {
+                  await setRehabProgramStartDate(getTodayDateString());
+                  window.location.reload();
+                }}
+                className="mt-6 w-full sm:w-auto bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 px-5 rounded-xl transition"
+              >
+                Set rehab start to today (week 1)
+              </button>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                Use this if you are beginning the program or want to reset the week counter. Workout history is kept.
+              </p>
+            </div>
+          </div>
         )}
 
         {/* Gym Program Content */}

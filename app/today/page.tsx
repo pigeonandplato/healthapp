@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode, ProgramType } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate, getGymDayForDate } from "@/lib/db";
+import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate, getGymDayForDate, getRehabWorkoutByDate } from "@/lib/db";
 import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
 import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
@@ -67,11 +67,14 @@ export default function TodayPage() {
         
         // Load workout based on active program
         let selectedWorkout: WorkoutDay | null | undefined;
-        if (currentProgram === "gym") {
+        if (currentProgram === "gym" || currentProgram === "rehab") {
           const gymInfo = getGymDayForDate(selectedDate);
           console.log('[LoadWorkout]', { selectedDate, gymInfo, currentProgram });
           setIsRestDay(!gymInfo.isGymDay);
-          selectedWorkout = await getGymWorkoutByDate(selectedDate);
+          selectedWorkout =
+            currentProgram === "gym"
+              ? await getGymWorkoutByDate(selectedDate)
+              : await getRehabWorkoutByDate(selectedDate);
         } else {
           setIsRestDay(false);
           selectedWorkout = await getWorkoutByDate(selectedDate);
@@ -122,9 +125,12 @@ export default function TodayPage() {
         const tomorrow = new Date();
         tomorrow.setDate(tomorrow.getDate() + 1);
         const tomorrowDate = toLocalDateString(tomorrow);
-        const tomorrowW = currentProgram === "gym" 
-          ? await getGymWorkoutByDate(tomorrowDate)
-          : await getWorkoutByDate(tomorrowDate);
+        const tomorrowW =
+          currentProgram === "gym"
+            ? await getGymWorkoutByDate(tomorrowDate)
+            : currentProgram === "rehab"
+              ? await getRehabWorkoutByDate(tomorrowDate)
+              : await getWorkoutByDate(tomorrowDate);
         setTomorrowWorkout(tomorrowW || null);
         
         // Load YouTube video
@@ -205,17 +211,48 @@ export default function TodayPage() {
     );
   }
 
-  // Helper to find the next gym day from a given date
-  const getNextGymDay = (fromDate: Date): { date: Date; day: string; workout: string } => {
+  // Helper to find the next Mon/Wed/Fri training day from a given date
+  const getNextScheduledDay = (
+    fromDate: Date,
+    program: ProgramType
+  ): { date: Date; day: string; workout: string } => {
     const d = new Date(fromDate);
+    const rehab = (letter: string) => `🩹 Day ${letter}: Rehab strength`;
+    const gym = (letter: string, label: string) => {
+      if (letter === "A") return `💪 Day A: ${label}`;
+      if (letter === "B") return `🔙 Day B: ${label}`;
+      return `🦵 Day C: ${label}`;
+    };
     for (let i = 1; i <= 7; i++) {
       d.setDate(d.getDate() + 1);
       const dow = d.getDay();
-      if (dow === 1) return { date: new Date(d), day: 'Monday', workout: '💪 Day A: Chest' };
-      if (dow === 3) return { date: new Date(d), day: 'Wednesday', workout: '🔙 Day B: Back + Biceps' };
-      if (dow === 5) return { date: new Date(d), day: 'Friday', workout: '🦵 Day C: Shoulders + Legs' };
+      if (dow === 1) {
+        return {
+          date: new Date(d),
+          day: "Monday",
+          workout: program === "rehab" ? rehab("A") : gym("A", "Chest"),
+        };
+      }
+      if (dow === 3) {
+        return {
+          date: new Date(d),
+          day: "Wednesday",
+          workout: program === "rehab" ? rehab("B") : gym("B", "Back + Biceps"),
+        };
+      }
+      if (dow === 5) {
+        return {
+          date: new Date(d),
+          day: "Friday",
+          workout: program === "rehab" ? rehab("C") : gym("C", "Shoulders + Legs"),
+        };
+      }
     }
-    return { date: d, day: 'Monday', workout: '💪 Day A: Chest' };
+    return {
+      date: d,
+      day: "Monday",
+      workout: program === "rehab" ? rehab("A") : gym("A", "Chest"),
+    };
   };
 
   // Helper to jump to a specific weekday
@@ -233,10 +270,10 @@ export default function TodayPage() {
 
   if (!workout) {
     // Check if it's a gym rest day
-    if (activeProgram === "gym" && isRestDay) {
+    if ((activeProgram === "gym" || activeProgram === "rehab") && isRestDay) {
       const selectedDateObj = parseLocalDate(selectedDate);
       const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" });
-      const nextGym = getNextGymDay(selectedDateObj);
+      const nextGym = getNextScheduledDay(selectedDateObj, activeProgram);
       const nextGymDateStr = toLocalDateString(nextGym.date);
       
       return (
@@ -280,7 +317,9 @@ export default function TodayPage() {
                 >
                   <div className="text-xl mb-1">💪</div>
                   <div className="text-xs font-bold text-red-700 dark:text-red-300">Monday</div>
-                  <div className="text-[10px] text-red-600 dark:text-red-400">Chest</div>
+                  <div className="text-[10px] text-red-600 dark:text-red-400">
+                    {activeProgram === "rehab" ? "Session A" : "Chest"}
+                  </div>
                 </button>
                 <button
                   onClick={() => jumpToWeekday(3)}
@@ -288,7 +327,9 @@ export default function TodayPage() {
                 >
                   <div className="text-xl mb-1">🔙</div>
                   <div className="text-xs font-bold text-blue-700 dark:text-blue-300">Wednesday</div>
-                  <div className="text-[10px] text-blue-600 dark:text-blue-400">Back+Biceps</div>
+                  <div className="text-[10px] text-blue-600 dark:text-blue-400">
+                    {activeProgram === "rehab" ? "Session B" : "Back+Biceps"}
+                  </div>
                 </button>
                 <button
                   onClick={() => jumpToWeekday(5)}
@@ -296,7 +337,9 @@ export default function TodayPage() {
                 >
                   <div className="text-xl mb-1">🦵</div>
                   <div className="text-xs font-bold text-green-700 dark:text-green-300">Friday</div>
-                  <div className="text-[10px] text-green-600 dark:text-green-400">Shoulders+Legs</div>
+                  <div className="text-[10px] text-green-600 dark:text-green-400">
+                    {activeProgram === "rehab" ? "Session C" : "Shoulders+Legs"}
+                  </div>
                 </button>
               </div>
             </div>
@@ -373,7 +416,11 @@ export default function TodayPage() {
           {/* Active Program Badge */}
           <div className="mb-3">
             <a href="/program" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF2D55]/10 dark:bg-[#FF2D55]/20 rounded-full text-sm font-medium text-[#FF2D55] hover:bg-[#FF2D55]/20 transition-colors">
-              {activeProgram === "running" ? "🏃 5K Running" : "🏋️ Gym PPL"}
+              {activeProgram === "running"
+                ? "🏃 5K Running"
+                : activeProgram === "gym"
+                  ? "🏋️ Gym PPL"
+                  : "🩹 Rehab Strength"}
               <span className="text-xs opacity-70">Change →</span>
             </a>
           </div>
@@ -391,11 +438,19 @@ export default function TodayPage() {
               </div>
               {programMeta && (
                 <p className="text-sm text-[#8E8E93]">
-                  {activeProgram === "running" ? `Week ${programMeta.week} · ${programMeta.phase} · ` : ""}Day {programMeta.day}
+                  {activeProgram === "running"
+                    ? `Week ${programMeta.week} · ${programMeta.phase} · `
+                    : activeProgram === "rehab"
+                      ? `Week ${programMeta.week} · ${programMeta.phase} · `
+                      : ""}
+                  Day {programMeta.day}
                   {activeProgram === "gym" && (
                     <span className="ml-2">
                       {programMeta.day === "A" ? "💪 Chest" : programMeta.day === "B" ? "🔙 Back + Biceps" : "🦵 Shoulders + Legs"}
                     </span>
+                  )}
+                  {activeProgram === "rehab" && (
+                    <span className="ml-2">🩹 Session {programMeta.day}</span>
                   )}
                 </p>
               )}
@@ -510,7 +565,12 @@ export default function TodayPage() {
         <section className="mt-12 mb-8">
           <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
             <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-4">
-              📋 {activeProgram === "gym" ? "Gym Training Tips" : "Program Rules"}
+              📋{" "}
+              {activeProgram === "gym"
+                ? "Gym Training Tips"
+                : activeProgram === "rehab"
+                  ? "Rehab strength tips"
+                  : "Program Rules"}
             </h2>
             
             {activeProgram === "gym" ? (
@@ -540,6 +600,25 @@ export default function TodayPage() {
                     <li>Increase weight when 3×10 feels easy</li>
                     <li>Add 5 lbs for upper body, 10 lbs for legs</li>
                     <li>Track your lifts to see progress</li>
+                  </ul>
+                </div>
+              </div>
+            ) : activeProgram === "rehab" ? (
+              <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#007AFF]">📅 Schedule</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li><strong>Monday</strong> · Day A</li>
+                    <li><strong>Wednesday</strong> · Day B</li>
+                    <li><strong>Friday</strong> · Day C</li>
+                    <li>Week 1 and 2 follow the program as written; from week 3 onward you keep the week-2 sessions and add optional pogo hops on B/C only if you meet the checklist.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#34C759]">✅ Intensity</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
+                    <li>Stay under symptom threshold (see running program traffic-light rules if unsure).</li>
+                    <li>Quality and calm breathing beat chasing load while tissues adapt.</li>
                   </ul>
                 </div>
               </div>

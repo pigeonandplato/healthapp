@@ -9,6 +9,7 @@ const menuItems = [
   { href: "/today", label: "Today's Workout", icon: "🏠" },
   { href: "/schedule", label: "Schedule", icon: "📅" },
   { href: "/progress", label: "Progress", icon: "📊" },
+  { href: "/progress/diet", label: "Daily diet", icon: "🥗" },
   { href: "/program", label: "Program Overview", icon: "📈" },
   { href: "/settings", label: "Settings", icon: "⚙️" },
 ];
@@ -62,6 +63,8 @@ export default function TopHeader() {
         return "Schedule";
       case "/progress":
         return "Progress";
+      case "/progress/diet":
+        return "Daily diet";
       case "/program":
         return "Program";
       case "/settings":
@@ -158,7 +161,8 @@ export default function TopHeader() {
           {/* Navigation Links */}
           <nav className="flex-1 space-y-1">
             {menuItems.map((item) => {
-              const isActive = pathname === item.href || (item.href === "/today" && pathname === "/");
+              const isActive =
+                pathname === item.href || (item.href === "/today" && pathname === "/");
               return (
                 <Link
                   key={item.href}

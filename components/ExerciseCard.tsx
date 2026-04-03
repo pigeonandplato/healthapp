@@ -37,8 +37,9 @@ export default function ExerciseCard({
   const [isAdmin, setIsAdmin] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
-  // Check if this is a gym exercise
-  const isGymExercise = exercise.id.startsWith("gym-exercise");
+  // Strength exercises: show sets/reps/weight logging like gym
+  const isGymExercise =
+    exercise.id.startsWith("gym-exercise") || exercise.id.startsWith("rehab-p");
   
   // Swipe gesture state
   const [swipeOffset, setSwipeOffset] = useState(0);

@@ -89,7 +89,12 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-t border-[#E5E5EA] dark:border-[#38383A]">
       <div className="flex items-center justify-around max-w-lg mx-auto px-2 pb-[max(8px,env(safe-area-inset-bottom))] pt-2">
         {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href === "/today" && pathname === "/");
+          const isActive =
+            item.href === "/today"
+              ? pathname === "/today" || pathname === "/"
+              : item.href === "/progress"
+                ? pathname === "/progress" || pathname.startsWith("/progress/")
+                : pathname === item.href;
           return (
             <Link
               key={item.href}

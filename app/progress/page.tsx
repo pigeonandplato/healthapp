@@ -1,10 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { getAllCompletions } from "@/lib/db";
 import { calculateProgressStats, detectMilestones, ProgressStats, Milestone } from "@/lib/progress";
 import { getAllExercises } from "@/lib/db";
 import MilestoneCelebration from "@/components/MilestoneCelebration";
+
+function DailyDietCard() {
+  return (
+    <Link
+      href="/progress/diet"
+      className="block rounded-2xl p-5 bg-gradient-to-br from-[#FF9500]/15 via-[#FF6482]/15 to-[#FF2D55]/15 dark:from-[#FF9500]/20 dark:via-[#FF6482]/15 dark:to-[#FF2D55]/20 border-2 border-[#FF2D55]/30 dark:border-[#FF6482]/40 shadow-sm hover:border-[#FF2D55]/50 transition-all active:scale-[0.99]"
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold text-[#FF2D55] uppercase tracking-wide mb-1">Diet</p>
+          <h2 className="text-lg font-bold text-[#1C1C1E] dark:text-white">Daily diet</h2>
+          <p className="text-sm text-[#8E8E93] mt-1">
+            High-protein 4-meal plan · ~200g protein · reflux-friendly
+          </p>
+        </div>
+        <span className="text-3xl flex-shrink-0" aria-hidden>
+          🥗
+        </span>
+      </div>
+      <p className="text-sm font-medium text-[#FF2D55] mt-3">Open meal plan →</p>
+    </Link>
+  );
+}
 
 export default function ProgressPage() {
   const [stats, setStats] = useState<ProgressStats | null>(null);
@@ -49,10 +73,13 @@ export default function ProgressPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF2D55] mx-auto mb-4"></div>
-          <p className="text-[#8E8E93]">Loading progress...</p>
+      <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <DailyDietCard />
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF2D55] mx-auto mb-4" />
+            <p className="text-[#8E8E93]">Loading progress...</p>
+          </div>
         </div>
       </div>
     );
@@ -60,10 +87,13 @@ export default function ProgressPage() {
 
   if (!stats) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <p className="text-[#8E8E93] mb-4">No progress data yet</p>
-          <p className="text-sm text-[#8E8E93]">Complete your first workout to see progress!</p>
+      <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <DailyDietCard />
+          <div className="text-center py-12">
+            <p className="text-[#8E8E93] mb-4">No progress data yet</p>
+            <p className="text-sm text-[#8E8E93]">Complete your first workout to see progress!</p>
+          </div>
         </div>
       </div>
     );
@@ -76,6 +106,8 @@ export default function ProgressPage() {
       )}
       
       <div className="max-w-2xl mx-auto space-y-6">
+        <DailyDietCard />
+
         {/* Header Stats */}
         <div className="grid grid-cols-2 gap-4">
           <StatCard

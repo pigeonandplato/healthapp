@@ -12,6 +12,11 @@ import {
 } from "./types";
 import { allExercises, getBlocksForProgramMeta } from "./seedData";
 import { allGymExercises, getGymBlocksForDay, GYM_PROGRAM_ID } from "./gymSeedData";
+import {
+  allRehabExercises,
+  getRehabBlocksForProgramWeekAndDay,
+  REHAB_PROGRAM_ID,
+} from "./rehabSeedData";
 import { getProgramMetaForDate } from "./program";
 import { supabase } from "./supabase";
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
@@ -33,6 +38,13 @@ export const AVAILABLE_PROGRAMS: ProgramInfo[] = [
     name: "Gym PPL Workout",
     description: "Push/Pull/Legs strength training split",
     icon: "🏋️",
+  },
+  {
+    id: REHAB_PROGRAM_ID,
+    type: "rehab",
+    name: "Rehab Strength",
+    description: "3-week progressive rehab strength (Mon/Wed/Fri)",
+    icon: "🩹",
   },
 ];
 
@@ -378,12 +390,15 @@ export async function pushToTomorrow(exerciseIds: string[]): Promise<void> {
 // ============================================
 
 export async function getAllExercises(): Promise<Exercise[]> {
-  return [...allExercises, ...allGymExercises];
+  return [...allExercises, ...allGymExercises, ...allRehabExercises];
 }
 
 export async function getExerciseById(id: string): Promise<Exercise | undefined> {
-  return allExercises.find((ex) => ex.id === id) || 
-         allGymExercises.find((ex) => ex.id === id);
+  return (
+    allExercises.find((ex) => ex.id === id) ||
+    allGymExercises.find((ex) => ex.id === id) ||
+    allRehabExercises.find((ex) => ex.id === id)
+  );
 }
 
 // ============================================
@@ -414,6 +429,7 @@ export function getDayRotation(date?: string): 'A' | 'B' | 'C' {
 
 const ACTIVE_PROGRAM_KEY = "activeProgram";
 const GYM_PROGRAM_START_DATE_KEY = "gymProgramStartDate";
+const REHAB_PROGRAM_START_DATE_KEY = "rehabProgramStartDate";
 
 export async function getActiveProgram(): Promise<ProgramType> {
   const value = await getSetting(ACTIVE_PROGRAM_KEY);
@@ -434,6 +450,19 @@ export async function getGymProgramStartDate(): Promise<string> {
 
 export async function setGymProgramStartDate(startDate: string): Promise<void> {
   await saveSetting(GYM_PROGRAM_START_DATE_KEY, startDate);
+  await clearWorkoutCache();
+}
+
+export async function getRehabProgramStartDate(): Promise<string> {
+  const existing = await getSetting(REHAB_PROGRAM_START_DATE_KEY);
+  if (existing) return existing;
+  const today = toLocalDateString(new Date());
+  await saveSetting(REHAB_PROGRAM_START_DATE_KEY, today);
+  return today;
+}
+
+export async function setRehabProgramStartDate(startDate: string): Promise<void> {
+  await saveSetting(REHAB_PROGRAM_START_DATE_KEY, startDate);
   await clearWorkoutCache();
 }
 
@@ -487,6 +516,46 @@ export async function getGymWorkoutByDate(date: string): Promise<WorkoutDay | nu
     date,
     blocks,
     program: gymMeta,
+  };
+}
+
+function rehabPhaseForWeek(week: number): ProgramMeta["phase"] {
+  if (week >= 3) return "P3";
+  if (week === 2) return "P2";
+  return "P1";
+}
+
+export async function getRehabWorkoutByDate(date: string): Promise<WorkoutDay | null> {
+  const { isGymDay, day: dayRotation } = getGymDayForDate(date);
+  if (!isGymDay) {
+    return null;
+  }
+
+  const startDate = await getRehabProgramStartDate();
+  const [y1, m1, d1] = date.split("-").map(Number);
+  const [y2, m2, d2] = startDate.split("-").map(Number);
+  const targetDate = new Date(y1, m1 - 1, d1);
+  const start = new Date(y2, m2 - 1, d2);
+
+  const programWeek =
+    Math.floor((targetDate.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1;
+  const week = Math.max(1, programWeek);
+  const blocks = getRehabBlocksForProgramWeekAndDay(week, dayRotation);
+
+  const rehabMeta: ProgramMeta = {
+    planId: REHAB_PROGRAM_ID,
+    startDate,
+    week,
+    phase: rehabPhaseForWeek(week),
+    phaseWeek: week >= 3 ? week - 2 : week,
+    day: dayRotation,
+  };
+
+  return {
+    id: `rehab-workout-${date}`,
+    date,
+    blocks,
+    program: rehabMeta,
   };
 }
 
