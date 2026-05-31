@@ -37,9 +37,12 @@ export default function ExerciseCard({
   const [isAdmin, setIsAdmin] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
-  // Strength exercises: show sets/reps/weight logging like gym
-  const isGymExercise =
-    exercise.id.startsWith("gym-exercise") || exercise.id.startsWith("rehab-p");
+  const isStrengthTrackingExercise =
+    exercise.id.startsWith("gym-exercise") ||
+    exercise.id.startsWith("rehab-p") ||
+    (exercise.id.startsWith("adhd-") &&
+      !exercise.id.startsWith("adhd-rules") &&
+      !exercise.id.startsWith("adhd-minimum"));
   
   // Swipe gesture state
   const [swipeOffset, setSwipeOffset] = useState(0);
@@ -576,7 +579,7 @@ export default function ExerciseCard({
         </div>
 
         {/* Gym Exercise Tracking - Weight/Reps/Sets */}
-        {isGymExercise && (
+        {isStrengthTrackingExercise && (
           <div className="mb-4 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
             <h4 className="font-bold text-purple-900 dark:text-purple-200 mb-3 flex items-center gap-2">
               <span>📊</span> Log Your Lift
@@ -639,7 +642,7 @@ export default function ExerciseCard({
             id={`notes-${exercise.id}`}
             value={notes}
             onChange={(e) => handleNotesChange(e.target.value)}
-            placeholder={isGymExercise ? "How did the lift feel? Form notes?" : "How did this feel? Any modifications?"}
+            placeholder={isStrengthTrackingExercise ? "How did the lift feel? Form notes?" : "How did this feel? Any modifications?"}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             rows={2}
           />

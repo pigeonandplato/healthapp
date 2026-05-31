@@ -17,6 +17,12 @@ import {
   getRehabBlocksForProgramWeekAndDay,
   REHAB_PROGRAM_ID,
 } from "./rehabSeedData";
+import {
+  allAdhdExercises,
+  getAdhdBlocksForWeekAndKneeDay,
+  adhdPhaseForWeek,
+  ADHD_PROGRAM_ID,
+} from "./adhdSeedData";
 import { getProgramMetaForDate } from "./program";
 import { supabase } from "./supabase";
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
@@ -45,6 +51,13 @@ export const AVAILABLE_PROGRAMS: ProgramInfo[] = [
     name: "Rehab Strength",
     description: "3-week progressive rehab strength (Mon/Wed/Fri)",
     icon: "🩹",
+  },
+  {
+    id: ADHD_PROGRAM_ID,
+    type: "adhd",
+    name: "ADHD Knee + Back",
+    description: "3 daily WFH breaks · 12-week progressive plan",
+    icon: "🧠",
   },
 ];
 
@@ -390,14 +403,15 @@ export async function pushToTomorrow(exerciseIds: string[]): Promise<void> {
 // ============================================
 
 export async function getAllExercises(): Promise<Exercise[]> {
-  return [...allExercises, ...allGymExercises, ...allRehabExercises];
+  return [...allExercises, ...allGymExercises, ...allRehabExercises, ...allAdhdExercises];
 }
 
 export async function getExerciseById(id: string): Promise<Exercise | undefined> {
   return (
     allExercises.find((ex) => ex.id === id) ||
     allGymExercises.find((ex) => ex.id === id) ||
-    allRehabExercises.find((ex) => ex.id === id)
+    allRehabExercises.find((ex) => ex.id === id) ||
+    allAdhdExercises.find((ex) => ex.id === id)
   );
 }
 
@@ -430,6 +444,7 @@ export function getDayRotation(date?: string): 'A' | 'B' | 'C' {
 const ACTIVE_PROGRAM_KEY = "activeProgram";
 const GYM_PROGRAM_START_DATE_KEY = "gymProgramStartDate";
 const REHAB_PROGRAM_START_DATE_KEY = "rehabProgramStartDate";
+const ADHD_PROGRAM_START_DATE_KEY = "adhdProgramStartDate";
 
 export async function getActiveProgram(): Promise<ProgramType> {
   const value = await getSetting(ACTIVE_PROGRAM_KEY);
@@ -463,6 +478,19 @@ export async function getRehabProgramStartDate(): Promise<string> {
 
 export async function setRehabProgramStartDate(startDate: string): Promise<void> {
   await saveSetting(REHAB_PROGRAM_START_DATE_KEY, startDate);
+  await clearWorkoutCache();
+}
+
+export async function getAdhdProgramStartDate(): Promise<string> {
+  const existing = await getSetting(ADHD_PROGRAM_START_DATE_KEY);
+  if (existing) return existing;
+  const today = toLocalDateString(new Date());
+  await saveSetting(ADHD_PROGRAM_START_DATE_KEY, today);
+  return today;
+}
+
+export async function setAdhdProgramStartDate(startDate: string): Promise<void> {
+  await saveSetting(ADHD_PROGRAM_START_DATE_KEY, startDate);
   await clearWorkoutCache();
 }
 
@@ -556,6 +584,37 @@ export async function getRehabWorkoutByDate(date: string): Promise<WorkoutDay | 
     date,
     blocks,
     program: rehabMeta,
+  };
+}
+
+export async function getAdhdWorkoutByDate(date: string): Promise<WorkoutDay> {
+  const { isGymDay: isKneeDay, day: dayRotation } = getGymDayForDate(date);
+  const startDate = await getAdhdProgramStartDate();
+  const [y1, m1, d1] = date.split("-").map(Number);
+  const [y2, m2, d2] = startDate.split("-").map(Number);
+  const targetDate = new Date(y1, m1 - 1, d1);
+  const start = new Date(y2, m2 - 1, d2);
+
+  const programWeek =
+    Math.floor((targetDate.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1;
+  const week = Math.max(1, programWeek);
+  const phase = adhdPhaseForWeek(week);
+  const blocks = getAdhdBlocksForWeekAndKneeDay(week, isKneeDay);
+
+  const adhdMeta: ProgramMeta = {
+    planId: ADHD_PROGRAM_ID,
+    startDate,
+    week,
+    phase,
+    phaseWeek: phase === "P1" ? week : phase === "P2" ? week - 4 : week - 8,
+    day: dayRotation,
+  };
+
+  return {
+    id: `adhd-workout-${date}`,
+    date,
+    blocks,
+    program: adhdMeta,
   };
 }
 

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getProgramMetaForDate, PROGRAM_PHASES, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta, ProgramType } from "@/lib/types";
-import { getActiveProgram, setActiveProgram, AVAILABLE_PROGRAMS, setRehabProgramStartDate, getTodayDateString } from "@/lib/db";
+import { getActiveProgram, setActiveProgram, AVAILABLE_PROGRAMS, setRehabProgramStartDate, setAdhdProgramStartDate, getTodayDateString } from "@/lib/db";
 
 export default function ProgramPage() {
   const [program, setProgram] = useState<ProgramMeta | null>(null);
@@ -291,6 +291,42 @@ export default function ProgramPage() {
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
                 Use this if you are beginning the program or want to reset the week counter. Workout history is kept.
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* ADHD knee + back program */}
+        {activeProgram === "adhd" && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">🧠 ADHD Knee + Back Plan</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Three <strong>10–15 minute</strong> work-from-home breaks. Phase 1 weeks 1–4, Phase 2 weeks 5–8,
+                Phase 3 week 9+. Stay on each phase ~4 weeks before changing much.
+              </p>
+              <ul className="text-sm text-gray-700 dark:text-gray-300 space-y-2 list-disc pl-5 mb-4">
+                <li><strong>Break 1</strong> — Back Armor (McGill curl-up, side plank, bird dog) · daily</li>
+                <li><strong>Break 2</strong> — Knee strength · Mon / Wed / Fri</li>
+                <li><strong>Break 3</strong> — Walk + mobility/control · daily</li>
+                <li>Pain 0–3/10 okay · 4–5 reduce · 6+ or worse next day = stop/regress</li>
+              </ul>
+              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-4 mb-4 border border-purple-200 dark:border-purple-800">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-200 mb-2">Diet & supplements (summary)</h3>
+                <p className="text-sm text-purple-800 dark:text-purple-300">
+                  Protein ~105–140 g/day at ~195 lb · protein-first meals · consider whey, creatine 3–5 g/day,
+                  omega-3, curcumin, vitamin D if appropriate — check with your clinician.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  await setAdhdProgramStartDate(getTodayDateString());
+                  window.location.reload();
+                }}
+                className="w-full sm:w-auto bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 px-5 rounded-xl transition"
+              >
+                Set program start to today (week 1)
+              </button>
             </div>
           </div>
         )}

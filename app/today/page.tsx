@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode, ProgramType } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate, getGymDayForDate, getRehabWorkoutByDate } from "@/lib/db";
+import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate, getGymDayForDate, getRehabWorkoutByDate, getAdhdWorkoutByDate } from "@/lib/db";
 import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
 import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
 import type { ProgramMeta } from "@/lib/types";
@@ -75,6 +75,9 @@ export default function TodayPage() {
             currentProgram === "gym"
               ? await getGymWorkoutByDate(selectedDate)
               : await getRehabWorkoutByDate(selectedDate);
+        } else if (currentProgram === "adhd") {
+          setIsRestDay(false);
+          selectedWorkout = await getAdhdWorkoutByDate(selectedDate);
         } else {
           setIsRestDay(false);
           selectedWorkout = await getWorkoutByDate(selectedDate);
@@ -130,7 +133,9 @@ export default function TodayPage() {
             ? await getGymWorkoutByDate(tomorrowDate)
             : currentProgram === "rehab"
               ? await getRehabWorkoutByDate(tomorrowDate)
-              : await getWorkoutByDate(tomorrowDate);
+              : currentProgram === "adhd"
+                ? await getAdhdWorkoutByDate(tomorrowDate)
+                : await getWorkoutByDate(tomorrowDate);
         setTomorrowWorkout(tomorrowW || null);
         
         // Load YouTube video
@@ -420,7 +425,9 @@ export default function TodayPage() {
                 ? "🏃 5K Running"
                 : activeProgram === "gym"
                   ? "🏋️ Gym PPL"
-                  : "🩹 Rehab Strength"}
+                  : activeProgram === "rehab"
+                    ? "🩹 Rehab Strength"
+                    : "🧠 ADHD Knee + Back"}
               <span className="text-xs opacity-70">Change →</span>
             </a>
           </div>
@@ -440,7 +447,7 @@ export default function TodayPage() {
                 <p className="text-sm text-[#8E8E93]">
                   {activeProgram === "running"
                     ? `Week ${programMeta.week} · ${programMeta.phase} · `
-                    : activeProgram === "rehab"
+                    : activeProgram === "rehab" || activeProgram === "adhd"
                       ? `Week ${programMeta.week} · ${programMeta.phase} · `
                       : ""}
                   Day {programMeta.day}
@@ -451,6 +458,11 @@ export default function TodayPage() {
                   )}
                   {activeProgram === "rehab" && (
                     <span className="ml-2">🩹 Session {programMeta.day}</span>
+                  )}
+                  {activeProgram === "adhd" && (
+                    <span className="ml-2">
+                      🧠 {getGymDayForDate(selectedDate).isGymDay ? "3 breaks (incl. knee)" : "Break 1 + 3 (knee block rest day)"}
+                    </span>
                   )}
                 </p>
               )}
@@ -570,7 +582,9 @@ export default function TodayPage() {
                 ? "Gym Training Tips"
                 : activeProgram === "rehab"
                   ? "Rehab strength tips"
-                  : "Program Rules"}
+                  : activeProgram === "adhd"
+                    ? "ADHD-friendly plan tips"
+                    : "Program Rules"}
             </h2>
             
             {activeProgram === "gym" ? (
@@ -619,6 +633,27 @@ export default function TodayPage() {
                   <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
                     <li>Stay under symptom threshold (see running program traffic-light rules if unsure).</li>
                     <li>Quality and calm breathing beat chasing load while tissues adapt.</li>
+                  </ul>
+                </div>
+              </div>
+            ) : activeProgram === "adhd" ? (
+              <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#007AFF]">📅 Daily breaks</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] ml-2">
+                    <li><strong>Break 1</strong> (morning): Back Armor — daily</li>
+                    <li><strong>Break 2</strong> (midday): Knee Strength — Mon / Wed / Fri</li>
+                    <li><strong>Break 3</strong> (afternoon): Walk + control — daily</li>
+                    <li>Busy day? Do Break 1 only — still a win.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2 text-[#34C759]">🧠 ADHD system</h3>
+                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] ml-2">
+                    <li>Same times daily (after coffee / lunch / before shutdown).</li>
+                    <li>Open the exercise video before the break starts.</li>
+                    <li>Use the minimum-day checklist at the bottom when overwhelmed.</li>
+                    <li>Never miss twice — after a miss, only the minimum version is required.</li>
                   </ul>
                 </div>
               </div>
