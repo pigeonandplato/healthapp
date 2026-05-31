@@ -9,6 +9,8 @@ import {
   ProgramType,
   ProgramInfo,
   DayRotation,
+  CustomProgramRow,
+  Phase,
 } from "./types";
 import { allExercises } from "./seedData";
 import { allGymExercises, getGymBlocksForDay, GYM_PROGRAM_ID } from "./gymSeedData";
@@ -325,7 +327,19 @@ export async function pushToTomorrow(exerciseIds: string[]): Promise<void> {
 // ============================================
 
 export async function getAllExercises(): Promise<Exercise[]> {
-  return [...allExercises, ...allGymExercises, ...allAdhdExercises];
+  const base = [...allExercises, ...allGymExercises, ...allAdhdExercises];
+  const customRows = await getCustomProgram();
+  if (customRows) {
+    const seen = new Set<string>();
+    for (const r of customRows) {
+      const ex = customRowToExercise(r, Number(r.week) || 1);
+      if (!seen.has(ex.id)) {
+        seen.add(ex.id);
+        base.push(ex);
+      }
+    }
+  }
+  return base;
 }
 
 export async function getExerciseById(id: string): Promise<Exercise | undefined> {
@@ -365,10 +379,18 @@ export function getDayRotation(date?: string): 'A' | 'B' | 'C' {
 const ACTIVE_PROGRAM_KEY = "activeProgram";
 const GYM_PROGRAM_START_DATE_KEY = "gymProgramStartDate";
 const ADHD_PROGRAM_START_DATE_KEY = "adhdProgramStartDate";
+const CUSTOM_PROGRAM_KEY = "custom_program";
+const CUSTOM_PROGRAM_NAME_KEY = "custom_program_name";
+const CUSTOM_PROGRAM_START_DATE_KEY = "customProgramStartDate";
 
 export async function getActiveProgram(): Promise<ProgramType> {
   const value = await getSetting(ACTIVE_PROGRAM_KEY);
   if (value === "gym" || value === "adhd") return value;
+  if (value === "custom") {
+    // Only honor a custom selection if a custom program actually exists.
+    const hasCustom = await hasCustomProgram();
+    return hasCustom ? "custom" : "adhd";
+  }
   if (value === "running" || value === "rehab") {
     await saveSetting(ACTIVE_PROGRAM_KEY, "adhd");
     return "adhd";
@@ -414,9 +436,7 @@ export function getGymDayForDate(dateIso: string): { isGymDay: boolean; day: Day
   const dayNum = parseInt(parts[2], 10);
   const date = new Date(year, month - 1, dayNum);
   const dayOfWeek = date.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
-  
-  console.log('[GymDay Debug]', { dateIso, year, month, dayNum, dayOfWeek, dateStr: date.toString() });
-  
+
   // Gym days: Monday=A, Wednesday=B, Friday=C
   if (dayOfWeek === 1) return { isGymDay: true, day: 'A', dayName: 'Monday' };
   if (dayOfWeek === 3) return { isGymDay: true, day: 'B', dayName: 'Wednesday' };
@@ -488,6 +508,155 @@ export async function getAdhdWorkoutByDate(date: string): Promise<WorkoutDay> {
     blocks,
     program: adhdMeta,
   };
+}
+
+// ============================================
+// CUSTOM PROGRAM - User-imported (CSV / Sheets)
+// ============================================
+export const CUSTOM_PROGRAM_ID = "custom-program-v1";
+
+export async function getCustomProgram(): Promise<CustomProgramRow[] | null> {
+  const rows = await getSetting(CUSTOM_PROGRAM_KEY);
+  if (!Array.isArray(rows) || rows.length === 0) return null;
+  return rows as CustomProgramRow[];
+}
+
+export async function hasCustomProgram(): Promise<boolean> {
+  const rows = await getCustomProgram();
+  return !!rows && rows.length > 0;
+}
+
+export async function getCustomProgramName(): Promise<string> {
+  const name = await getSetting(CUSTOM_PROGRAM_NAME_KEY);
+  return name || "My Custom Program";
+}
+
+export async function saveCustomProgram(rows: CustomProgramRow[], name?: string): Promise<void> {
+  await saveSetting(CUSTOM_PROGRAM_KEY, rows);
+  if (name) await saveSetting(CUSTOM_PROGRAM_NAME_KEY, name);
+  // Anchor the program to today so week 1 starts now.
+  await saveSetting(CUSTOM_PROGRAM_START_DATE_KEY, toLocalDateString(new Date()));
+  await clearWorkoutCache();
+}
+
+export async function getCustomProgramStartDate(): Promise<string> {
+  const existing = await getSetting(CUSTOM_PROGRAM_START_DATE_KEY);
+  if (existing) return existing;
+  const today = toLocalDateString(new Date());
+  await saveSetting(CUSTOM_PROGRAM_START_DATE_KEY, today);
+  return today;
+}
+
+export async function setCustomProgramStartDate(startDate: string): Promise<void> {
+  await saveSetting(CUSTOM_PROGRAM_START_DATE_KEY, startDate);
+  await clearWorkoutCache();
+}
+
+function customRowToExercise(row: CustomProgramRow, week: number): Exercise {
+  const slug = (row.exerciseName || "move").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 24);
+  return {
+    id: row.exerciseId || `custom-w${week}-${row.day}-${slug}`,
+    name: row.exerciseName || "Exercise",
+    description: row.description || "",
+    phase: Phase.PHASE_0,
+    media: { type: "svg", alt: row.exerciseName || "Exercise" },
+    prescription: {
+      sets: row.sets,
+      reps: row.reps,
+      holdSeconds: row.holdSeconds,
+      minutes: row.minutes,
+      description: row.description || undefined,
+    },
+    instructions: row.description ? [row.description] : [],
+    commonMistakes: [],
+    stopConditions: [],
+    category: row.blockName || "Custom",
+  };
+}
+
+function buildCustomBlocks(rows: CustomProgramRow[], week: number, day: DayRotation): ExerciseBlock[] {
+  const dayRows = rows.filter((r) => String(r.day).toUpperCase() === day && Number(r.week) === week);
+  if (dayRows.length === 0) return [];
+
+  // Preserve block order as first seen in the CSV.
+  const order: string[] = [];
+  const groups = new Map<string, CustomProgramRow[]>();
+  for (const r of dayRows) {
+    const name = r.blockName || "Workout";
+    if (!groups.has(name)) {
+      groups.set(name, []);
+      order.push(name);
+    }
+    groups.get(name)!.push(r);
+  }
+
+  return order.map((name, i) => {
+    const blockRows = groups.get(name)!;
+    const exercises = blockRows.map((r) => customRowToExercise(r, week));
+    const estMinutes = exercises.reduce((sum, ex) => {
+      if (ex.prescription.minutes) return sum + ex.prescription.minutes;
+      return sum + 2; // rough estimate per set-based move
+    }, 0);
+    return {
+      id: `custom-w${week}-${day}-block${i}-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 16)}`,
+      name,
+      estimatedMinutes: Math.max(5, estMinutes),
+      exercises,
+    };
+  });
+}
+
+export async function getCustomWorkoutByDate(date: string): Promise<WorkoutDay | null> {
+  const rows = await getCustomProgram();
+  if (!rows) return null;
+
+  const { isGymDay, day } = getGymDayForDate(date);
+  if (!isGymDay) return null; // Custom programs run Mon (A) / Wed (B) / Fri (C)
+
+  const startDate = await getCustomProgramStartDate();
+  const [y1, m1, d1] = date.split("-").map(Number);
+  const [y2, m2, d2] = startDate.split("-").map(Number);
+  const targetDate = new Date(y1, m1 - 1, d1);
+  const start = new Date(y2, m2 - 1, d2);
+
+  const maxWeek = Math.max(1, ...rows.map((r) => Number(r.week) || 1));
+  const rawWeek = Math.floor((targetDate.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1;
+  // Clamp into the program range; hold at the last week once finished.
+  const week = Math.min(maxWeek, Math.max(1, rawWeek));
+
+  const blocks = buildCustomBlocks(rows, week, day);
+  if (blocks.length === 0) return null;
+
+  const meta: ProgramMeta = {
+    planId: CUSTOM_PROGRAM_ID,
+    startDate,
+    week,
+    phase: "P1",
+    phaseWeek: week,
+    day,
+  };
+
+  return {
+    id: `custom-workout-${date}`,
+    date,
+    blocks,
+    program: meta,
+  };
+}
+
+export async function getAvailablePrograms(): Promise<ProgramInfo[]> {
+  const programs = [...AVAILABLE_PROGRAMS];
+  if (await hasCustomProgram()) {
+    const name = await getCustomProgramName();
+    programs.push({
+      id: CUSTOM_PROGRAM_ID,
+      type: "custom",
+      name,
+      description: "Your imported program · Mon / Wed / Fri",
+      icon: "🗂️",
+    });
+  }
+  return programs;
 }
 
 // ============================================

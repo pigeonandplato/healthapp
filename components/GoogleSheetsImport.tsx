@@ -1,22 +1,14 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { saveSetting } from "@/lib/db";
+import { saveCustomProgram, setActiveProgram } from "@/lib/db";
+import type { CustomProgramRow as ProgramRow } from "@/lib/types";
 
-interface ProgramRow {
-  week: number;
-  day: string; // A, B, or C
-  blockName: string;
-  exerciseId: string;
-  exerciseName: string;
-  sets?: number;
-  reps?: number;
-  holdSeconds?: number;
-  minutes?: number;
-  description?: string;
+interface GoogleSheetsImportProps {
+  onImported?: () => void;
 }
 
-export default function GoogleSheetsImport() {
+export default function GoogleSheetsImport({ onImported }: GoogleSheetsImportProps) {
   const [file, setFile] = useState<File | null>(null);
   const [parsing, setParsing] = useState(false);
   const [error, setError] = useState("");
@@ -123,18 +115,23 @@ export default function GoogleSheetsImport() {
     try {
       const text = await file.text();
       const rows = parseCSV(text);
-      
-      // Save custom program to settings
-      await saveSetting("custom_program", rows);
-      
+
+      const programName = file.name.replace(/\.(csv|xlsx|xls)$/i, "").replace(/[-_]+/g, " ").trim() || "My Custom Program";
+
+      // Save the parsed program AND make it the active program so the user
+      // can immediately train it from the Today screen.
+      await saveCustomProgram(rows, programName);
+      await setActiveProgram("custom");
+
       setSuccess(true);
       setFile(null);
       setPreview([]);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-      
-      setTimeout(() => setSuccess(false), 3000);
+      onImported?.();
+
+      setTimeout(() => setSuccess(false), 4000);
     } catch (err: any) {
       setError(err.message || "Failed to import program");
     } finally {
@@ -178,7 +175,7 @@ export default function GoogleSheetsImport() {
 
       {success && (
         <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-4 py-3 rounded-xl text-sm">
-          Program imported successfully! Your custom program is now active.
+          🎉 Imported and set as your active program! It runs Mon / Wed / Fri (days A / B / C). Head to the Today tab to start.
         </div>
       )}
 

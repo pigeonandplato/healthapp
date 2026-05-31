@@ -14,17 +14,24 @@ export default function AppShell({ children }: AppShellProps) {
   const pathname = usePathname();
   const isLoginPage = pathname === "/login";
 
-  // Don't show navigation on login page
-  if (isLoginPage) {
-    return <>{children}</>;
-  }
-
-  // Initialize cache DB on mount
+  // Initialize cache DB on mount (hook must run unconditionally before any early return)
   useEffect(() => {
     import("@/lib/db").then(({ initDB }) => {
       initDB().catch(console.error);
     });
   }, []);
+
+  // Schedule today's break reminders while the app is open.
+  useEffect(() => {
+    import("@/lib/reminders").then(({ loadReminders, scheduleTodayReminders }) => {
+      scheduleTodayReminders(loadReminders());
+    });
+  }, []);
+
+  // Don't show navigation on login page
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   return (
     <ProtectedRoute>

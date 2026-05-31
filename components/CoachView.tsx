@@ -9,40 +9,60 @@ import { WorkoutSkeleton } from "./SkeletonLoader";
 
 interface CoachViewProps {
   workout: WorkoutDay;
+  onProgressChange?: (completed: number, total: number) => void;
 }
 
-export default function CoachView({ workout }: CoachViewProps) {
+export default function CoachView({ workout, onProgressChange }: CoachViewProps) {
   const [completions, setCompletions] = useState<Record<string, ExerciseCompletion>>({});
   const [loading, setLoading] = useState(true);
 
+  const trackableIds = workout.blocks
+    .flatMap((b) => b.exercises)
+    .filter((ex) => ex.category !== "Guidance")
+    .map((ex) => ex.id);
+
   // Load all completions for this workout
   useEffect(() => {
+    let active = true;
     async function loadCompletions() {
       setLoading(true);
       const allCompletions = await getCompletionsByDate(workout.date);
+      if (!active) return;
       const completionMap: Record<string, ExerciseCompletion> = {};
-      
+
       allCompletions.forEach((completion) => {
         completionMap[completion.exerciseId] = completion;
       });
-      
+
       setCompletions(completionMap);
       setLoading(false);
+
+      const completed = trackableIds.filter((id) => completionMap[id]?.completed).length;
+      onProgressChange?.(completed, trackableIds.length);
     }
 
     loadCompletions();
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workout.date]);
 
   const handleCompletionChange = (exerciseId: string, completed: boolean) => {
-    setCompletions((prev) => ({
-      ...prev,
-      [exerciseId]: {
-        exerciseId,
-        date: workout.date,
-        completed,
-        completedAt: completed ? new Date().toISOString() : undefined,
-      },
-    }));
+    setCompletions((prev) => {
+      const next = {
+        ...prev,
+        [exerciseId]: {
+          exerciseId,
+          date: workout.date,
+          completed,
+          completedAt: completed ? new Date().toISOString() : undefined,
+        },
+      };
+      const done = trackableIds.filter((id) => next[id]?.completed).length;
+      onProgressChange?.(done, trackableIds.length);
+      return next;
+    });
   };
 
   const calculateProgress = (blockExerciseIds: string[]) => {

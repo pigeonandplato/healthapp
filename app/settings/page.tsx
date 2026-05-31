@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getYouTubeVideo, saveYouTubeVideo } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import GoogleSheetsImport from "@/components/GoogleSheetsImport";
+import ReminderSettings from "@/components/ReminderSettings";
 
 export default function SettingsPage() {
   const [youtubeUrl, setYoutubeUrl] = useState<string>("");
@@ -37,6 +38,15 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
       <div className="max-w-2xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-6">Settings</h1>
+
+        {/* Break Reminders Section */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">⏰ Break Reminders</h2>
+          <p className="text-sm text-[#8E8E93] mb-4">
+            Get nudged for each of your daily breaks. Out of sight is out of mind — these keep you on track.
+          </p>
+          <ReminderSettings />
+        </div>
 
         {/* YouTube Video Section */}
         <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">

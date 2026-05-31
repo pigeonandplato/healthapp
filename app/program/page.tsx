@@ -1,24 +1,34 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { ProgramType } from "@/lib/types";
+import type { ProgramType, ProgramInfo } from "@/lib/types";
 import {
   getActiveProgram,
   setActiveProgram,
-  AVAILABLE_PROGRAMS,
+  getAvailablePrograms,
   setAdhdProgramStartDate,
+  setCustomProgramStartDate,
+  getCustomProgramName,
   getTodayDateString,
 } from "@/lib/db";
 
 export default function ProgramPage() {
   const [loading, setLoading] = useState(true);
   const [activeProgram, setActiveProgramState] = useState<ProgramType>("adhd");
+  const [programs, setPrograms] = useState<ProgramInfo[]>([]);
+  const [customName, setCustomName] = useState("My Custom Program");
 
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const currentProgram = await getActiveProgram();
+      const [currentProgram, available, cName] = await Promise.all([
+        getActiveProgram(),
+        getAvailablePrograms(),
+        getCustomProgramName(),
+      ]);
       setActiveProgramState(currentProgram);
+      setPrograms(available);
+      setCustomName(cName);
       setLoading(false);
     }
     load();
@@ -50,7 +60,7 @@ export default function ProgramPage() {
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Choose Active Program</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {AVAILABLE_PROGRAMS.map((prog) => (
+            {programs.map((prog) => (
               <button
                 key={prog.id}
                 onClick={() => handleProgramSwitch(prog.type)}
@@ -179,6 +189,31 @@ export default function ProgramPage() {
                 <li>• <strong>Rest Between Sets:</strong> 60-90 seconds</li>
                 <li>• <strong>Form First:</strong> Control the weight, full range of motion</li>
               </ul>
+            </div>
+          </div>
+        )}
+
+        {activeProgram === "custom" && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">🗂️ {customName}</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
+                Your imported program. Workouts run on <strong>Monday (A)</strong>, <strong>Wednesday (B)</strong> and{" "}
+                <strong>Friday (C)</strong>, advancing one week at a time. Weeks loop at the final week so you always have something to do.
+              </p>
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-4 border border-blue-200 dark:border-blue-800 text-sm text-blue-800 dark:text-blue-300">
+                Want to edit it? Re-import an updated CSV from <strong>Settings → Import Custom Program</strong>. The new file replaces this one.
+              </div>
+              <button
+                type="button"
+                onClick={async () => {
+                  await setCustomProgramStartDate(getTodayDateString());
+                  window.location.reload();
+                }}
+                className="w-full sm:w-auto bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 px-5 rounded-xl transition"
+              >
+                Set program start to today (week 1)
+              </button>
             </div>
           </div>
         )}

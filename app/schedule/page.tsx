@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import type { ProgramType, WorkoutDay } from "@/lib/types";
-import { getActiveProgram, getGymWorkoutByDate, getAdhdWorkoutByDate } from "@/lib/db";
+import { getActiveProgram, getGymWorkoutByDate, getAdhdWorkoutByDate, getCustomWorkoutByDate } from "@/lib/db";
 
 type ScheduleDay = {
   date: string;
@@ -44,7 +44,9 @@ export default function SchedulePage() {
         const workout =
           program === "gym"
             ? await getGymWorkoutByDate(dateStr)
-            : await getAdhdWorkoutByDate(dateStr);
+            : program === "custom"
+              ? await getCustomWorkoutByDate(dateStr)
+              : await getAdhdWorkoutByDate(dateStr);
 
         items.push({
           date: dateStr,
@@ -80,7 +82,8 @@ export default function SchedulePage() {
     return weeks;
   }, [] as ScheduleDay[][]);
 
-  const programLabel = activeProgram === "gym" ? "🏋️ Gym PPL" : "🧠 ADHD Knee + Back";
+  const programLabel =
+    activeProgram === "gym" ? "🏋️ Gym PPL" : activeProgram === "custom" ? "🗂️ Custom Program" : "🧠 ADHD Knee + Back";
 
   return (
     <div className="bg-white dark:bg-black">
@@ -123,7 +126,7 @@ export default function SchedulePage() {
                     {firstDay.workout?.program?.phase && ` · ${firstDay.workout.program.phase}`}
                   </h3>
                   <p className="text-sm text-blue-100">
-                    {activeProgram === "gym" ? "Mon / Wed / Fri training days" : "Daily breaks · knee block Mon / Wed / Fri"}
+                    {activeProgram === "adhd" ? "Daily breaks · knee block Mon / Wed / Fri" : "Mon / Wed / Fri training days"}
                   </p>
                 </div>
 
@@ -154,7 +157,7 @@ export default function SchedulePage() {
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="text-3xl">{isRestDay ? "😴" : activeProgram === "gym" ? "💪" : "🧠"}</div>
+                              <div className="text-3xl">{isRestDay ? "😴" : activeProgram === "gym" ? "💪" : activeProgram === "custom" ? "🗂️" : "🧠"}</div>
                               <div>
                                 <div className="font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                                   {item.dayName}

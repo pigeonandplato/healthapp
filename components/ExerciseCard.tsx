@@ -37,11 +37,9 @@ export default function ExerciseCard({
   const [isAdmin, setIsAdmin] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   
-  const isStrengthTrackingExercise =
-    exercise.id.startsWith("gym-exercise") ||
-    (exercise.id.startsWith("adhd-") &&
-      !exercise.id.startsWith("adhd-rules") &&
-      !exercise.id.startsWith("adhd-minimum"));
+  // Only barbell/dumbbell gym lifts get weight/reps/sets logging.
+  // ADHD breaks are bodyweight holds / walks, so weight logging would just add friction.
+  const isStrengthTrackingExercise = exercise.id.startsWith("gym-exercise");
   
   // Swipe gesture state
   const [swipeOffset, setSwipeOffset] = useState(0);

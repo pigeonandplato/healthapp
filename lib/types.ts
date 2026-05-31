@@ -15,7 +15,21 @@ export type DayRotation = "A" | "B" | "C";
 export type ProgramPhase = "P1" | "P2" | "P3" | "P4" | "P5";
 
 // Program types available in the app
-export type ProgramType = "gym" | "adhd";
+export type ProgramType = "gym" | "adhd" | "custom";
+
+// A single row of a user-imported custom program (from CSV/Sheets).
+export type CustomProgramRow = {
+  week: number;
+  day: string; // A, B, or C
+  blockName: string;
+  exerciseId: string;
+  exerciseName: string;
+  sets?: number;
+  reps?: number;
+  holdSeconds?: number;
+  minutes?: number;
+  description?: string;
+};
 
 export type ProgramInfo = {
   id: string;
@@ -99,5 +113,5 @@ export type BlockTimerState = {
   lastUpdated: string; // ISO timestamp
 };
 
-export type ViewMode = "checklist" | "coach";
+export type ViewMode = "focus" | "checklist" | "coach";
 

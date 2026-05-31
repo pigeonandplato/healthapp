@@ -1,5 +1,5 @@
 // Streak tracking utility
-import { getCompletionsByDate } from "./db";
+import { getCompletionsByDateRange } from "./db";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -9,27 +9,36 @@ function toLocalDateString(date: Date): string {
 }
 
 export async function calculateStreak(): Promise<number> {
-  let streak = 0;
   const today = new Date();
-  
-  // Check backwards from today
-  for (let i = 0; i < 365; i++) {
+  const start = new Date(today);
+  start.setDate(start.getDate() - 365);
+
+  // Single query for the whole window instead of 365 sequential round-trips.
+  const completions = await getCompletionsByDateRange(
+    toLocalDateString(start),
+    toLocalDateString(today)
+  );
+
+  // Set of dates that have at least one completed exercise.
+  const completedDates = new Set(
+    completions.filter((c) => c.completed).map((c) => c.date)
+  );
+
+  let streak = 0;
+  for (let i = 0; i < 366; i++) {
     const checkDate = new Date(today);
     checkDate.setDate(checkDate.getDate() - i);
     const dateString = toLocalDateString(checkDate);
-    
-    const completions = await getCompletionsByDate(dateString);
-    const hasCompletions = completions.some((c) => c.completed);
-    
-    if (hasCompletions) {
+
+    if (completedDates.has(dateString)) {
       streak++;
     } else {
-      // If today hasn't been done yet, don't break the streak
+      // If today hasn't been done yet, don't break the streak.
       if (i === 0) continue;
       break;
     }
   }
-  
+
   return streak;
 }
 
