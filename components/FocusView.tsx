@@ -135,6 +135,14 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
   const totalDone = allExerciseIds.filter((id) => completions[id]).length;
   const allComplete = missions.length > 0 && completedMissions === missions.length;
 
+  // Break 2 (knee strength) is Mon / Wed / Fri only — on other days it's intentionally omitted.
+  const hasBreak2Today = missions.some(
+    (m) => m.block.id.includes("break2") || m.block.name.includes("Break 2")
+  );
+
+  const isBreak1Mission = (m: Mission) =>
+    m.block.id.includes("break1") || m.block.name.includes("Break 1");
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -158,7 +166,9 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
             <p className="text-white/90 text-sm mt-1">
               {allComplete
                 ? "Every break done. That's a real win."
-                : `${completedMissions} of ${missions.length} breaks done · ${totalDone} moves logged`}
+                : !hasBreak2Today
+                  ? `${completedMissions} of ${missions.length} breaks done · knee block rests today (Mon/Wed/Fri)`
+                  : `${completedMissions} of ${missions.length} breaks done · ${totalDone} moves logged`}
             </p>
           </div>
         </div>
@@ -174,10 +184,10 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
 
       {/* Break mission cards */}
       <div className="space-y-3">
-        {missions.map((m, idx) => {
+        {missions.flatMap((m, idx) => {
           const { done, total, complete } = missionProgress(m);
           const started = done > 0 && !complete;
-          return (
+          const cards = [
             <div
               key={m.block.id}
               className={`rounded-3xl border-2 p-5 shadow-card transition-all ${
@@ -212,7 +222,6 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
                 </div>
               </div>
 
-              {/* mini progress bar */}
               <div className="w-full bg-[#E5E5EA] dark:bg-[#38383A] rounded-full h-2 overflow-hidden mb-4">
                 <div
                   className={`h-full rounded-full transition-all duration-500 ${complete ? "bg-[#34C759]" : "bg-[#FF2D55]"}`}
@@ -241,8 +250,34 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
                   </button>
                 )}
               </div>
-            </div>
-          );
+            </div>,
+          ];
+
+          if (isBreak1Mission(m) && !hasBreak2Today) {
+            cards.push(
+              <div
+                key="break2-rest"
+                className="rounded-3xl border-2 border-dashed border-[#C7C7CC] dark:border-[#48484A] bg-[#F2F2F7]/80 dark:bg-[#1C1C1E]/60 p-5"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="text-2xl flex-shrink-0">🦵</div>
+                  <div>
+                    <h3 className="text-lg font-bold text-[#8E8E93] dark:text-[#8E8E93]">
+                      Break 2 — Knee Strength
+                    </h3>
+                    <p className="text-sm text-[#8E8E93] mt-1">
+                      Rest day for knee block. This break runs <strong className="text-[#1C1C1E] dark:text-white">Monday, Wednesday & Friday</strong> only — not today.
+                    </p>
+                    <p className="text-xs text-[#C7C7CC] dark:text-[#636366] mt-2">
+                      You still win the day with Break 1 + Break 3. ✓
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return cards;
         })}
       </div>
 

@@ -58,37 +58,41 @@ export default function TodayPage() {
   const defaultView: ViewMode = activeProgram === "adhd" ? "focus" : "checklist";
 
   useEffect(() => {
-    let active = true;
+    let cancelled = false;
+    const loadId = selectedDate;
+
     async function loadWorkout() {
       setLoading(true);
       try {
         const currentProgram = await getActiveProgram();
-        if (!active) return;
+        if (cancelled) return;
         setActiveProgramState(currentProgram);
 
         if (currentProgram === "custom") {
-          getCustomProgramName().then((n) => active && setCustomName(n));
+          getCustomProgramName().then((n) => !cancelled && setCustomName(n));
         }
 
-        // Resolve preferred view for this program.
         const allowed: ViewMode[] = currentProgram === "adhd" ? ["focus", "checklist", "coach"] : ["checklist", "coach"];
         const saved = (typeof window !== "undefined" ? localStorage.getItem(VIEW_PREF_KEY) : null) as ViewMode | null;
         setViewMode(saved && allowed.includes(saved) ? saved : currentProgram === "adhd" ? "focus" : "checklist");
 
         let selectedWorkout: WorkoutDay | null | undefined;
         if (currentProgram === "gym") {
-          const gymInfo = getGymDayForDate(selectedDate);
+          const gymInfo = getGymDayForDate(loadId);
+          if (cancelled) return;
           setIsRestDay(!gymInfo.isGymDay);
-          selectedWorkout = await getGymWorkoutByDate(selectedDate);
+          selectedWorkout = await getGymWorkoutByDate(loadId);
         } else if (currentProgram === "custom") {
-          const gymInfo = getGymDayForDate(selectedDate);
+          const gymInfo = getGymDayForDate(loadId);
+          if (cancelled) return;
           setIsRestDay(!gymInfo.isGymDay);
-          selectedWorkout = await getCustomWorkoutByDate(selectedDate);
+          selectedWorkout = await getCustomWorkoutByDate(loadId);
         } else {
+          if (cancelled) return;
           setIsRestDay(false);
-          selectedWorkout = await getAdhdWorkoutByDate(selectedDate);
+          selectedWorkout = await getAdhdWorkoutByDate(loadId);
         }
-        if (!active) return;
+        if (cancelled) return;
         setWorkout(selectedWorkout || null);
 
         if (selectedWorkout) {
@@ -98,8 +102,8 @@ export default function TodayPage() {
           const trackableSet = new Set(trackableIds);
           setTotalExercises(trackableIds.length);
 
-          const completions = await getCompletionsByDate(selectedWorkout.date);
-          if (!active) return;
+          const completions = await getCompletionsByDate(loadId);
+          if (cancelled) return;
           const completed = completions.filter((c) => c.completed && trackableSet.has(c.exerciseId)).length;
           setCompletedCount(completed);
         } else {
@@ -108,24 +112,24 @@ export default function TodayPage() {
         }
 
         const currentStreak = await calculateStreak();
-        if (!active) return;
+        if (cancelled) return;
         setStreak(currentStreak);
 
         setProgramMeta(selectedWorkout?.program ?? null);
 
         const videoUrl = await getYouTubeVideo();
-        if (!active) return;
+        if (cancelled) return;
         setYoutubeVideo(videoUrl);
       } catch (error) {
         console.error("Failed to load workout:", error);
       } finally {
-        if (active) setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
 
     loadWorkout();
     return () => {
-      active = false;
+      cancelled = true;
     };
   }, [selectedDate]);
 
@@ -253,6 +257,10 @@ export default function TodayPage() {
   const selectedDateObj = parseLocalDate(selectedDate);
   const todayDate = selectedDateObj.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
   const isToday = selectedDate === toLocalDateString(new Date());
+  const todayMidnight = new Date();
+  todayMidnight.setHours(0, 0, 0, 0);
+  const isPastDay = selectedDateObj < todayMidnight;
+  const isFutureDay = selectedDateObj > todayMidnight;
 
   const totalMinutes = workout.blocks
     .filter((b) => b.exercises.some((ex) => ex.category !== "Guidance"))
@@ -286,7 +294,7 @@ export default function TodayPage() {
                 <p className="text-base text-[#8E8E93] font-medium">{todayDate}</p>
                 {!isToday && (
                   <span className="text-xs bg-[#FF9500] text-white px-2 py-0.5 rounded-full font-medium">
-                    {selectedDateObj < new Date() ? "Past" : "Future"}
+                    {isPastDay ? "Past" : isFutureDay ? "Future" : ""}
                   </span>
                 )}
               </div>
@@ -301,7 +309,10 @@ export default function TodayPage() {
                   )}
                   {activeProgram === "adhd" && (
                     <span>
-                      🧠 {getGymDayForDate(selectedDate).isGymDay ? "3 breaks (incl. knee)" : "2 breaks today"}
+                      🧠{" "}
+                      {getGymDayForDate(selectedDate).isGymDay
+                        ? "3 breaks today (incl. knee)"
+                        : "Break 1 + 3 today · knee block Mon/Wed/Fri"}
                     </span>
                   )}
                   {activeProgram === "custom" && <span>Day {programMeta.day}</span>}
@@ -338,14 +349,14 @@ export default function TodayPage() {
           ))}
         </div>
 
-        {/* Active view */}
+        {/* Active view — key forces remount when the date changes */}
         <div className="animate-fade-in">
           {viewMode === "focus" ? (
-            <FocusView workout={workout} onProgressChange={handleProgressChange} />
+            <FocusView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
           ) : viewMode === "checklist" ? (
-            <ChecklistView workout={workout} onProgressChange={handleProgressChange} />
+            <ChecklistView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
           ) : (
-            <CoachView workout={workout} onProgressChange={handleProgressChange} />
+            <CoachView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
           )}
         </div>
 

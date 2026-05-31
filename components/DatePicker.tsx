@@ -95,6 +95,7 @@ export default function DatePicker({ selectedDate, onDateChange, minDate, maxDat
   };
 
   const handleDateSelect = (date: string) => {
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
     setTempDate(date);
     onDateChange(date);
     setIsOpen(false);
@@ -105,6 +106,16 @@ export default function DatePicker({ selectedDate, onDateChange, minDate, maxDat
     date.setDate(date.getDate() + daysOffset);
     const dateStr = toLocalDateString(date);
     handleDateSelect(dateStr);
+  };
+
+  const handleNativeDateChange = (value: string) => {
+    setTempDate(value);
+    // Apply immediately — waiting for a separate "Select" tap left many users
+    // on the previous day's workout (especially on mobile native date pickers).
+    if (value && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      onDateChange(value);
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -194,7 +205,7 @@ export default function DatePicker({ selectedDate, onDateChange, minDate, maxDat
               <input
                 type="date"
                 value={tempDate}
-                onChange={(e) => setTempDate(e.target.value)}
+                onChange={(e) => handleNativeDateChange(e.target.value)}
                 min={defaultMinDate}
                 max={defaultMaxDate}
                 className="w-full px-4 py-3 md:py-2 rounded-xl border border-[#E5E5EA] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:border-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55]/20 outline-none text-base md:text-sm touch-target"
