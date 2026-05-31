@@ -6,6 +6,8 @@ import { getCompletionsByDate } from "@/lib/db";
 import ExerciseCard from "./ExerciseCard";
 import BlockTimer from "./BlockTimer";
 import { WorkoutSkeleton } from "./SkeletonLoader";
+import Break2RestCard, { workoutHasBreak2 } from "./Break2RestCard";
+import { formatLongDate, toLocalDateString } from "@/lib/dates";
 
 interface CoachViewProps {
   workout: WorkoutDay;
@@ -82,25 +84,34 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
     return <WorkoutSkeleton />;
   }
 
+  const hasBreak2 = workoutHasBreak2(workout.blocks);
+  const isBreak1Block = (block: { id: string; name: string }) =>
+    block.id.includes("break1") || block.name.includes("Break 1");
+  const isToday = workout.date === toLocalDateString(new Date());
+  const headerTitle = isToday ? "Today's Workout" : formatLongDate(workout.date);
+
   return (
     <div className="space-y-8 pb-8">
       {/* Workout Header */}
       <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg p-6 shadow-lg">
-        <h2 className="text-2xl font-bold mb-2">Today's Workout</h2>
+        <h2 className="text-2xl font-bold mb-2">{headerTitle}</h2>
         <p className="text-blue-100">
-          {workout.blocks.length} blocks • ~
+          {workout.blocks.filter((b) => b.exercises.some((e) => e.category !== "Guidance")).length} breaks • ~
           {workout.blocks.reduce((sum, b) => sum + b.estimatedMinutes, 0)} minutes total
+          {!hasBreak2 && workout.blocks.some((b) => b.name.includes("Break")) && (
+            <span className="block text-sm mt-1 text-blue-200">Break 2 (knee) rests today — Mon / Wed / Fri only</span>
+          )}
         </p>
       </div>
 
       {/* Blocks */}
-      {workout.blocks.map((block) => {
+      {workout.blocks.flatMap((block) => {
         const trackable = block.exercises.filter((e) => e.category !== "Guidance");
         if (trackable.length === 0) return null;
         const exerciseIds = trackable.map((e) => e.id);
         const progress = calculateProgress(exerciseIds);
 
-        return (
+        return [
           <div
             key={block.id}
             className="bg-gray-50 dark:bg-gray-900 rounded-lg p-5 space-y-4 w-full"
@@ -167,8 +178,9 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
                 />
               ))}
             </div>
-          </div>
-        );
+          </div>,
+          ...(isBreak1Block(block) && !hasBreak2 ? [<Break2RestCard key="break2-rest" />] : []),
+        ];
       })}
 
       {/* Completion Summary */}

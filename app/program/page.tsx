@@ -6,11 +6,15 @@ import {
   getActiveProgram,
   setActiveProgram,
   getAvailablePrograms,
+  getAdhdProgramStartDate,
   setAdhdProgramStartDate,
+  getGymProgramStartDate,
+  setGymProgramStartDate,
+  getCustomProgramStartDate,
   setCustomProgramStartDate,
   getCustomProgramName,
-  getTodayDateString,
 } from "@/lib/db";
+import ProgramStartDateControl from "@/components/ProgramStartDateControl";
 
 export default function ProgramPage() {
   const [loading, setLoading] = useState(true);
@@ -111,16 +115,12 @@ export default function ProgramPage() {
                   omega-3, curcumin, vitamin D if appropriate — check with your clinician.
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={async () => {
-                  await setAdhdProgramStartDate(getTodayDateString());
-                  window.location.reload();
-                }}
-                className="w-full sm:w-auto bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 px-5 rounded-xl transition"
-              >
-                Set program start to today (week 1)
-              </button>
+              <ProgramStartDateControl
+                title="When did you start this plan?"
+                description="Pick the date you began (or plan to begin). Week numbers and phases count forward from here."
+                getStartDate={getAdhdProgramStartDate}
+                setStartDate={setAdhdProgramStartDate}
+              />
             </div>
           </div>
         )}
@@ -189,6 +189,11 @@ export default function ProgramPage() {
                 <li>• <strong>Rest Between Sets:</strong> 60-90 seconds</li>
                 <li>• <strong>Form First:</strong> Control the weight, full range of motion</li>
               </ul>
+              <ProgramStartDateControl
+                title="When did you start gym training?"
+                getStartDate={getGymProgramStartDate}
+                setStartDate={setGymProgramStartDate}
+              />
             </div>
           </div>
         )}
@@ -204,16 +209,11 @@ export default function ProgramPage() {
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-4 border border-blue-200 dark:border-blue-800 text-sm text-blue-800 dark:text-blue-300">
                 Want to edit it? Re-import an updated CSV from <strong>Settings → Import Custom Program</strong>. The new file replaces this one.
               </div>
-              <button
-                type="button"
-                onClick={async () => {
-                  await setCustomProgramStartDate(getTodayDateString());
-                  window.location.reload();
-                }}
-                className="w-full sm:w-auto bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 px-5 rounded-xl transition"
-              >
-                Set program start to today (week 1)
-              </button>
+              <ProgramStartDateControl
+                title="When did you start this program?"
+                getStartDate={getCustomProgramStartDate}
+                setStartDate={setCustomProgramStartDate}
+              />
             </div>
           </div>
         )}

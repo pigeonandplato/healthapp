@@ -319,7 +319,11 @@ export default function TodayPage() {
                 </p>
               )}
             </div>
-            <DatePicker selectedDate={selectedDate} onDateChange={setSelectedDate} />
+            <DatePicker
+              selectedDate={selectedDate}
+              onDateChange={setSelectedDate}
+              showKneeDayHints={activeProgram === "adhd"}
+            />
           </div>
 
           <div className="grid grid-cols-3 gap-3">

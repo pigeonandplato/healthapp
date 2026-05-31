@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { WorkoutDay, Exercise, ExerciseBlock } from "@/lib/types";
 import { getCompletionsByDate, saveCompletion } from "@/lib/db";
 import { triggerCompletion } from "@/utils/haptics";
+import Break2RestCard, { workoutHasBreak2 } from "./Break2RestCard";
 
 interface FocusViewProps {
   workout: WorkoutDay;
@@ -136,9 +137,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
   const allComplete = missions.length > 0 && completedMissions === missions.length;
 
   // Break 2 (knee strength) is Mon / Wed / Fri only — on other days it's intentionally omitted.
-  const hasBreak2Today = missions.some(
-    (m) => m.block.id.includes("break2") || m.block.name.includes("Break 2")
-  );
+  const hasBreak2Today = workoutHasBreak2(missions.map((m) => m.block));
 
   const isBreak1Mission = (m: Mission) =>
     m.block.id.includes("break1") || m.block.name.includes("Break 1");
@@ -254,27 +253,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
           ];
 
           if (isBreak1Mission(m) && !hasBreak2Today) {
-            cards.push(
-              <div
-                key="break2-rest"
-                className="rounded-3xl border-2 border-dashed border-[#C7C7CC] dark:border-[#48484A] bg-[#F2F2F7]/80 dark:bg-[#1C1C1E]/60 p-5"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="text-2xl flex-shrink-0">🦵</div>
-                  <div>
-                    <h3 className="text-lg font-bold text-[#8E8E93] dark:text-[#8E8E93]">
-                      Break 2 — Knee Strength
-                    </h3>
-                    <p className="text-sm text-[#8E8E93] mt-1">
-                      Rest day for knee block. This break runs <strong className="text-[#1C1C1E] dark:text-white">Monday, Wednesday & Friday</strong> only — not today.
-                    </p>
-                    <p className="text-xs text-[#C7C7CC] dark:text-[#636366] mt-2">
-                      You still win the day with Break 1 + Break 3. ✓
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
+            cards.push(<Break2RestCard key="break2-rest" />);
           }
 
           return cards;
