@@ -10,7 +10,7 @@ interface ProgramSelectorProps {
 }
 
 export default function ProgramSelector({ onProgramChange, compact = false }: ProgramSelectorProps) {
-  const [activeProgram, setActiveProgramState] = useState<ProgramType>("running");
+  const [activeProgram, setActiveProgramState] = useState<ProgramType>("adhd");
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       {AVAILABLE_PROGRAMS.map((program) => (
         <button
           key={program.id}

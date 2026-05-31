@@ -4,13 +4,13 @@ import AppShell from "@/components/AppShell";
 import AuthWrapper from "@/components/AuthWrapper";
 
 export const metadata: Metadata = {
-  title: "5K Trainer",
-  description: "Your personal 24-week journey to running 5K injury-free",
+  title: "Health Tracker",
+  description: "Your personal wellness companion for fitness and health",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "5K Trainer",
+    title: "Health Tracker",
   },
   formatDetection: {
     telephone: false,

@@ -39,7 +39,6 @@ export default function ExerciseCard({
   
   const isStrengthTrackingExercise =
     exercise.id.startsWith("gym-exercise") ||
-    exercise.id.startsWith("rehab-p") ||
     (exercise.id.startsWith("adhd-") &&
       !exercise.id.startsWith("adhd-rules") &&
       !exercise.id.startsWith("adhd-minimum"));

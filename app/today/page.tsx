@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { WorkoutDay, ViewMode, ProgramType } from "@/lib/types";
-import { getTodayWorkout, getTodayDateString, getCompletionsByDate, getDayRotation, getWorkoutByDate, getYouTubeVideo, clearWorkoutCache, getActiveProgram, getGymWorkoutByDate, getGymDayForDate, getRehabWorkoutByDate, getAdhdWorkoutByDate } from "@/lib/db";
-import { calculateStreak, getMotivationalMessage } from "@/lib/streak";
-import { getProgramMetaForDate, setProgramStartDate } from "@/lib/program";
+import { getTodayDateString, getCompletionsByDate, getDayRotation, getYouTubeVideo, getActiveProgram, getGymWorkoutByDate, getGymDayForDate, getAdhdWorkoutByDate, saveYouTubeVideo } from "@/lib/db";
+import { calculateStreak } from "@/lib/streak";
 import type { ProgramMeta } from "@/lib/types";
 import ChecklistView from "@/components/ChecklistView";
 import CoachView from "@/components/CoachView";
@@ -15,7 +14,6 @@ import StickyProgressBar from "@/components/StickyProgressBar";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
-import { saveYouTubeVideo } from "@/lib/db";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -40,12 +38,10 @@ export default function TodayPage() {
   const [todayProgress, setTodayProgress] = useState(0);
   const [totalExercises, setTotalExercises] = useState(0);
   const [dayRotation, setDayRotation] = useState<'A' | 'B' | 'C'>('A');
-  const [tomorrowWorkout, setTomorrowWorkout] = useState<WorkoutDay | null>(null);
   const [programMeta, setProgramMeta] = useState<ProgramMeta | null>(null);
-  const [showMissedDayPrompt, setShowMissedDayPrompt] = useState(false);
   const [youtubeVideo, setYoutubeVideo] = useState<string | null>(null);
   const [isEditingVideo, setIsEditingVideo] = useState(false);
-  const [activeProgram, setActiveProgramState] = useState<ProgramType>("running");
+  const [activeProgram, setActiveProgramState] = useState<ProgramType>("adhd");
   const [isRestDay, setIsRestDay] = useState(false);
 
   // Load view preference from localStorage
@@ -67,23 +63,15 @@ export default function TodayPage() {
         
         // Load workout based on active program
         let selectedWorkout: WorkoutDay | null | undefined;
-        if (currentProgram === "gym" || currentProgram === "rehab") {
+        if (currentProgram === "gym") {
           const gymInfo = getGymDayForDate(selectedDate);
-          console.log('[LoadWorkout]', { selectedDate, gymInfo, currentProgram });
           setIsRestDay(!gymInfo.isGymDay);
-          selectedWorkout =
-            currentProgram === "gym"
-              ? await getGymWorkoutByDate(selectedDate)
-              : await getRehabWorkoutByDate(selectedDate);
-        } else if (currentProgram === "adhd") {
-          setIsRestDay(false);
-          selectedWorkout = await getAdhdWorkoutByDate(selectedDate);
+          selectedWorkout = await getGymWorkoutByDate(selectedDate);
         } else {
           setIsRestDay(false);
-          selectedWorkout = await getWorkoutByDate(selectedDate);
+          selectedWorkout = await getAdhdWorkoutByDate(selectedDate);
         }
         setWorkout(selectedWorkout || null);
-        console.log('[LoadWorkout Result]', { hasWorkout: !!selectedWorkout, isRestDay: !selectedWorkout });
         
         // Get selected date's day rotation
         const rotation = getDayRotation(selectedDate);
@@ -117,26 +105,9 @@ export default function TodayPage() {
         // Get program meta for selected date
         if (selectedWorkout?.program) {
           setProgramMeta(selectedWorkout.program);
-        } else if (currentProgram === "running") {
-          const meta = await getProgramMetaForDate(selectedDate);
-          setProgramMeta(meta);
         } else {
           setProgramMeta(null);
         }
-        
-        // Load tomorrow's workout for preview (always tomorrow from today)
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDate = toLocalDateString(tomorrow);
-        const tomorrowW =
-          currentProgram === "gym"
-            ? await getGymWorkoutByDate(tomorrowDate)
-            : currentProgram === "rehab"
-              ? await getRehabWorkoutByDate(tomorrowDate)
-              : currentProgram === "adhd"
-                ? await getAdhdWorkoutByDate(tomorrowDate)
-                : await getWorkoutByDate(tomorrowDate);
-        setTomorrowWorkout(tomorrowW || null);
         
         // Load YouTube video
         const videoUrl = await getYouTubeVideo();
@@ -159,42 +130,7 @@ export default function TodayPage() {
   const handleShowCoachView = () => {
     setViewMode("coach");
     localStorage.setItem("preferredView", "coach");
-    // Smooth scroll to top
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handlePushProgramOneDay = async () => {
-    if (!programMeta) return;
-    const startDate = parseLocalDate(programMeta.startDate);
-    startDate.setDate(startDate.getDate() - 1); // Push forward by moving start back
-    const newStartDate = toLocalDateString(startDate);
-    await setProgramStartDate(newStartDate);
-    
-    // Clear cache to force regeneration with new start date
-    await clearWorkoutCache();
-    
-    // Reload workout with new program start date
-    const updatedMeta = await getProgramMetaForDate(selectedDate);
-    setProgramMeta(updatedMeta);
-    const selectedWorkout = await getWorkoutByDate(selectedDate);
-    setWorkout(selectedWorkout || null);
-    
-    // Recalculate progress
-    if (selectedWorkout) {
-      const trackableIds = selectedWorkout.blocks.flatMap((b) =>
-        b.exercises
-          .filter((ex) => ex.category !== "Guidance")
-          .map((ex) => ex.id)
-      );
-      const trackableSet = new Set(trackableIds);
-      const totalEx = trackableIds.length;
-      setTotalExercises(totalEx);
-
-      const completions = await getCompletionsByDate(selectedWorkout.date);
-      const completed = completions.filter((c) => c.completed && trackableSet.has(c.exerciseId)).length;
-      const progress = totalEx > 0 ? Math.round((completed / totalEx) * 100) : 0;
-      setTodayProgress(progress);
-    }
   };
 
   if (loading) {
@@ -218,11 +154,9 @@ export default function TodayPage() {
 
   // Helper to find the next Mon/Wed/Fri training day from a given date
   const getNextScheduledDay = (
-    fromDate: Date,
-    program: ProgramType
+    fromDate: Date
   ): { date: Date; day: string; workout: string } => {
     const d = new Date(fromDate);
-    const rehab = (letter: string) => `🩹 Day ${letter}: Rehab strength`;
     const gym = (letter: string, label: string) => {
       if (letter === "A") return `💪 Day A: ${label}`;
       if (letter === "B") return `🔙 Day B: ${label}`;
@@ -232,32 +166,16 @@ export default function TodayPage() {
       d.setDate(d.getDate() + 1);
       const dow = d.getDay();
       if (dow === 1) {
-        return {
-          date: new Date(d),
-          day: "Monday",
-          workout: program === "rehab" ? rehab("A") : gym("A", "Chest"),
-        };
+        return { date: new Date(d), day: "Monday", workout: gym("A", "Chest") };
       }
       if (dow === 3) {
-        return {
-          date: new Date(d),
-          day: "Wednesday",
-          workout: program === "rehab" ? rehab("B") : gym("B", "Back + Biceps"),
-        };
+        return { date: new Date(d), day: "Wednesday", workout: gym("B", "Back + Biceps") };
       }
       if (dow === 5) {
-        return {
-          date: new Date(d),
-          day: "Friday",
-          workout: program === "rehab" ? rehab("C") : gym("C", "Shoulders + Legs"),
-        };
+        return { date: new Date(d), day: "Friday", workout: gym("C", "Shoulders + Legs") };
       }
     }
-    return {
-      date: d,
-      day: "Monday",
-      workout: program === "rehab" ? rehab("A") : gym("A", "Chest"),
-    };
+    return { date: d, day: "Monday", workout: gym("A", "Chest") };
   };
 
   // Helper to jump to a specific weekday
@@ -275,10 +193,10 @@ export default function TodayPage() {
 
   if (!workout) {
     // Check if it's a gym rest day
-    if ((activeProgram === "gym" || activeProgram === "rehab") && isRestDay) {
+    if (activeProgram === "gym" && isRestDay) {
       const selectedDateObj = parseLocalDate(selectedDate);
       const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" });
-      const nextGym = getNextScheduledDay(selectedDateObj, activeProgram);
+      const nextGym = getNextScheduledDay(selectedDateObj);
       const nextGymDateStr = toLocalDateString(nextGym.date);
       
       return (
@@ -322,9 +240,7 @@ export default function TodayPage() {
                 >
                   <div className="text-xl mb-1">💪</div>
                   <div className="text-xs font-bold text-red-700 dark:text-red-300">Monday</div>
-                  <div className="text-[10px] text-red-600 dark:text-red-400">
-                    {activeProgram === "rehab" ? "Session A" : "Chest"}
-                  </div>
+                  <div className="text-[10px] text-red-600 dark:text-red-400">Chest</div>
                 </button>
                 <button
                   onClick={() => jumpToWeekday(3)}
@@ -332,9 +248,7 @@ export default function TodayPage() {
                 >
                   <div className="text-xl mb-1">🔙</div>
                   <div className="text-xs font-bold text-blue-700 dark:text-blue-300">Wednesday</div>
-                  <div className="text-[10px] text-blue-600 dark:text-blue-400">
-                    {activeProgram === "rehab" ? "Session B" : "Back+Biceps"}
-                  </div>
+                  <div className="text-[10px] text-blue-600 dark:text-blue-400">Back+Biceps</div>
                 </button>
                 <button
                   onClick={() => jumpToWeekday(5)}
@@ -342,9 +256,7 @@ export default function TodayPage() {
                 >
                   <div className="text-xl mb-1">🦵</div>
                   <div className="text-xs font-bold text-green-700 dark:text-green-300">Friday</div>
-                  <div className="text-[10px] text-green-600 dark:text-green-400">
-                    {activeProgram === "rehab" ? "Session C" : "Shoulders+Legs"}
-                  </div>
+                  <div className="text-[10px] text-green-600 dark:text-green-400">Shoulders+Legs</div>
                 </button>
               </div>
             </div>
@@ -421,13 +333,7 @@ export default function TodayPage() {
           {/* Active Program Badge */}
           <div className="mb-3">
             <a href="/program" className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF2D55]/10 dark:bg-[#FF2D55]/20 rounded-full text-sm font-medium text-[#FF2D55] hover:bg-[#FF2D55]/20 transition-colors">
-              {activeProgram === "running"
-                ? "🏃 5K Running"
-                : activeProgram === "gym"
-                  ? "🏋️ Gym PPL"
-                  : activeProgram === "rehab"
-                    ? "🩹 Rehab Strength"
-                    : "🧠 ADHD Knee + Back"}
+              {activeProgram === "gym" ? "🏋️ Gym PPL" : "🧠 ADHD Knee + Back"}
               <span className="text-xs opacity-70">Change →</span>
             </a>
           </div>
@@ -445,19 +351,12 @@ export default function TodayPage() {
               </div>
               {programMeta && (
                 <p className="text-sm text-[#8E8E93]">
-                  {activeProgram === "running"
-                    ? `Week ${programMeta.week} · ${programMeta.phase} · `
-                    : activeProgram === "rehab" || activeProgram === "adhd"
-                      ? `Week ${programMeta.week} · ${programMeta.phase} · `
-                      : ""}
+                  {activeProgram === "adhd" && `Week ${programMeta.week} · ${programMeta.phase} · `}
                   Day {programMeta.day}
                   {activeProgram === "gym" && (
                     <span className="ml-2">
                       {programMeta.day === "A" ? "💪 Chest" : programMeta.day === "B" ? "🔙 Back + Biceps" : "🦵 Shoulders + Legs"}
                     </span>
-                  )}
-                  {activeProgram === "rehab" && (
-                    <span className="ml-2">🩹 Session {programMeta.day}</span>
                   )}
                   {activeProgram === "adhd" && (
                     <span className="ml-2">
@@ -580,11 +479,7 @@ export default function TodayPage() {
               📋{" "}
               {activeProgram === "gym"
                 ? "Gym Training Tips"
-                : activeProgram === "rehab"
-                  ? "Rehab strength tips"
-                  : activeProgram === "adhd"
-                    ? "ADHD-friendly plan tips"
-                    : "Program Rules"}
+                : "ADHD-friendly plan tips"}
             </h2>
             
             {activeProgram === "gym" ? (
@@ -617,26 +512,7 @@ export default function TodayPage() {
                   </ul>
                 </div>
               </div>
-            ) : activeProgram === "rehab" ? (
-              <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
-                <div>
-                  <h3 className="font-semibold mb-2 text-[#007AFF]">📅 Schedule</h3>
-                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                    <li><strong>Monday</strong> · Day A</li>
-                    <li><strong>Wednesday</strong> · Day B</li>
-                    <li><strong>Friday</strong> · Day C</li>
-                    <li>Week 1 and 2 follow the program as written; from week 3 onward you keep the week-2 sessions and add optional pogo hops on B/C only if you meet the checklist.</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-2 text-[#34C759]">✅ Intensity</h3>
-                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                    <li>Stay under symptom threshold (see running program traffic-light rules if unsure).</li>
-                    <li>Quality and calm breathing beat chasing load while tissues adapt.</li>
-                  </ul>
-                </div>
-              </div>
-            ) : activeProgram === "adhd" ? (
+            ) : (
               <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
                 <div>
                   <h3 className="font-semibold mb-2 text-[#007AFF]">📅 Daily breaks</h3>
@@ -655,45 +531,6 @@ export default function TodayPage() {
                     <li>Use the minimum-day checklist at the bottom when overwhelmed.</li>
                     <li>Never miss twice — after a miss, only the minimum version is required.</li>
                   </ul>
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4 text-sm text-[#1C1C1E] dark:text-white">
-                <div>
-                  <h3 className="font-semibold mb-2 text-[#FF2D55]">🟢 Green Light (Progress Normally)</h3>
-                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                    <li>Pain ≤ 2/10 during exercise</li>
-                    <li>Back to baseline by next morning</li>
-                    <li>No symptom increase</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold mb-2 text-[#FF9500]">🟡 Yellow (Hold Current Level)</h3>
-                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                    <li>Pain 3–4/10 or stiffness into next day</li>
-                    <li>Keep same intensity 1 more week</li>
-                    <li>Don't progress yet</li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold mb-2 text-[#FF3B30]">🔴 Red (Reduce Volume/Intensity)</h3>
-                  <ul className="list-disc list-inside space-y-1 text-[#8E8E93] dark:text-[#8E8E93] ml-2">
-                    <li>Pain ≥ 5/10</li>
-                    <li>Sharp/radiating pain</li>
-                    <li>Increased tingling/numbness</li>
-                    <li>Pain lasting &gt;24–48h</li>
-                    <li>→ Drop volume/intensity 30–50%, reassess</li>
-                  </ul>
-                </div>
-                
-                <div className="pt-2 border-t border-[#E5E5EA] dark:border-[#38383A]">
-                  <h3 className="font-semibold mb-2">💡 Progression Rule</h3>
-                  <p className="text-[#8E8E93] dark:text-[#8E8E93]">
-                    If 2 good sessions in a row: progress ONE thing (reps OR height OR range). 
-                    Increase total weekly running time by ≤10%.
-                  </p>
                 </div>
               </div>
             )}

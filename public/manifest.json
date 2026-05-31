@@ -52,7 +52,7 @@
     {
       "name": "Program",
       "short_name": "Program",
-      "description": "View 24-week program",
+      "description": "View program details",
       "url": "/program",
       "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
     }
