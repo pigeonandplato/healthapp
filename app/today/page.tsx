@@ -28,6 +28,7 @@ import CoachView from "@/components/CoachView";
 import FocusView from "@/components/FocusView";
 import StatsCard from "@/components/StatsCard";
 import LevelBar from "@/components/LevelBar";
+import WeeklyRecap from "@/components/WeeklyRecap";
 import MilestoneCelebration from "@/components/MilestoneCelebration";
 import StickyProgressBar from "@/components/StickyProgressBar";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
@@ -408,6 +409,12 @@ export default function TodayPage() {
             <StatsCard value={`${todayProgress}%`} label="Progress" icon="✓" color="green" />
             <StatsCard value={totalMinutes} label="Minutes" icon="⏱" color="pink" />
           </div>
+
+          {commitment && (
+            <div className="mt-3">
+              <WeeklyRecap completedDates={commitment.completedDates} streak={streak} />
+            </div>
+          )}
         </div>
       </section>
 

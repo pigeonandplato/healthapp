@@ -5,14 +5,24 @@ import { getYouTubeVideo, saveYouTubeVideo } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import GoogleSheetsImport from "@/components/GoogleSheetsImport";
 import ReminderSettings from "@/components/ReminderSettings";
+import { isSoundEnabled, setSoundEnabled, playCompletionChime } from "@/utils/haptics";
 
 export default function SettingsPage() {
   const [youtubeUrl, setYoutubeUrl] = useState<string>("");
   const [loading, setLoading] = useState(true);
+  const [soundOn, setSoundOn] = useState(false);
 
   useEffect(() => {
     loadSettings();
+    setSoundOn(isSoundEnabled());
   }, []);
+
+  const toggleSound = () => {
+    const next = !soundOn;
+    setSoundOn(next);
+    setSoundEnabled(next);
+    if (next) playCompletionChime(); // preview the sound when turning it on
+  };
 
   async function loadSettings() {
     setLoading(true);
@@ -38,6 +48,33 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
       <div className="max-w-2xl mx-auto space-y-6">
         <h1 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-6">Settings</h1>
+
+        {/* Completion Sound Section */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex-1">
+              <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">🔊 Completion Sound</h2>
+              <p className="text-sm text-[#8E8E93]">
+                Play a little chime each time you check off an exercise. An instant audio reward — on by choice, off if it&apos;s too much.
+              </p>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={soundOn}
+              onClick={toggleSound}
+              className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors ${
+                soundOn ? "bg-[#34C759]" : "bg-[#E5E5EA] dark:bg-[#38383A]"
+              }`}
+            >
+              <span
+                className={`inline-block h-6 w-6 transform rounded-full bg-white shadow transition-transform ${
+                  soundOn ? "translate-x-[22px]" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+        </div>
 
         {/* Break Reminders Section */}
         <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">

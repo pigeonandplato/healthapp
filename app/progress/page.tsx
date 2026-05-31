@@ -13,6 +13,7 @@ import {
 } from "@/lib/gamification";
 import MilestoneCelebration from "@/components/MilestoneCelebration";
 import LevelBar from "@/components/LevelBar";
+import WeeklyRecap from "@/components/WeeklyRecap";
 import ConsistencyCalendar from "@/components/ConsistencyCalendar";
 import AchievementsGrid from "@/components/AchievementsGrid";
 
@@ -125,6 +126,11 @@ export default function ProgressPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Weekly recap */}
+        {commitment && (
+          <WeeklyRecap completedDates={commitment.completedDates} streak={commitment.currentStreak} />
         )}
 
         {/* Consistency Calendar (commitment chain) */}
