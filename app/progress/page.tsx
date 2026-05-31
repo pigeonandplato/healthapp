@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllCompletions } from "@/lib/db";
+import { getAllCompletions, getSeenAchievements, setSeenAchievements } from "@/lib/db";
 import { calculateProgressStats, detectMilestones, ProgressStats, Milestone } from "@/lib/progress";
 import { getAllExercises } from "@/lib/db";
 import {
   computeCommitmentStats,
   computeAchievements,
-  getNewlyEarned,
+  pickNewlyEarned,
+  earnedIds,
   CommitmentStats,
   Achievement,
 } from "@/lib/gamification";
@@ -54,8 +55,17 @@ export default function ProgressPage() {
       const allAchievements = computeAchievements(commitmentStats);
       setAchievements(allAchievements);
 
-      // Celebrate newly earned achievements once.
-      const fresh = getNewlyEarned(allAchievements);
+      // Celebrate newly earned achievements once (synced to Supabase).
+      const seen = await getSeenAchievements();
+      let fresh: Achievement[] = [];
+      if (seen === null) {
+        await setSeenAchievements(earnedIds(allAchievements));
+      } else {
+        fresh = pickNewlyEarned(allAchievements, seen);
+        if (fresh.length > 0) {
+          await setSeenAchievements([...seen, ...fresh.map((a) => a.id)]);
+        }
+      }
       const achievementMilestones: Milestone[] = fresh.map((a) => ({
         type: "workouts",
         value: 0,

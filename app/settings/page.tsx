@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getYouTubeVideo, saveYouTubeVideo } from "@/lib/db";
+import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import GoogleSheetsImport from "@/components/GoogleSheetsImport";
 import ReminderSettings from "@/components/ReminderSettings";
@@ -14,13 +14,21 @@ export default function SettingsPage() {
 
   useEffect(() => {
     loadSettings();
+    // Show the local cache immediately, then reconcile with the synced value.
     setSoundOn(isSoundEnabled());
+    getCompletionSoundSetting().then((remote) => {
+      if (remote !== undefined) {
+        setSoundOn(remote);
+        setSoundEnabled(remote); // keep local cache in sync
+      }
+    });
   }, []);
 
   const toggleSound = () => {
     const next = !soundOn;
     setSoundOn(next);
-    setSoundEnabled(next);
+    setSoundEnabled(next); // instant local cache for triggerCompletion
+    setCompletionSoundSetting(next); // sync across devices
     if (next) playCompletionChime(); // preview the sound when turning it on
   };
 

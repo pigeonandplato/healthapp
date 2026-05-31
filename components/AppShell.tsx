@@ -28,6 +28,18 @@ export default function AppShell({ children }: AppShellProps) {
     });
   }, []);
 
+  // Hydrate the synced completion-sound preference into the local cache so it
+  // carries across devices (triggerCompletion reads the cache synchronously).
+  useEffect(() => {
+    Promise.all([import("@/lib/db"), import("@/utils/haptics")]).then(
+      ([{ getCompletionSoundSetting }, { setSoundEnabled }]) => {
+        getCompletionSoundSetting().then((remote) => {
+          if (remote !== undefined) setSoundEnabled(remote);
+        });
+      }
+    );
+  }, []);
+
   // Don't show navigation on login page
   if (isLoginPage) {
     return <>{children}</>;

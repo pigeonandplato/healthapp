@@ -239,6 +239,48 @@ export async function saveSetting(key: string, value: any): Promise<void> {
 }
 
 // ============================================
+// PREFERENCES & PROGRESS STATE - Synced to Supabase
+// Stored in the generic settings table (no schema change needed).
+// ============================================
+
+const COMPLETION_SOUND_KEY = "completion_sound";
+const SEEN_ACHIEVEMENTS_KEY = "seen_achievements";
+const LAST_SEEN_LEVEL_KEY = "last_seen_level";
+
+// Completion sound preference. Returns undefined when never set.
+export async function getCompletionSoundSetting(): Promise<boolean | undefined> {
+  const v = await getSetting(COMPLETION_SOUND_KEY);
+  if (v === undefined || v === null) return undefined;
+  return v === true || v === "true";
+}
+
+export async function setCompletionSoundSetting(enabled: boolean): Promise<void> {
+  await saveSetting(COMPLETION_SOUND_KEY, enabled);
+}
+
+// Achievements already celebrated. Returns null when never set (first run).
+export async function getSeenAchievements(): Promise<string[] | null> {
+  const v = await getSetting(SEEN_ACHIEVEMENTS_KEY);
+  if (v === undefined || v === null) return null;
+  return Array.isArray(v) ? (v as string[]) : [];
+}
+
+export async function setSeenAchievements(ids: string[]): Promise<void> {
+  await saveSetting(SEEN_ACHIEVEMENTS_KEY, ids);
+}
+
+// Highest level the user has already been congratulated for. null when unset.
+export async function getLastSeenLevel(): Promise<number | null> {
+  const v = await getSetting(LAST_SEEN_LEVEL_KEY);
+  if (v === undefined || v === null) return null;
+  return Number(v);
+}
+
+export async function setLastSeenLevel(level: number): Promise<void> {
+  await saveSetting(LAST_SEEN_LEVEL_KEY, level);
+}
+
+// ============================================
 // BLOCK TIMERS - Synced to Supabase (per user)
 // ============================================
 

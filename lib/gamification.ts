@@ -193,28 +193,15 @@ export function computeAchievements(stats: CommitmentStats): Achievement[] {
   }));
 }
 
-// Track which achievements have already been celebrated so we only pop once.
-const SEEN_KEY = "seenAchievements";
+// Pure helper: given the list of already-seen achievement ids, return the
+// earned ones that haven't been celebrated yet. Persistence (Supabase) is
+// handled by the caller so this stays free of side effects.
+export function pickNewlyEarned(achievements: Achievement[], seen: string[]): Achievement[] {
+  return achievements.filter((a) => a.earned && !seen.includes(a.id));
+}
 
-export function getNewlyEarned(achievements: Achievement[]): Achievement[] {
-  if (typeof window === "undefined") return [];
-  let seen: string[] = [];
-  try {
-    seen = JSON.parse(localStorage.getItem(SEEN_KEY) || "[]");
-  } catch {
-    seen = [];
-  }
-  const earned = achievements.filter((a) => a.earned);
-  const fresh = earned.filter((a) => !seen.includes(a.id));
-  // First load (nothing seen yet) shouldn't dump every past achievement at once.
-  if (seen.length === 0) {
-    localStorage.setItem(SEEN_KEY, JSON.stringify(earned.map((a) => a.id)));
-    return [];
-  }
-  if (fresh.length > 0) {
-    localStorage.setItem(SEEN_KEY, JSON.stringify([...seen, ...fresh.map((a) => a.id)]));
-  }
-  return fresh;
+export function earnedIds(achievements: Achievement[]): string[] {
+  return achievements.filter((a) => a.earned).map((a) => a.id);
 }
 
 // Build a month grid (weeks of 7) for a consistency calendar.

@@ -14,12 +14,17 @@ import {
   getCustomWorkoutByDate,
   getCustomProgramName,
   saveYouTubeVideo,
+  getSeenAchievements,
+  setSeenAchievements,
+  getLastSeenLevel,
+  setLastSeenLevel,
 } from "@/lib/db";
 import { calculateStreak } from "@/lib/streak";
 import {
   computeCommitmentStats,
   computeAchievements,
-  getNewlyEarned,
+  pickNewlyEarned,
+  earnedIds,
   CommitmentStats,
 } from "@/lib/gamification";
 import { Milestone } from "@/lib/progress";
@@ -34,8 +39,6 @@ import StickyProgressBar from "@/components/StickyProgressBar";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
-
-const LAST_LEVEL_KEY = "lastSeenLevel";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -158,36 +161,45 @@ export default function TodayPage() {
 
       const pending: Milestone[] = [];
 
-      // Level-up celebration (only when level actually increases).
-      if (typeof window !== "undefined") {
-        const prev = Number(localStorage.getItem(LAST_LEVEL_KEY) || "0");
-        if (prev === 0) {
-          localStorage.setItem(LAST_LEVEL_KEY, String(stats.level.level));
-        } else if (stats.level.level > prev) {
-          pending.push({
-            type: "workouts",
-            value: stats.level.level,
-            title: `Level ${stats.level.level}!`,
-            description: `You're now "${stats.level.title}". Keep stacking wins.`,
-            emoji: "⭐️",
-            achieved: true,
-          });
-          localStorage.setItem(LAST_LEVEL_KEY, String(stats.level.level));
-        }
-      }
-
-      // Newly earned achievements (each celebrated once).
-      const fresh = getNewlyEarned(computeAchievements(stats));
-      fresh.forEach((a) => {
+      // Level-up celebration (only when level actually increases). State is
+      // synced to Supabase so it celebrates once across all devices.
+      const prevLevel = await getLastSeenLevel();
+      if (prevLevel === null) {
+        await setLastSeenLevel(stats.level.level);
+      } else if (stats.level.level > prevLevel) {
         pending.push({
           type: "workouts",
-          value: 0,
-          title: a.title,
-          description: a.description,
-          emoji: a.emoji,
+          value: stats.level.level,
+          title: `Level ${stats.level.level}!`,
+          description: `You're now "${stats.level.title}". Keep stacking wins.`,
+          emoji: "⭐️",
           achieved: true,
         });
-      });
+        await setLastSeenLevel(stats.level.level);
+      }
+
+      // Newly earned achievements (each celebrated once, synced to Supabase).
+      const achievements = computeAchievements(stats);
+      const seen = await getSeenAchievements();
+      if (seen === null) {
+        // First run: seed without dumping every past achievement at once.
+        await setSeenAchievements(earnedIds(achievements));
+      } else {
+        const fresh = pickNewlyEarned(achievements, seen);
+        if (fresh.length > 0) {
+          await setSeenAchievements([...seen, ...fresh.map((a) => a.id)]);
+          fresh.forEach((a) => {
+            pending.push({
+              type: "workouts",
+              value: 0,
+              title: a.title,
+              description: a.description,
+              emoji: a.emoji,
+              achieved: true,
+            });
+          });
+        }
+      }
 
       if (pending.length > 0) setCelebrations((c) => [...c, ...pending]);
     } catch (e) {
