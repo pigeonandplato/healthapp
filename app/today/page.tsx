@@ -5,6 +5,7 @@ import Link from "next/link";
 import { WorkoutDay, ViewMode, ProgramType, ProgramMeta } from "@/lib/types";
 import {
   getCompletionsByDate,
+  getAllCompletions,
   getYouTubeVideo,
   getActiveProgram,
   getGymWorkoutByDate,
@@ -15,14 +16,25 @@ import {
   saveYouTubeVideo,
 } from "@/lib/db";
 import { calculateStreak } from "@/lib/streak";
+import {
+  computeCommitmentStats,
+  computeAchievements,
+  getNewlyEarned,
+  CommitmentStats,
+} from "@/lib/gamification";
+import { Milestone } from "@/lib/progress";
 import ChecklistView from "@/components/ChecklistView";
 import CoachView from "@/components/CoachView";
 import FocusView from "@/components/FocusView";
 import StatsCard from "@/components/StatsCard";
+import LevelBar from "@/components/LevelBar";
+import MilestoneCelebration from "@/components/MilestoneCelebration";
 import StickyProgressBar from "@/components/StickyProgressBar";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
+
+const LAST_LEVEL_KEY = "lastSeenLevel";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -53,6 +65,8 @@ export default function TodayPage() {
   const [activeProgram, setActiveProgramState] = useState<ProgramType>("adhd");
   const [customName, setCustomName] = useState("My Custom Program");
   const [isRestDay, setIsRestDay] = useState(false);
+  const [commitment, setCommitment] = useState<CommitmentStats | null>(null);
+  const [celebrations, setCelebrations] = useState<Milestone[]>([]);
 
   const allowedViews: ViewMode[] = activeProgram === "adhd" ? ["focus", "checklist", "coach"] : ["checklist", "coach"];
   const defaultView: ViewMode = activeProgram === "adhd" ? "focus" : "checklist";
@@ -115,6 +129,8 @@ export default function TodayPage() {
         if (cancelled) return;
         setStreak(currentStreak);
 
+        refreshCommitment();
+
         setProgramMeta(selectedWorkout?.program ?? null);
 
         const videoUrl = await getYouTubeVideo();
@@ -133,10 +149,59 @@ export default function TodayPage() {
     };
   }, [selectedDate]);
 
-  const handleProgressChange = useCallback((completed: number, total: number) => {
-    setCompletedCount(completed);
-    setTotalExercises(total);
+  const refreshCommitment = useCallback(async () => {
+    try {
+      const all = await getAllCompletions();
+      const stats = computeCommitmentStats(all);
+      setCommitment(stats);
+
+      const pending: Milestone[] = [];
+
+      // Level-up celebration (only when level actually increases).
+      if (typeof window !== "undefined") {
+        const prev = Number(localStorage.getItem(LAST_LEVEL_KEY) || "0");
+        if (prev === 0) {
+          localStorage.setItem(LAST_LEVEL_KEY, String(stats.level.level));
+        } else if (stats.level.level > prev) {
+          pending.push({
+            type: "workouts",
+            value: stats.level.level,
+            title: `Level ${stats.level.level}!`,
+            description: `You're now "${stats.level.title}". Keep stacking wins.`,
+            emoji: "⭐️",
+            achieved: true,
+          });
+          localStorage.setItem(LAST_LEVEL_KEY, String(stats.level.level));
+        }
+      }
+
+      // Newly earned achievements (each celebrated once).
+      const fresh = getNewlyEarned(computeAchievements(stats));
+      fresh.forEach((a) => {
+        pending.push({
+          type: "workouts",
+          value: 0,
+          title: a.title,
+          description: a.description,
+          emoji: a.emoji,
+          achieved: true,
+        });
+      });
+
+      if (pending.length > 0) setCelebrations((c) => [...c, ...pending]);
+    } catch (e) {
+      console.error("Failed to refresh commitment stats:", e);
+    }
   }, []);
+
+  const handleProgressChange = useCallback(
+    (completed: number, total: number) => {
+      setCompletedCount(completed);
+      setTotalExercises(total);
+      refreshCommitment();
+    },
+    [refreshCommitment]
+  );
 
   const handleViewChange = (view: ViewMode) => {
     setViewMode(view);
@@ -273,6 +338,9 @@ export default function TodayPage() {
 
   return (
     <div className="bg-white dark:bg-black">
+      {celebrations.length > 0 && (
+        <MilestoneCelebration milestones={celebrations} onClose={() => setCelebrations([])} />
+      )}
       <StickyProgressBar progress={todayProgress} />
 
       {/* Stats Section */}
@@ -325,6 +393,15 @@ export default function TodayPage() {
               showKneeDayHints={activeProgram === "adhd"}
             />
           </div>
+
+          {commitment && (
+            <Link
+              href="/progress"
+              className="block mb-3 rounded-2xl p-4 bg-gradient-to-r from-[#5856D6] to-[#7B7AE8] shadow-sm active:scale-[0.99] transition-transform"
+            >
+              <LevelBar level={commitment.level} />
+            </Link>
+          )}
 
           <div className="grid grid-cols-3 gap-3">
             <StatsCard value={streak} label="Streak" icon="🔥" color="orange" />

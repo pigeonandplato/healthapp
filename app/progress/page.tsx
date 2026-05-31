@@ -4,13 +4,25 @@ import { useState, useEffect } from "react";
 import { getAllCompletions } from "@/lib/db";
 import { calculateProgressStats, detectMilestones, ProgressStats, Milestone } from "@/lib/progress";
 import { getAllExercises } from "@/lib/db";
+import {
+  computeCommitmentStats,
+  computeAchievements,
+  getNewlyEarned,
+  CommitmentStats,
+  Achievement,
+} from "@/lib/gamification";
 import MilestoneCelebration from "@/components/MilestoneCelebration";
+import LevelBar from "@/components/LevelBar";
+import ConsistencyCalendar from "@/components/ConsistencyCalendar";
+import AchievementsGrid from "@/components/AchievementsGrid";
 
 export default function ProgressPage() {
   const [stats, setStats] = useState<ProgressStats | null>(null);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [loading, setLoading] = useState(true);
-  const [exerciseNames, setExerciseNames] = useState<Map<string, string>>(new Map());
+  const [, setExerciseNames] = useState<Map<string, string>>(new Map());
+  const [commitment, setCommitment] = useState<CommitmentStats | null>(null);
+  const [achievements, setAchievements] = useState<Achievement[]>([]);
 
   useEffect(() => {
     loadProgress();
@@ -34,11 +46,29 @@ export default function ProgressPage() {
       });
       
       setStats(progressStats);
-      
-      // Detect new milestones
+
+      // Commitment / gamification layer (additive, never punishing).
+      const commitmentStats = computeCommitmentStats(completions);
+      setCommitment(commitmentStats);
+      const allAchievements = computeAchievements(commitmentStats);
+      setAchievements(allAchievements);
+
+      // Celebrate newly earned achievements once.
+      const fresh = getNewlyEarned(allAchievements);
+      const achievementMilestones: Milestone[] = fresh.map((a) => ({
+        type: "workouts",
+        value: 0,
+        title: a.title,
+        description: a.description,
+        emoji: a.emoji,
+        achieved: true,
+      }));
+
+      // Detect new streak/workout milestones too.
       const newMilestones = detectMilestones(progressStats);
-      if (newMilestones.length > 0) {
-        setMilestones(newMilestones);
+      const combined = [...achievementMilestones, ...newMilestones];
+      if (combined.length > 0) {
+        setMilestones(combined);
       }
     } catch (error) {
       console.error("Error loading progress:", error);
@@ -76,6 +106,41 @@ export default function ProgressPage() {
       )}
       
       <div className="max-w-2xl mx-auto space-y-6">
+        {/* Level / XP */}
+        {commitment && (
+          <div className="rounded-2xl p-5 bg-gradient-to-r from-[#5856D6] to-[#7B7AE8] shadow-sm">
+            <LevelBar level={commitment.level} />
+            <div className="grid grid-cols-3 gap-3 mt-4">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white">{commitment.totalXp}</p>
+                <p className="text-[11px] text-white/80">Total XP</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white">{commitment.activeDays}</p>
+                <p className="text-[11px] text-white/80">Active Days</p>
+              </div>
+              <div className="text-center">
+                <p className="text-2xl font-bold text-white">{commitment.rollingConsistency}%</p>
+                <p className="text-[11px] text-white/80">Last 30 Days</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Consistency Calendar (commitment chain) */}
+        {commitment && (
+          <ChartCard title="Consistency">
+            <ConsistencyCalendar completedDates={commitment.completedDates} />
+          </ChartCard>
+        )}
+
+        {/* Achievements */}
+        {achievements.length > 0 && (
+          <ChartCard title="Achievements">
+            <AchievementsGrid achievements={achievements} />
+          </ChartCard>
+        )}
+
         {/* Header Stats */}
         <div className="grid grid-cols-2 gap-4">
           <StatCard

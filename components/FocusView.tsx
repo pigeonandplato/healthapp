@@ -1,10 +1,40 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { WorkoutDay, Exercise, ExerciseBlock } from "@/lib/types";
 import { getCompletionsByDate, saveCompletion } from "@/lib/db";
-import { triggerCompletion } from "@/utils/haptics";
+import { triggerCompletion, triggerHaptic } from "@/utils/haptics";
 import Break2RestCard, { workoutHasBreak2 } from "./Break2RestCard";
+
+// Short beep so the timer works as a hands-free body-double signal.
+function playBeep() {
+  if (typeof window === "undefined") return;
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 880;
+    gain.gain.setValueAtTime(0.001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.5);
+    osc.onended = () => ctx.close();
+  } catch {
+    // Audio not available — haptics still fire.
+  }
+}
+
+// Seconds a single set/hold/walk should run, or null if it isn't time-based.
+function timerSecondsFor(ex: Exercise): number | null {
+  const p = ex.prescription;
+  if (p.holdSeconds) return p.holdSeconds;
+  if (p.minutes) return p.minutes * 60;
+  return null;
+}
 
 interface FocusViewProps {
   workout: WorkoutDay;
@@ -396,6 +426,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
   };
 
   const videoUrl = exercise.media.type === "video" ? exercise.media.videoUrl : null;
+  const timerSeconds = timerSecondsFor(exercise);
 
   if (celebrate) {
     return (
@@ -458,6 +489,14 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
           {formatPrescription(exercise)}
         </div>
 
+        {timerSeconds !== null && (
+          <HoldTimer
+            key={exercise.id}
+            seconds={timerSeconds}
+            label={exercise.prescription.minutes ? "Walk" : "Hold"}
+          />
+        )}
+
         {exercise.instructions.length > 0 && (
           <div className="mb-4">
             <button
@@ -519,6 +558,82 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
             Skip →
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function HoldTimer({ seconds, label }: { seconds: number; label: string }) {
+  const [remaining, setRemaining] = useState(seconds);
+  const [running, setRunning] = useState(false);
+  const [finished, setFinished] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (!running) return;
+    intervalRef.current = setInterval(() => {
+      setRemaining((r) => {
+        if (r <= 1) {
+          if (intervalRef.current) clearInterval(intervalRef.current);
+          setRunning(false);
+          setFinished(true);
+          triggerHaptic("heavy");
+          playBeep();
+          return 0;
+        }
+        return r - 1;
+      });
+    }, 1000);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [running]);
+
+  const reset = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    setRemaining(seconds);
+    setRunning(false);
+    setFinished(false);
+  };
+
+  const mins = Math.floor(remaining / 60);
+  const secs = remaining % 60;
+  const display = mins > 0 ? `${mins}:${String(secs).padStart(2, "0")}` : `${secs}`;
+  const pct = seconds > 0 ? ((seconds - remaining) / seconds) * 100 : 0;
+
+  return (
+    <div className="bg-[#F2F2F7] dark:bg-[#1C1C1E] rounded-2xl p-4 mb-4">
+      <div className="flex items-center justify-between mb-3">
+        <span className="text-xs font-semibold text-[#8E8E93] uppercase tracking-wide">
+          {finished ? "Time's up! 🎉" : `${label} timer`}
+        </span>
+        <span className={`text-3xl font-black tabular-nums ${finished ? "text-[#34C759]" : "text-[#1C1C1E] dark:text-white"}`}>
+          {display}
+        </span>
+      </div>
+      <div className="w-full bg-[#E5E5EA] dark:bg-[#38383A] rounded-full h-2 overflow-hidden mb-3">
+        <div
+          className={`h-full rounded-full transition-all duration-1000 ease-linear ${finished ? "bg-[#34C759]" : "bg-[#FF9500]"}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <div className="flex gap-2">
+        {!finished ? (
+          <button
+            onClick={() => setRunning((r) => !r)}
+            className="flex-1 bg-[#FF9500] hover:brightness-95 text-white font-semibold py-2.5 rounded-xl transition-all active:scale-[0.98] text-sm"
+          >
+            {running ? "⏸ Pause" : remaining === seconds ? "▶ Start timer" : "▶ Resume"}
+          </button>
+        ) : (
+          <div className="flex-1 text-center text-sm font-semibold text-[#34C759] py-2.5">Hold complete</div>
+        )}
+        <button
+          onClick={reset}
+          className="px-4 bg-[#E5E5EA] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white font-medium py-2.5 rounded-xl transition-all text-sm"
+        >
+          Reset
+        </button>
       </div>
     </div>
   );
