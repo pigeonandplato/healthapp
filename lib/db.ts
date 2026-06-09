@@ -280,6 +280,21 @@ export async function setLastSeenLevel(level: number): Promise<void> {
   await saveSetting(LAST_SEEN_LEVEL_KEY, level);
 }
 
+// Habit Coach habits — stored in the generic settings table so they sync
+// across devices. localStorage remains the offline-first source of truth; this
+// is the cloud mirror. Returns null when never synced.
+const USER_HABITS_KEY = "user_habits";
+
+export async function getRemoteHabits(): Promise<unknown[] | null> {
+  const v = await getSetting(USER_HABITS_KEY);
+  if (v === undefined || v === null) return null;
+  return Array.isArray(v) ? v : [];
+}
+
+export async function saveRemoteHabits(habits: unknown[]): Promise<void> {
+  await saveSetting(USER_HABITS_KEY, habits);
+}
+
 // ============================================
 // BLOCK TIMERS - Synced to Supabase (per user)
 // ============================================

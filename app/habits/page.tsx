@@ -11,6 +11,7 @@ import {
   wonToday,
   habitStreak,
   winCount,
+  hydrateHabitsFromRemote,
 } from "@/lib/habits";
 import { triggerCompletion, triggerHaptic } from "@/utils/haptics";
 
@@ -56,7 +57,15 @@ export default function HabitsPage() {
   const coachRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Instant render from local cache, then reconcile with the cloud copy.
     setHabits(getHabits());
+    let active = true;
+    hydrateHabitsFromRemote().then((merged) => {
+      if (active) setHabits(merged);
+    });
+    return () => {
+      active = false;
+    };
   }, []);
 
   const scrollToCoach = useCallback(() => {

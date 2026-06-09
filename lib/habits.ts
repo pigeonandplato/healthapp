@@ -44,6 +44,67 @@ function persist(habits: UserHabit[]): void {
   }
 }
 
+// Fire-and-forget cloud mirror so habits sync across devices. Failures are
+// silent — localStorage stays the offline-first source of truth.
+function pushRemote(habits: UserHabit[]): void {
+  if (typeof window === "undefined") return;
+  import("./db")
+    .then(({ saveRemoteHabits }) => saveRemoteHabits(habits))
+    .catch(() => {});
+}
+
+function mergeHabits(local: UserHabit[], remote: UserHabit[]): UserHabit[] {
+  const byId = new Map<string, UserHabit>();
+
+  const absorb = (h: UserHabit) => {
+    const existing = byId.get(h.id);
+    if (!existing) {
+      byId.set(h.id, { ...h, winDates: [...(h.winDates || [])] });
+      return;
+    }
+    // Union win dates, keep the earliest createdAt and a non-empty label.
+    const dates = new Set([...(existing.winDates || []), ...(h.winDates || [])]);
+    const sorted = Array.from(dates).sort();
+    byId.set(h.id, {
+      ...existing,
+      label: existing.label || h.label,
+      kind: existing.kind || h.kind,
+      createdAt: existing.createdAt < h.createdAt ? existing.createdAt : h.createdAt,
+      winDates: sorted,
+      lastWinDate: sorted.length ? sorted[sorted.length - 1] : undefined,
+    });
+  };
+
+  remote.forEach(absorb);
+  local.forEach(absorb);
+
+  // Newest first by createdAt.
+  return Array.from(byId.values()).sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+}
+
+// Pull the cloud copy, merge with local, persist, and push the merged result
+// back. Returns the merged list to render. Safe offline (returns local).
+export async function hydrateHabitsFromRemote(): Promise<UserHabit[]> {
+  const local = getHabits();
+  if (typeof window === "undefined") return local;
+  try {
+    const { getRemoteHabits } = await import("./db");
+    const remoteRaw = await getRemoteHabits();
+    if (!remoteRaw) {
+      // Nothing in the cloud yet — seed it from local so other devices get it.
+      if (local.length) pushRemote(local);
+      return local;
+    }
+    const remote = remoteRaw as UserHabit[];
+    const merged = mergeHabits(local, remote);
+    persist(merged);
+    pushRemote(merged);
+    return merged;
+  } catch {
+    return local;
+  }
+}
+
 export function addHabit(label: string, kind: HabitKind): UserHabit {
   const habit: UserHabit = {
     id:
@@ -58,11 +119,14 @@ export function addHabit(label: string, kind: HabitKind): UserHabit {
   const habits = getHabits();
   habits.unshift(habit);
   persist(habits);
+  pushRemote(habits);
   return habit;
 }
 
 export function deleteHabit(id: string): void {
-  persist(getHabits().filter((h) => h.id !== id));
+  const next = getHabits().filter((h) => h.id !== id);
+  persist(next);
+  pushRemote(next);
 }
 
 // Toggle today's win for a habit. Returns the updated habit (or null if gone).
@@ -86,6 +150,7 @@ export function toggleWinToday(id: string): UserHabit | null {
   }
 
   persist(habits);
+  pushRemote(habits);
   return updated;
 }
 
