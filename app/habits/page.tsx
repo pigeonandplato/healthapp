@@ -358,8 +358,7 @@ function CoachPanel({
       </div>
 
       <div className="p-5 space-y-4">
-        <InfoRow emoji="🧠" title="What it does to your brain" body={intervention.brainImpact} />
-        <InfoRow emoji="🦵" title="What it does to your recovery" body={intervention.bodyImpact} />
+        <UnderstandSection intervention={intervention} />
 
         <div className="rounded-2xl bg-[#5856D6]/8 border border-[#5856D6]/20 p-4">
           <p className="text-xs font-bold uppercase tracking-wide text-[#5856D6] mb-1">⚡ Do this instead (2 min)</p>
@@ -405,6 +404,39 @@ function CoachPanel({
           <span>▶</span> Find a video on YouTube
         </a>
       </div>
+    </div>
+  );
+}
+
+function UnderstandSection({ intervention }: { intervention: Intervention }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <div className="rounded-2xl border border-[#E5E5EA] dark:border-[#38383A] overflow-hidden">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-[#F9F9FB] dark:bg-[#2C2C2E] text-left"
+        aria-expanded={open}
+      >
+        <span className="text-sm font-bold text-[#1C1C1E] dark:text-white">
+          Why your brain does this &amp; how it harms you
+        </span>
+        <svg
+          className={`w-4 h-4 flex-shrink-0 text-[#8E8E93] transition-transform ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open && (
+        <div className="p-4 space-y-4">
+          <InfoRow emoji="🧲" title="Why your brain wants this" body={intervention.whyBrain} />
+          <InfoRow emoji="🧠" title="What it does to your brain" body={intervention.brainImpact} />
+          <InfoRow emoji="⚠️" title="How it harms you over time" body={intervention.harm} />
+          <InfoRow emoji="🦵" title="What it does to your recovery" body={intervention.bodyImpact} />
+        </div>
+      )}
     </div>
   );
 }
