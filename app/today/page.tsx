@@ -460,11 +460,28 @@ export default function TodayPage() {
           )}
         </div>
 
+        {/* Habit Coach prompt (ADHD) */}
+        {activeProgram === "adhd" && (
+          <Link
+            href="/habits"
+            className="mt-6 flex items-center gap-3 bg-[#5856D6]/10 hover:bg-[#5856D6]/15 rounded-2xl p-4 transition-colors"
+          >
+            <span className="text-2xl">💡</span>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">Fighting an urge right now?</p>
+              <p className="text-xs text-[#8E8E93]">
+                Eating out, scrolling, skipping rehab? Get an instant intervention in Habit Coach.
+              </p>
+            </div>
+            <span className="text-[#5856D6]">→</span>
+          </Link>
+        )}
+
         {/* Reminder nudge (ADHD) */}
         {activeProgram === "adhd" && (
           <Link
             href="/settings"
-            className="mt-6 flex items-center gap-3 bg-[#007AFF]/10 hover:bg-[#007AFF]/15 rounded-2xl p-4 transition-colors"
+            className="mt-3 flex items-center gap-3 bg-[#007AFF]/10 hover:bg-[#007AFF]/15 rounded-2xl p-4 transition-colors"
           >
             <span className="text-2xl">⏰</span>
             <div className="flex-1">
