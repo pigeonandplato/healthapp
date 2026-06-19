@@ -949,6 +949,50 @@ export async function saveMasterExerciseVideo(exerciseId: string, videoUrl: stri
   }
 }
 
+export async function deleteMasterExerciseVideo(exerciseId: string): Promise<void> {
+  const { error } = await supabase
+    .from("settings")
+    .delete()
+    .eq("key", `master_exercise_video_${exerciseId}`);
+
+  if (error) {
+    console.error("Error deleting master video:", error);
+  }
+}
+
+const CHACHA_EXERCISE_COUNT = 38;
+
+export async function clearChachaVideoOverrides(): Promise<{ custom: number; master: number }> {
+  let custom = 0;
+  let master = 0;
+
+  for (let i = 1; i <= CHACHA_EXERCISE_COUNT; i++) {
+    const exerciseId = `chacha-${i}`;
+    await deleteCustomExerciseVideo(exerciseId);
+    custom++;
+    await deleteMasterExerciseVideo(exerciseId);
+    master++;
+  }
+
+  return { custom, master };
+}
+
+const CHACHA_VIDEO_SEED_VERSION_KEY = "chachaVideoSeedVersion";
+const CHACHA_VIDEO_SEED_VERSION = "3";
+
+/** One-time migration: clear stale Chacha video overrides when seed URLs update. */
+export async function maybeMigrateChachaVideoSeedVersion(): Promise<void> {
+  const stored = await getSetting(CHACHA_VIDEO_SEED_VERSION_KEY);
+  const storedNum = stored != null ? Number(stored) : 0;
+  if (storedNum >= Number(CHACHA_VIDEO_SEED_VERSION)) return;
+
+  const active = await getActiveProgram();
+  if (active !== "chacha") return;
+
+  await clearChachaVideoOverrides();
+  await saveSetting(CHACHA_VIDEO_SEED_VERSION_KEY, CHACHA_VIDEO_SEED_VERSION);
+}
+
 // Helper to get current user email
 export async function getUserEmail(): Promise<string | null> {
   const { data: { user } } = await supabase.auth.getUser();

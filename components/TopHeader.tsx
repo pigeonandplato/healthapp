@@ -12,6 +12,7 @@ const menuItems = [
   { href: "/diet", label: "Diet", icon: "🥗" },
   { href: "/program", label: "Program Overview", icon: "📈" },
   { href: "/settings", label: "Settings", icon: "⚙️" },
+  { href: "/help", label: "Help & Setup", icon: "❓" },
 ];
 
 export default function TopHeader() {
@@ -69,6 +70,8 @@ export default function TopHeader() {
         return "Program";
       case "/settings":
         return "Settings";
+      case "/help":
+        return "Help & Setup";
       default:
         return "Health Tracker";
     }

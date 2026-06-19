@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting } from "@/lib/db";
+import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting, clearChachaVideoOverrides } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import GoogleSheetsImport from "@/components/GoogleSheetsImport";
 import ReminderSettings from "@/components/ReminderSettings";
@@ -11,6 +11,8 @@ export default function SettingsPage() {
   const [youtubeUrl, setYoutubeUrl] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [soundOn, setSoundOn] = useState(false);
+  const [chachaVideoResetConfirm, setChachaVideoResetConfirm] = useState(false);
+  const [chachaVideoResetStatus, setChachaVideoResetStatus] = useState<string | null>(null);
 
   useEffect(() => {
     loadSettings();
@@ -91,6 +93,46 @@ export default function SettingsPage() {
             Get nudged for each of your daily breaks. Out of sight is out of mind — these keep you on track.
           </p>
           <ReminderSettings />
+        </div>
+
+        {/* Chacha video reset */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">💪 Chacha exercise videos</h2>
+          <p className="text-sm text-[#8E8E93] mb-4">
+            Clears any saved video overrides so the latest built-in guides play for all 38 Chacha moves.
+          </p>
+          <button
+            type="button"
+            onClick={async () => {
+              if (!chachaVideoResetConfirm) {
+                setChachaVideoResetStatus(null);
+                setChachaVideoResetConfirm(true);
+                return;
+              }
+              setChachaVideoResetConfirm(false);
+              setChachaVideoResetStatus(null);
+              try {
+                const { custom, master } = await clearChachaVideoOverrides();
+                setChachaVideoResetStatus(
+                  `Done — reset ${custom} custom and ${master} master video slots. Open Today to see the updated guides.`
+                );
+              } catch (e) {
+                setChachaVideoResetStatus(e instanceof Error ? e.message : "Reset failed. Try again.");
+              }
+            }}
+            className={`rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
+              chachaVideoResetConfirm
+                ? "bg-[#FF9500] text-white"
+                : "bg-[#FF2D55]/10 text-[#FF2D55] hover:bg-[#FF2D55]/20"
+            }`}
+          >
+            {chachaVideoResetConfirm
+              ? "Tap again to confirm reset"
+              : "Reset Chacha exercise videos to defaults"}
+          </button>
+          {chachaVideoResetStatus && (
+            <p className="mt-3 text-sm text-[#8E8E93]">{chachaVideoResetStatus}</p>
+          )}
         </div>
 
         {/* YouTube Video Section */}

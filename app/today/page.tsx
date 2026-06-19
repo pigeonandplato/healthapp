@@ -21,6 +21,7 @@ import {
   setSeenAchievements,
   getLastSeenLevel,
   setLastSeenLevel,
+  maybeMigrateChachaVideoSeedVersion,
 } from "@/lib/db";
 import { calculateStreak } from "@/lib/streak";
 import {
@@ -152,6 +153,10 @@ function TodayPageContent() {
         const currentProgram = await getActiveProgram();
         if (cancelled) return;
         setActiveProgramState(currentProgram);
+
+        if (currentProgram === "chacha") {
+          await maybeMigrateChachaVideoSeedVersion();
+        }
 
         if (currentProgram === "custom") {
           getCustomProgramName().then((n) => !cancelled && setCustomName(n));
