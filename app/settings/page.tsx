@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting, clearChachaVideoOverrides } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import CustomProgramImport from "@/components/CustomProgramImport";
+import AIPromptTemplate from "@/components/AIPromptTemplate";
 import ReminderSettings from "@/components/ReminderSettings";
 import { isSoundEnabled, setSoundEnabled, playCompletionChime } from "@/utils/haptics";
 
@@ -152,13 +153,24 @@ export default function SettingsPage() {
           />
         </div>
 
+        {/* AI Prompt Template */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-2">
+            🧠 Generate with AI
+          </h2>
+          <p className="text-sm text-[#8E8E93] mb-4">
+            Copy a prompt and paste your program into Claude or ChatGPT. It'll return perfect JSON to import below.
+          </p>
+          <AIPromptTemplate />
+        </div>
+
         {/* Custom program import */}
         <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
-            Import Custom Program
+            📥 Import Custom Program
           </h2>
           <p className="text-sm text-[#8E8E93] mb-4">
-            Paste JSON (or upload a .json file) to create a custom workout program. Use the AI prompt to convert any plan from ChatGPT, Claude, or Gemini.
+            Paste the JSON you got from the AI (above), or upload a .json file directly.
           </p>
           <CustomProgramImport />
         </div>
