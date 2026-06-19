@@ -65,7 +65,7 @@ const mondayBlocks: ExerciseBlock[] = [
         id: "chacha-1",
         name: "Hip and ankle mobility",
         tldr: "Loosen hips/ankles so knees and back don't take all the load.",
-        videoId: "1cs3SKwQZpM",
+        videoId: "l1FEMz2Sdco",
         category: "Mobility",
         prescription: { description: "5–8 min flow" },
         instructions: [
@@ -84,7 +84,7 @@ const mondayBlocks: ExerciseBlock[] = [
         id: "chacha-2",
         name: "Box squat (bodyweight or light goblet)",
         tldr: "Controlled squat depth, less stress on knees and spine than heavy barbell squats.",
-        videoId: "akAhLxnS9aI",
+        videoId: "7uSuVN1rjKo",
         category: "Legs",
         instructions: [
           "Set box height so hips sit just above parallel — raise it if knees complain.",
@@ -105,7 +105,7 @@ const mondayBlocks: ExerciseBlock[] = [
         id: "chacha-3",
         name: "Static split squat / supported lunge",
         tldr: "Builds single-leg strength while holding on so knees/ankles feel stable.",
-        videoId: "3u6yV2L7pbg",
+        videoId: "Zaw_9ckSvz4",
         category: "Legs",
         prescription: { sets: 3, reps: 8, description: "3 × 8 per leg" },
         instructions: [
@@ -146,7 +146,7 @@ const mondayBlocks: ExerciseBlock[] = [
         id: "chacha-5",
         name: "Leg press (short range, moderate load)",
         tldr: "Load legs without heavy weight on your spine; limit knee depth.",
-        videoId: "yZ8b9vH6w88",
+        videoId: "M79Yf1HE5Vg",
         category: "Legs",
         instructions: [
           "Feet high and slightly wide on the platform — biases glutes/hamstrings over quads.",
@@ -167,7 +167,7 @@ const mondayBlocks: ExerciseBlock[] = [
         id: "chacha-6",
         name: "Lateral band walks",
         tldr: "Strengthens hip stabilizers to take pressure off knees and lower back.",
-        videoId: "3_eX6qD73lY",
+        videoId: "PhNkkOieB-8",
         category: "Legs",
         prescription: { sets: 3, reps: 12, description: "3 × 12 steps each direction" },
         instructions: [
@@ -186,7 +186,7 @@ const mondayBlocks: ExerciseBlock[] = [
         id: "chacha-7",
         name: "Standing or seated calf raises",
         tldr: "Builds calf strength for ankle stability with very low back stress.",
-        videoId: "uD9HqXf8t9g",
+        videoId: "SVtg-1loH4c",
         category: "Legs",
         prescription: { sets: 3, reps: 15, description: "3 × 15 reps" },
         instructions: [
@@ -216,7 +216,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-8",
         name: "Cross-trainer / elliptical",
         tldr: "Low-impact cardio that's easier on knees and ankles than running.",
-        videoId: "vVjH2nK1WqQ",
+        videoId: "B06008plfVk",
         category: "Cardio",
         prescription: { minutes: 15, description: "15–20 min moderate pace" },
         instructions: [
@@ -243,7 +243,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-9",
         name: "Farmer carry (moderate dumbbells)",
         tldr: "Improves grip and core tension while walking upright, back stays neutral.",
-        videoId: "p5M6L6f3hjg",
+        videoId: "lLAw6fUccKA",
         category: "Grip",
         prescription: { sets: 3, description: "3 × 30–40 sec walk" },
         instructions: [
@@ -262,7 +262,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-10",
         name: "Pinch holds",
         tldr: "Pure grip strength work without loading the spine or knees much.",
-        videoId: "8XW6uO4x9_E",
+        videoId: "i0RFI2n6a9k",
         category: "Grip",
         prescription: { sets: 3, description: "3 × 20–30 sec holds" },
         instructions: [
@@ -280,7 +280,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-11",
         name: "Supported dead hang (feet touching box)",
         tldr: "Gentle decompression for the spine with less strain than a full bodyweight hang.",
-        videoId: "b4O6uO_3H5Y",
+        videoId: "cju3uXYC6cA",
         category: "Grip",
         prescription: { sets: 3, description: "3 × 15–30 sec hangs" },
         instructions: [
@@ -308,7 +308,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-12",
         name: "Dead bug",
         tldr: "Core stability exercise that trains abs without bending the spine a lot.",
-        videoId: "4XLEnwUr_V4",
+        videoId: "g_BYB0R-4Ws",
         category: "Core",
         prescription: { sets: 3, reps: 8, description: "3 × 8 per side" },
         instructions: [
@@ -328,7 +328,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-13",
         name: "Bird dog",
         tldr: "Teaches back and core to stay stable while arms/legs move, great for low-back control.",
-        videoId: "wiF9KrmGAOg",
+        videoId: "T7M6Gj61DoE",
         category: "Core",
         prescription: { sets: 3, reps: 8, description: "3 × 8 per side" },
         instructions: [
@@ -347,7 +347,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-14",
         name: "Side plank",
         tldr: "Builds side core strength without loaded twisting that could irritate the spine.",
-        videoId: "K3HEn8V_9M4",
+        videoId: "iNbH7_edNI8",
         category: "Core",
         prescription: { sets: 3, holdSeconds: 20, description: "3 × 20 sec each side" },
         instructions: [
@@ -367,7 +367,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-15",
         name: "Front plank",
         tldr: "Simple full-core brace drill, no crunching so it's easier on the back.",
-        videoId: "pSHjTRCQxIw",
+        videoId: "A2b2EmIg0dA",
         category: "Core",
         prescription: { sets: 3, holdSeconds: 30, description: "3 × 30 sec" },
         instructions: [
@@ -399,7 +399,7 @@ const wednesdayBlocks: ExerciseBlock[] = [
         id: "chacha-16",
         name: "Push-ups (hands elevated if needed)",
         tldr: "Chest and triceps work with a natural position for wrists and shoulders.",
-        videoId: "Mo07RIm_Zfs",
+        videoId: "wFD-jkJK5Sw",
         category: "Chest",
         instructions: [
           "Hands under shoulders, fingers spread, slight external rotation (fingers point slightly out).",
@@ -420,7 +420,7 @@ const wednesdayBlocks: ExerciseBlock[] = [
         id: "chacha-17",
         name: "Flat bench press (barbell or dumbbell)",
         tldr: "Main chest strength move while lying supported, minimal stress on knees/ankles.",
-        videoId: "rT7DgCr-3ps",
+        videoId: "xFMElpKwhfs",
         category: "Chest",
         instructions: [
           "Retract and depress shoulder blades into the bench before unracking.",
@@ -440,7 +440,7 @@ const wednesdayBlocks: ExerciseBlock[] = [
         id: "chacha-18",
         name: "Incline dumbbell press",
         tldr: "Hits upper chest and shoulders in a joint-friendly angle.",
-        videoId: "8iPvZ69Y19A",
+        videoId: "c1ZX5ZXMQVk",
         category: "Chest",
         instructions: [
           "Bench 30–45° incline; shoulder blades pinned to bench.",
@@ -458,7 +458,7 @@ const wednesdayBlocks: ExerciseBlock[] = [
         id: "chacha-19",
         name: "Machine or cable chest press",
         tldr: "Back is supported so you can press without worrying about spine position.",
-        videoId: "W79v21_M6hY",
+        videoId: "sh92B-_2O48",
         category: "Chest",
         instructions: [
           "Adjust seat so handles align with mid-chest; back flat against pad.",
@@ -475,7 +475,7 @@ const wednesdayBlocks: ExerciseBlock[] = [
         id: "chacha-20",
         name: "Chest fly (cable or light DB)",
         tldr: "Adds chest stretch and squeeze with light load so shoulders stay safe.",
-        videoId: "eGjt4lk66zo",
+        videoId: "ETtXO4FW1EU",
         category: "Chest",
         instructions: [
           "Slight bend in elbows stays fixed — this is an arc, not a press.",
@@ -494,7 +494,7 @@ const wednesdayBlocks: ExerciseBlock[] = [
         id: "chacha-21",
         name: "Optional assisted/band dips",
         tldr: "Extra chest/triceps work only if shoulders and back feel 100% okay.",
-        videoId: "J32Ym7qXz3c",
+        videoId: "Eimue34PEuA",
         category: "Chest",
         prescription: { description: "Optional · 2 × 8–10 if feeling good" },
         instructions: [
@@ -544,7 +544,7 @@ const thursdayBlocks: ExerciseBlock[] = [
         id: "chacha-23",
         name: "Lat pulldown (neutral or shoulder-width grip)",
         tldr: "Trains lats and upper back while seated and supported.",
-        videoId: "CAwf7n6Luuc",
+        videoId: "KgZqDuNx7rI",
         category: "Back",
         instructions: [
           "Neutral or slightly wider than shoulder grip; thighs secured under pad.",
@@ -562,7 +562,7 @@ const thursdayBlocks: ExerciseBlock[] = [
         id: "chacha-24",
         name: "One-arm dumbbell row (bench-supported)",
         tldr: "Rowing strength with support so your low back doesn't work as hard as a stabilizer.",
-        videoId: "pYcpY20QaFM",
+        videoId: "fURsHPHgssI",
         category: "Back",
         prescription: { sets: 3, reps: 10, description: "3 × 10 per arm" },
         instructions: [
@@ -581,7 +581,7 @@ const thursdayBlocks: ExerciseBlock[] = [
         id: "chacha-25",
         name: "Chest-supported row",
         tldr: "Upper-back strength without loading the lower back at all.",
-        videoId: "H75im9fA1G8",
+        videoId: "3EP5HpKtJG0",
         category: "Back",
         instructions: [
           "Chest fully against pad; feet flat, core lightly braced.",
@@ -598,7 +598,7 @@ const thursdayBlocks: ExerciseBlock[] = [
         id: "chacha-26",
         name: "Hip thrust or glute bridge",
         tldr: "Glute strength for hip and back support, very little knee or spine movement.",
-        videoId: "LM8LGhm76N4",
+        videoId: "29OfN4ztW_g",
         category: "Back/Glutes",
         instructions: [
           "Upper back on bench (hip thrust) or floor (bridge); feet hip-width.",
@@ -636,7 +636,7 @@ const thursdayBlocks: ExerciseBlock[] = [
         id: "chacha-28",
         name: "Shrugs",
         tldr: "Builds traps to help posture without stressing knees or ankles.",
-        videoId: "MInyXw9w_zE",
+        videoId: "FOGWC04nYtI",
         category: "Back",
         instructions: [
           "Dumbbells at sides; stand tall, core braced.",
@@ -665,7 +665,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-29",
         name: "Dumbbell curl",
         tldr: "Simple biceps work with neutral, controllable wrist position.",
-        videoId: "ykJmrZ5v0M0",
+        videoId: "5-8i2S-h4gQ",
         category: "Biceps",
         instructions: [
           "Stand tall, elbows pinned to your sides (don't swing).",
@@ -684,7 +684,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-30",
         name: "Hammer curl",
         tldr: "Biceps and forearms with a neutral grip that's easier on the wrist.",
-        videoId: "TwD-YGOY5kE",
+        videoId: "FNvndC4Ov04",
         category: "Biceps",
         instructions: [
           "Palms face each other (neutral grip) the entire rep.",
@@ -701,7 +701,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-31",
         name: "Reverse curl",
         tldr: "Hits forearms and biceps; keep weight light for wrist comfort.",
-        videoId: "4K9E_DclpYg",
+        videoId: "nRgxYX2Ve9w",
         category: "Biceps",
         instructions: [
           "Palms face DOWN (pronated grip); use lighter weight than regular curls.",
@@ -764,7 +764,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-34",
         name: "Face pull",
         tldr: "Great for upper-back and rear-shoulder posture, helps protect shoulders long-term.",
-        videoId: "V8dZ39E_u38",
+        videoId: "rep-qVOkqgk",
         category: "Shoulders",
         prescription: { sets: 3, reps: 15, description: "3 × 15 reps" },
         instructions: [
@@ -783,7 +783,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-35",
         name: "Reverse fly (cable/band or incline bench)",
         tldr: "Targets rear delts and upper back without heavy spinal loading.",
-        videoId: "KzL_n_zizv8",
+        videoId: "zM7yAE6dFiA",
         category: "Shoulders",
         prescription: { sets: 3, reps: 12, description: "3 × 12 reps" },
         instructions: [
@@ -828,7 +828,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-37",
         name: "Overhead rope extension (light)",
         tldr: "Extra triceps work; keep load light and core tight to protect your back.",
-        videoId: "ns-VnF9q9pM",
+        videoId: "l4i7iDLiMXs",
         category: "Triceps",
         instructions: [
           "Light weight only; stand tall, core braced, ribs down.",
@@ -847,7 +847,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-38",
         name: "Kickbacks",
         tldr: "Isolation for triceps with small weights and controlled motion so joints stay happy.",
-        videoId: "6SS6K3lAwWI",
+        videoId: "m9me06UBPKc",
         category: "Triceps",
         prescription: { sets: 3, reps: 12, description: "3 × 12 per arm" },
         instructions: [
