@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting, clearChachaVideoOverrides } from "@/lib/db";
+import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting, clearChachaVideoOverrides, getCustomProgram, getCustomProgramName, getActiveProgram } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import CustomProgramImport from "@/components/CustomProgramImport";
 import AIPromptTemplate from "@/components/AIPromptTemplate";
 import ReminderSettings from "@/components/ReminderSettings";
 import { isSoundEnabled, setSoundEnabled, playCompletionChime } from "@/utils/haptics";
+import { exportCustomProgramJson } from "@/lib/customProgramJson";
 
 export default function SettingsPage() {
   const [youtubeUrl, setYoutubeUrl] = useState<string>("");
@@ -14,6 +15,9 @@ export default function SettingsPage() {
   const [soundOn, setSoundOn] = useState(false);
   const [chachaVideoResetConfirm, setChachaVideoResetConfirm] = useState(false);
   const [chachaVideoResetStatus, setChachaVideoResetStatus] = useState<string | null>(null);
+  const [hasCustomProgram, setHasCustomProgram] = useState(false);
+  const [customProgramName, setCustomProgramName] = useState("My Custom Program");
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     loadSettings();
@@ -25,6 +29,16 @@ export default function SettingsPage() {
         setSoundEnabled(remote); // keep local cache in sync
       }
     });
+
+    // Check if user has a custom program
+    Promise.all([getActiveProgram(), getCustomProgram(), getCustomProgramName()]).then(
+      ([activeProgram, customProgram, customName]) => {
+        setHasCustomProgram(
+          activeProgram === "custom" && !!customProgram && customProgram.length > 0
+        );
+        setCustomProgramName(customName);
+      }
+    );
   }, []);
 
   const toggleSound = () => {
@@ -33,6 +47,32 @@ export default function SettingsPage() {
     setSoundEnabled(next); // instant local cache for triggerCompletion
     setCompletionSoundSetting(next); // sync across devices
     if (next) playCompletionChime(); // preview the sound when turning it on
+  };
+
+  const handleExportProgram = async () => {
+    setExporting(true);
+    try {
+      const program = await getCustomProgram();
+      if (!program || program.length === 0) {
+        alert("No custom program to export");
+        return;
+      }
+
+      const json = exportCustomProgramJson(program, customProgramName);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${customProgramName.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      alert("Failed to export program: " + (error instanceof Error ? error.message : "Unknown error"));
+    } finally {
+      setExporting(false);
+    }
   };
 
   async function loadSettings() {
@@ -154,7 +194,7 @@ export default function SettingsPage() {
         </div>
 
         {/* AI Prompt Template */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div id="generate-with-ai" className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-2">
             🧠 Generate with AI
           </h2>
@@ -174,6 +214,28 @@ export default function SettingsPage() {
           </p>
           <CustomProgramImport />
         </div>
+
+        {/* Export Custom Program */}
+        {hasCustomProgram && (
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+            <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
+              📤 Export Custom Program
+            </h2>
+            <p className="text-sm text-[#8E8E93] mb-4">
+              Download &quot;{customProgramName}&quot; as a JSON file. Perfect for backup or sharing with others.
+            </p>
+            <button
+              onClick={handleExportProgram}
+              disabled={exporting}
+              className="w-full bg-[#34C759] hover:bg-[#30B050] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {exporting ? "Exporting..." : "⬇️ Download as JSON"}
+            </button>
+            <p className="text-xs text-[#8E8E93] mt-3">
+              You can import this file anytime to restore or transfer your program.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

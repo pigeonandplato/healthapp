@@ -426,13 +426,36 @@ function TodayPageContent() {
     }
 
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center p-4">
-        <div className="bg-white dark:bg-gray-800 rounded-lg p-8 max-w-md w-full text-center shadow-lg">
-          <div className="text-5xl mb-4">🤔</div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">No Workout Found</h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Unable to load this day&apos;s workout. Try refreshing or picking another date.
-          </p>
+      <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
+        <div className="max-w-md mx-auto pt-12 space-y-4">
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-8 text-center shadow-lg border border-[#E5E5EA] dark:border-[#38383A]">
+            <div className="text-6xl mb-4">👋</div>
+            <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-3">Welcome to Health Tracker</h2>
+            <p className="text-sm text-[#8E8E93] mb-6">
+              No program set up yet. Choose one of our built-in programs or create your own.
+            </p>
+
+            <div className="space-y-3">
+              <Link
+                href="/program"
+                className="block w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl transition-all active:scale-95"
+              >
+                Choose a Program
+              </Link>
+              <Link
+                href="/settings#generate-with-ai"
+                className="block w-full bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl transition-all"
+              >
+                Create Custom Program
+              </Link>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-[#E5E5EA] dark:border-[#38383A]">
+              <p className="text-xs text-[#8E8E93]">
+                First time? Check out the <Link href="/help" className="text-[#FF2D55] hover:underline font-medium">Help guide</Link>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     );

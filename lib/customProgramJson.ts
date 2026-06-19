@@ -36,7 +36,7 @@ export type ParsedCustomProgram = {
 };
 
 export const CUSTOM_PROGRAM_JSON_TEMPLATE: CustomProgramJsonDoc = {
-  name: "My 3-Day Program",
+  name: "My Custom Program",
   weeks: [
     {
       week: 1,
@@ -125,7 +125,8 @@ OUTPUT RULES (follow exactly):
 }
 
 SCHEDULE RULES:
-- Day "A" = Monday, "B" = Wednesday, "C" = Friday (3-day split only).
+- Days: A=Monday, B=Tuesday, C=Wednesday, D=Thursday, E=Friday, F=Saturday, G=Sunday
+- Use any combination: 3-day (A,C,E), 4-day (A,B,C,D), 5-day (A,B,C,D,E), 6-day, or full week all work
 - Include as many weeks as my program has (week 1, 2, 3, …).
 - Group exercises into blocks (e.g. "Warm-up", "Main", "Cool-down").
 
@@ -156,10 +157,10 @@ function stripJsonFences(text: string): string {
   return trimmed;
 }
 
-function normalizeDay(day: string): "A" | "B" | "C" {
+function normalizeDay(day: string): string {
   const d = String(day).trim().toUpperCase();
-  if (d === "A" || d === "B" || d === "C") return d;
-  throw new Error(`Invalid day "${day}" — use A (Monday), B (Wednesday), or C (Friday).`);
+  if (["A", "B", "C", "D", "E", "F", "G"].includes(d)) return d;
+  throw new Error(`Invalid day "${day}" — use A-G (Mon-Sun). Example: A,C,E for Mon/Wed/Fri or A,B,C,D,E for Mon-Fri.`);
 }
 
 function nestedToRows(doc: CustomProgramJsonDoc): CustomProgramRow[] {
@@ -274,4 +275,66 @@ export function parseCustomProgramJson(text: string): ParsedCustomProgram {
 
 export function formatTemplateJson(): string {
   return JSON.stringify(CUSTOM_PROGRAM_JSON_TEMPLATE, null, 2);
+}
+
+/**
+ * Convert CustomProgramRow array back to nested JSON format for export
+ */
+export function rowsToNestedJson(rows: CustomProgramRow[], programName: string): CustomProgramJsonDoc {
+  const weeks = new Map<number, Map<string, Map<string, Array<CustomProgramRow>>>>();
+
+  // Group rows: week -> day -> block -> exercises
+  for (const row of rows) {
+    if (!weeks.has(row.week)) {
+      weeks.set(row.week, new Map());
+    }
+    const weekMap = weeks.get(row.week)!;
+
+    if (!weekMap.has(row.day)) {
+      weekMap.set(row.day, new Map());
+    }
+    const dayMap = weekMap.get(row.day)!;
+
+    if (!dayMap.has(row.blockName)) {
+      dayMap.set(row.blockName, []);
+    }
+    dayMap.get(row.blockName)!.push(row);
+  }
+
+  // Convert to nested structure
+  const weeks_array = Array.from(weeks.entries())
+    .sort((a, b) => a[0] - b[0])
+    .map(([week, weekMap]) => ({
+      week,
+      days: Array.from(weekMap.entries())
+        .map(([day, dayMap]) => ({
+          day,
+          blocks: Array.from(dayMap.entries()).map(([blockName, exercises]) => ({
+            name: blockName,
+            exercises: exercises.map((ex) => ({
+              id: ex.exerciseId || undefined,
+              name: ex.exerciseName,
+              sets: ex.sets,
+              reps: ex.reps,
+              holdSeconds: ex.holdSeconds,
+              minutes: ex.minutes,
+              description: ex.description,
+              videoUrl: ex.videoUrl,
+            })),
+          })),
+        })),
+    }));
+
+  return {
+    name: programName,
+    weeks: weeks_array,
+  };
+}
+
+/**
+ * Export custom program as formatted JSON string
+ */
+export function exportCustomProgramJson(rows: CustomProgramRow[], programName: string): string {
+  const json = rowsToNestedJson(rows, programName);
+  return JSON.stringify(json, null, 2);
 }

@@ -124,6 +124,27 @@ export default function ProgramPage() {
           </div>
         </div>
 
+        {/* Create Custom Program */}
+        <div className="mb-8 bg-gradient-to-br from-[#FF2D55]/10 to-[#FF6482]/10 dark:from-[#FF2D55]/20 dark:to-[#FF6482]/20 rounded-2xl p-6 border-2 border-dashed border-[#FF2D55]/40 dark:border-[#FF2D55]/60">
+          <div className="flex items-start gap-4">
+            <div className="text-3xl flex-shrink-0">🛠️</div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-bold text-[#1C1C1E] dark:text-white mb-2">
+                Create Custom Program
+              </h3>
+              <p className="text-sm text-[#8E8E93] mb-4">
+                Build your own program from scratch. Describe it to Claude or ChatGPT, get JSON, import here.
+              </p>
+              <Link
+                href="/settings#generate-with-ai"
+                className="inline-block bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold px-4 py-2 rounded-lg transition-all active:scale-95"
+              >
+                Go to Generate with AI →
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {activeProgram === "adhd" && (
           <div className="space-y-6">
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
