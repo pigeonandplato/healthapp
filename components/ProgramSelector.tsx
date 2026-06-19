@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ProgramType, ProgramInfo } from "../lib/types";
-import { AVAILABLE_PROGRAMS, getActiveProgram, setActiveProgram } from "../lib/db";
+import { getAvailablePrograms, getActiveProgram, setActiveProgram } from "../lib/db";
 
 interface ProgramSelectorProps {
   onProgramChange?: (program: ProgramType) => void;
@@ -11,10 +11,16 @@ interface ProgramSelectorProps {
 
 export default function ProgramSelector({ onProgramChange, compact = false }: ProgramSelectorProps) {
   const [activeProgram, setActiveProgramState] = useState<ProgramType>("adhd");
+  const [programs, setPrograms] = useState<ProgramInfo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    getActiveProgram().then(setActiveProgramState);
+    async function load() {
+      const [current, available] = await Promise.all([getActiveProgram(), getAvailablePrograms()]);
+      setActiveProgramState(current);
+      setPrograms(available);
+    }
+    load();
   }, []);
 
   const handleSelect = async (programType: ProgramType) => {
@@ -24,7 +30,7 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
     onProgramChange?.(programType);
   };
 
-  const currentProgram = AVAILABLE_PROGRAMS.find((p) => p.type === activeProgram);
+  const currentProgram = programs.find((p) => p.type === activeProgram);
 
   if (compact) {
     return (
@@ -44,7 +50,7 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
           <>
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
             <div className="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-xl shadow-xl border border-gray-700 overflow-hidden z-50">
-              {AVAILABLE_PROGRAMS.map((program) => (
+              {programs.map((program) => (
                 <button
                   key={program.id}
                   onClick={() => handleSelect(program.type)}
@@ -73,7 +79,7 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-      {AVAILABLE_PROGRAMS.map((program) => (
+      {programs.map((program) => (
         <button
           key={program.id}
           onClick={() => handleSelect(program.type)}

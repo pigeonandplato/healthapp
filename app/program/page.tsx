@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import type { ProgramType, ProgramInfo } from "@/lib/types";
 import {
   getActiveProgram,
   setActiveProgram,
   getAvailablePrograms,
+  getArchivedPrograms,
+  archiveProgram,
   getAdhdProgramStartDate,
   setAdhdProgramStartDate,
   getGymProgramStartDate,
@@ -17,24 +20,33 @@ import {
   getCustomProgramName,
 } from "@/lib/db";
 import ProgramStartDateControl from "@/components/ProgramStartDateControl";
+import ProgramListCard from "@/components/ProgramListCard";
 
 export default function ProgramPage() {
   const [loading, setLoading] = useState(true);
   const [activeProgram, setActiveProgramState] = useState<ProgramType>("adhd");
   const [programs, setPrograms] = useState<ProgramInfo[]>([]);
+  const [archivedCount, setArchivedCount] = useState(0);
   const [customName, setCustomName] = useState("My Custom Program");
+  const [error, setError] = useState<string | null>(null);
+
+  const loadPrograms = async () => {
+    const [currentProgram, available, archived, cName] = await Promise.all([
+      getActiveProgram(),
+      getAvailablePrograms(),
+      getArchivedPrograms(),
+      getCustomProgramName(),
+    ]);
+    setActiveProgramState(currentProgram);
+    setPrograms(available);
+    setArchivedCount(archived.length);
+    setCustomName(cName);
+  };
 
   useEffect(() => {
     async function load() {
       setLoading(true);
-      const [currentProgram, available, cName] = await Promise.all([
-        getActiveProgram(),
-        getAvailablePrograms(),
-        getCustomProgramName(),
-      ]);
-      setActiveProgramState(currentProgram);
-      setPrograms(available);
-      setCustomName(cName);
+      await loadPrograms();
       setLoading(false);
     }
     load();
@@ -43,6 +55,22 @@ export default function ProgramPage() {
   const handleProgramSwitch = async (programType: ProgramType) => {
     setActiveProgramState(programType);
     await setActiveProgram(programType);
+  };
+
+  const handleArchive = async (program: ProgramInfo) => {
+    setError(null);
+    const confirmed = window.confirm(
+      `Archive "${program.name}"?\n\nIt will move off this screen. You can restore it anytime from Archived Programs.`
+    );
+    if (!confirmed) return;
+
+    const result = await archiveProgram(program.type);
+    if (!result.ok) {
+      setError(result.error ?? "Could not archive that program.");
+      return;
+    }
+
+    await loadPrograms();
   };
 
   if (loading) {
@@ -59,39 +87,39 @@ export default function ProgramPage() {
         <div className="max-w-4xl mx-auto px-4 py-6">
           <h2 className="text-2xl font-bold mb-2">Your Programs 🎯</h2>
           <p className="text-white/90 text-sm">Select which program to track today</p>
+          <Link
+            href="/program/archived"
+            className="inline-flex items-center gap-1 mt-3 text-sm font-medium text-white/90 hover:text-white underline-offset-2 hover:underline"
+          >
+            {archivedCount > 0
+              ? `View archived programs (${archivedCount}) →`
+              : "View archived programs →"}
+          </Link>
         </div>
       </section>
 
       <main className="max-w-4xl mx-auto px-4 py-8">
+        {error && (
+          <div className="mb-6 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 px-4 py-3 text-sm text-red-800 dark:text-red-200">
+            {error}
+          </div>
+        )}
+
         <div className="mb-8">
           <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">Choose Active Program</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {programs.map((prog) => (
-              <button
+              <ProgramListCard
                 key={prog.id}
-                onClick={() => handleProgramSwitch(prog.type)}
-                className={`p-5 rounded-2xl border-2 transition-all text-left ${
-                  prog.type === activeProgram
-                    ? "border-[#FF2D55] bg-[#FF2D55]/10 dark:bg-[#FF2D55]/20"
-                    : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-gray-300 dark:hover:border-gray-600"
-                }`}
-              >
-                <div className="text-3xl mb-2">{prog.icon}</div>
-                <div className="font-bold text-gray-900 dark:text-white">{prog.name}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{prog.description}</div>
-                {prog.type === activeProgram && (
-                  <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#FF2D55]">
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Active
-                  </div>
-                )}
-              </button>
+                program={prog}
+                isActive={prog.type === activeProgram}
+                onSelect={() => handleProgramSwitch(prog.type)}
+                action={{
+                  label: "Archive",
+                  variant: "archive",
+                  onClick: () => handleArchive(prog),
+                }}
+              />
             ))}
           </div>
         </div>

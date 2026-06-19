@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { WorkoutDay } from "@/lib/types";
+import { useState, useEffect, useCallback } from "react";
+import { WorkoutDay, Exercise } from "@/lib/types";
 import { getCompletionsByDate, saveCompletion } from "@/lib/db";
 import { triggerCompletion } from "@/utils/haptics";
 import { WorkoutSkeleton } from "./SkeletonLoader";
@@ -9,11 +9,53 @@ import { WorkoutSkeleton } from "./SkeletonLoader";
 interface ChecklistViewProps {
   workout: WorkoutDay;
   onProgressChange?: (completed: number, total: number) => void;
+  onOpenDetailView?: () => void;
 }
 
-export default function ChecklistView({ workout, onProgressChange }: ChecklistViewProps) {
+function ExerciseDetailPreview({ exercise }: { exercise: Exercise }) {
+  return (
+    <div className="mt-3 pl-9 space-y-2 text-xs text-gray-600 dark:text-gray-400">
+      {exercise.description && (
+        <p className="text-sm text-gray-700 dark:text-gray-300">{exercise.description}</p>
+      )}
+      {exercise.instructions.length > 0 && (
+        <div>
+          <p className="font-semibold text-gray-800 dark:text-gray-200 mb-1">How to do it</p>
+          <ul className="list-disc pl-4 space-y-1">
+            {exercise.instructions.map((step, i) => (
+              <li key={i}>{step}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {exercise.commonMistakes.length > 0 && (
+        <div>
+          <p className="font-semibold text-amber-800 dark:text-amber-200 mb-1">Watch out for</p>
+          <ul className="list-disc pl-4 space-y-1">
+            {exercise.commonMistakes.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {exercise.stopConditions.length > 0 && (
+        <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-2">
+          <p className="font-semibold text-red-800 dark:text-red-200 mb-1">Stop if</p>
+          <ul className="list-disc pl-4 space-y-1 text-red-700 dark:text-red-300">
+            {exercise.stopConditions.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function ChecklistView({ workout, onProgressChange, onOpenDetailView }: ChecklistViewProps) {
   const [completions, setCompletions] = useState<Record<string, boolean>>({});
   const [loading, setLoading] = useState(true);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const trackableExercises = workout.blocks
     .flatMap((b) => b.exercises)
@@ -127,12 +169,19 @@ export default function ChecklistView({ workout, onProgressChange }: ChecklistVi
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {trackable.map((exercise) => {
                 const isCompleted = completions[exercise.id] || false;
+                const isExpanded = expandedId === exercise.id;
+                const hasDetails =
+                  exercise.description ||
+                  exercise.instructions.length > 0 ||
+                  exercise.commonMistakes.length > 0 ||
+                  exercise.stopConditions.length > 0;
+
                 return (
                   <li
                     key={exercise.id}
                     className="px-5 py-3 hover:bg-gray-50 dark:hover:bg-gray-900/40 transition-colors"
                   >
-                    <label className="flex items-start gap-3 cursor-pointer">
+                    <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 mt-0.5">
                         <input
                           type="checkbox"
@@ -143,20 +192,55 @@ export default function ChecklistView({ workout, onProgressChange }: ChecklistVi
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <p
-                          className={`font-medium text-sm ${
-                            isCompleted
-                              ? "line-through text-gray-400 dark:text-gray-500"
-                              : "text-gray-900 dark:text-gray-100"
-                          }`}
+                        <button
+                          type="button"
+                          onClick={() => setExpandedId(isExpanded ? null : exercise.id)}
+                          className="w-full text-left"
+                          disabled={!hasDetails}
                         >
-                          {exercise.name}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                          {formatPrescription(exercise)}
-                        </p>
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className={`font-medium text-sm ${
+                                  isCompleted
+                                    ? "line-through text-gray-400 dark:text-gray-500"
+                                    : "text-gray-900 dark:text-gray-100"
+                                }`}
+                              >
+                                {exercise.name}
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                {formatPrescription(exercise)}
+                              </p>
+                            </div>
+                            {hasDetails && (
+                              <svg
+                                className={`w-4 h-4 flex-shrink-0 text-gray-400 transition-transform mt-0.5 ${
+                                  isExpanded ? "rotate-180" : ""
+                                }`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            )}
+                          </div>
+                        </button>
+
+                        {isExpanded && hasDetails && <ExerciseDetailPreview exercise={exercise} />}
+
+                        {isExpanded && onOpenDetailView && exercise.media.type === "video" && (
+                          <button
+                            type="button"
+                            onClick={onOpenDetailView}
+                            className="mt-2 ml-0 text-xs font-semibold text-[#007AFF]"
+                          >
+                            Open Detail view for video →
+                          </button>
+                        )}
                       </div>
-                    </label>
+                    </div>
                   </li>
                 );
               })}

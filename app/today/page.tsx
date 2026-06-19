@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { WorkoutDay, ViewMode, ProgramType, ProgramMeta } from "@/lib/types";
 import {
   getCompletionsByDate,
@@ -40,8 +41,10 @@ import MilestoneCelebration from "@/components/MilestoneCelebration";
 import StickyProgressBar from "@/components/StickyProgressBar";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
+import DayNavigator from "@/components/DayNavigator";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
+import { isValidIsoDate, parseLocalDate as parseIsoDate } from "@/lib/dates";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -51,14 +54,48 @@ function toLocalDateString(date: Date): string {
 }
 
 function parseLocalDate(dateStr: string): Date {
-  const [year, month, day] = dateStr.split("-").map(Number);
-  return new Date(year, month - 1, day);
+  return parseIsoDate(dateStr);
 }
 
 const VIEW_PREF_KEY = "preferredView";
 
+function TodayPageLoading() {
+  return (
+    <div className="min-h-screen bg-white dark:bg-black">
+      <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="max-w-4xl mx-auto px-4 py-4">
+          <StatsSkeleton />
+        </div>
+      </section>
+      <main className="max-w-4xl mx-auto px-4 py-6">
+        <div className="animate-pulse space-y-4">
+          <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
+          <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
+          <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
+        </div>
+      </main>
+    </div>
+  );
+}
+
 export default function TodayPage() {
-  const [selectedDate, setSelectedDate] = useState<string>(() => toLocalDateString(new Date()));
+  return (
+    <Suspense fallback={<TodayPageLoading />}>
+      <TodayPageContent />
+    </Suspense>
+  );
+}
+
+function TodayPageContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialDateParam = searchParams.get("date");
+  const initialViewParam = searchParams.get("view") as ViewMode | null;
+
+  const [selectedDate, setSelectedDateState] = useState<string>(() => {
+    if (initialDateParam && isValidIsoDate(initialDateParam)) return initialDateParam;
+    return toLocalDateString(new Date());
+  });
   const [workout, setWorkout] = useState<WorkoutDay | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode | null>(null);
   const [loading, setLoading] = useState(true);
@@ -76,6 +113,33 @@ export default function TodayPage() {
   const [celebrations, setCelebrations] = useState<Milestone[]>([]);
 
   const allowedViews: ViewMode[] = activeProgram === "adhd" ? ["focus", "checklist", "coach"] : ["checklist", "coach"];
+
+  const syncUrl = useCallback(
+    (date: string, view: ViewMode | null) => {
+      const params = new URLSearchParams();
+      const today = toLocalDateString(new Date());
+      if (date !== today) params.set("date", date);
+      if (view === "coach") params.set("view", "coach");
+      const qs = params.toString();
+      router.replace(qs ? `/today?${qs}` : "/today", { scroll: false });
+    },
+    [router]
+  );
+
+  const setSelectedDate = useCallback(
+    (date: string) => {
+      setSelectedDateState(date);
+      syncUrl(date, viewMode);
+    },
+    [syncUrl, viewMode]
+  );
+
+  useEffect(() => {
+    if (initialDateParam && isValidIsoDate(initialDateParam) && initialDateParam !== selectedDate) {
+      setSelectedDateState(initialDateParam);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialDateParam]);
   const defaultView: ViewMode = activeProgram === "adhd" ? "focus" : "checklist";
 
   useEffect(() => {
@@ -95,7 +159,8 @@ export default function TodayPage() {
 
         const allowed: ViewMode[] = currentProgram === "adhd" ? ["focus", "checklist", "coach"] : ["checklist", "coach"];
         const saved = (typeof window !== "undefined" ? localStorage.getItem(VIEW_PREF_KEY) : null) as ViewMode | null;
-        setViewMode(saved && allowed.includes(saved) ? saved : currentProgram === "adhd" ? "focus" : "checklist");
+        const fromUrl = initialViewParam && allowed.includes(initialViewParam) ? initialViewParam : null;
+        setViewMode(fromUrl ?? (saved && allowed.includes(saved) ? saved : currentProgram === "adhd" ? "focus" : "checklist"));
 
         let selectedWorkout: WorkoutDay | null | undefined;
         if (currentProgram === "gym") {
@@ -227,6 +292,25 @@ export default function TodayPage() {
   const handleViewChange = (view: ViewMode) => {
     setViewMode(view);
     localStorage.setItem(VIEW_PREF_KEY, view);
+    syncUrl(selectedDate, view);
+  };
+
+  const getDaySubtitle = (): string | undefined => {
+    if (!programMeta) return undefined;
+    if (activeProgram === "gym") {
+      return programMeta.day === "A"
+        ? "Chest day"
+        : programMeta.day === "B"
+          ? "Back + biceps"
+          : "Shoulders + legs";
+    }
+    if (activeProgram === "chacha" && programMeta.day in CHACHA_DAY_LABELS) {
+      return CHACHA_DAY_LABELS[programMeta.day as keyof typeof CHACHA_DAY_LABELS];
+    }
+    if (activeProgram === "adhd" || activeProgram === "custom") {
+      return `Week ${programMeta.week}`;
+    }
+    return undefined;
   };
 
   const todayProgress = totalExercises > 0 ? Math.round((completedCount / totalExercises) * 100) : 0;
@@ -264,22 +348,7 @@ export default function TodayPage() {
   };
 
   if (loading || viewMode === null) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-black">
-        <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
-          <div className="max-w-4xl mx-auto px-4 py-4">
-            <StatsSkeleton />
-          </div>
-        </section>
-        <main className="max-w-4xl mx-auto px-4 py-6">
-          <div className="animate-pulse space-y-4">
-            <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
-            <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
-            <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
-          </div>
-        </main>
-      </div>
-    );
+    return <TodayPageLoading />;
   }
 
   // Rest-day screen for schedule-based programs (gym / custom).
@@ -292,8 +361,14 @@ export default function TodayPage() {
 
       return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-          <div className="max-w-md mx-auto pt-8">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg mb-4">
+          <div className="max-w-md mx-auto pt-4 space-y-4">
+            <DayNavigator
+              selectedDate={selectedDate}
+              onDateChange={setSelectedDate}
+              program={activeProgram}
+            />
+
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
               <div className="text-5xl mb-3">😴</div>
               <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Rest Day · {dayName}</h2>
               <p className="text-sm text-gray-500 dark:text-gray-400">Recovery is part of the program</p>
@@ -379,7 +454,11 @@ export default function TodayPage() {
           ? `🗂️ ${customName}`
           : "🧠 ADHD Knee + Back";
 
-  const viewLabels: Record<ViewMode, string> = { focus: "Focus", checklist: "List", coach: "Detail" };
+  const viewLabels: Record<ViewMode, string> = {
+    focus: "Focus",
+    checklist: "List",
+    coach: "Detail + video",
+  };
 
   return (
     <div className="bg-white dark:bg-black">
@@ -443,6 +522,14 @@ export default function TodayPage() {
             />
           </div>
 
+          <DayNavigator
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+            program={activeProgram}
+            subtitle={getDaySubtitle()}
+            className="mb-4"
+          />
+
           {commitment && (
             <Link
               href="/progress"
@@ -490,7 +577,12 @@ export default function TodayPage() {
           {viewMode === "focus" ? (
             <FocusView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
           ) : viewMode === "checklist" ? (
-            <ChecklistView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
+            <ChecklistView
+              key={selectedDate}
+              workout={workout}
+              onProgressChange={handleProgressChange}
+              onOpenDetailView={() => handleViewChange("coach")}
+            />
           ) : (
             <CoachView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
           )}

@@ -58,3 +58,19 @@ export function dateOnOrAfterWeekday(fromIso: string, targetDow: number): string
 export function isValidIsoDate(value: string): boolean {
   return /^\d{4}-\d{2}-\d{2}$/.test(value);
 }
+
+export function addDays(iso: string, days: number): string {
+  const d = parseLocalDate(iso);
+  d.setDate(d.getDate() + days);
+  return toLocalDateString(d);
+}
+
+/** Nearest on-or-before date matching targetDow (0=Sun … 6=Sat). */
+export function dateOnOrBeforeWeekday(fromIso: string, targetDow: number): string {
+  const d = parseLocalDate(fromIso);
+  for (let i = 0; i < 7; i++) {
+    if (d.getDay() === targetDow) return toLocalDateString(d);
+    d.setDate(d.getDate() - 1);
+  }
+  return toLocalDateString(d);
+}

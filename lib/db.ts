@@ -458,17 +458,34 @@ const CUSTOM_PROGRAM_START_DATE_KEY = "customProgramStartDate";
 
 export async function getActiveProgram(): Promise<ProgramType> {
   const value = await getSetting(ACTIVE_PROGRAM_KEY);
-  if (value === "gym" || value === "adhd" || value === "chacha") return value;
-  if (value === "custom") {
-    // Only honor a custom selection if a custom program actually exists.
-    const hasCustom = await hasCustomProgram();
-    return hasCustom ? "custom" : "adhd";
-  }
-  if (value === "running" || value === "rehab") {
+  let resolved: ProgramType = "adhd";
+
+  if (value === "gym" || value === "adhd" || value === "chacha") {
+    resolved = value;
+  } else if (value === "custom") {
+    resolved = (await hasCustomProgram()) ? "custom" : "adhd";
+  } else if (value === "running" || value === "rehab") {
     await saveSetting(ACTIVE_PROGRAM_KEY, "adhd");
-    return "adhd";
+    resolved = "adhd";
   }
-  return "adhd";
+
+  // If the active program was archived, fall back to the first visible one.
+  const archived = await getArchivedProgramTypes();
+  if (archived.includes(resolved)) {
+    const available = await getAvailablePrograms();
+    const fallback = available[0]?.type ?? "adhd";
+    if (fallback !== resolved) {
+      await saveSetting(ACTIVE_PROGRAM_KEY, fallback);
+    }
+    return fallback;
+  }
+
+  // Custom was archived or removed — same fallback.
+  if (resolved === "custom" && !(await hasCustomProgram())) {
+    resolved = "adhd";
+  }
+
+  return resolved;
 }
 
 export async function setActiveProgram(programType: ProgramType): Promise<void> {
@@ -781,7 +798,7 @@ export async function getCustomWorkoutByDate(date: string): Promise<WorkoutDay |
   };
 }
 
-export async function getAvailablePrograms(): Promise<ProgramInfo[]> {
+export async function getAllProgramInfos(): Promise<ProgramInfo[]> {
   const programs = [...AVAILABLE_PROGRAMS];
   if (await hasCustomProgram()) {
     const name = await getCustomProgramName();
@@ -794,6 +811,63 @@ export async function getAvailablePrograms(): Promise<ProgramInfo[]> {
     });
   }
   return programs;
+}
+
+const ARCHIVED_PROGRAMS_KEY = "archived_programs";
+
+const VALID_PROGRAM_TYPES: ProgramType[] = ["gym", "adhd", "custom", "chacha"];
+
+export async function getArchivedProgramTypes(): Promise<ProgramType[]> {
+  const v = await getSetting(ARCHIVED_PROGRAMS_KEY);
+  if (!Array.isArray(v)) return [];
+  return v.filter((t): t is ProgramType => VALID_PROGRAM_TYPES.includes(t));
+}
+
+export async function getAvailablePrograms(): Promise<ProgramInfo[]> {
+  const all = await getAllProgramInfos();
+  const archived = new Set(await getArchivedProgramTypes());
+  return all.filter((p) => !archived.has(p.type));
+}
+
+export async function getArchivedPrograms(): Promise<ProgramInfo[]> {
+  const all = await getAllProgramInfos();
+  const archived = new Set(await getArchivedProgramTypes());
+  return all.filter((p) => archived.has(p.type));
+}
+
+/** Hide a program from the main list. Keeps at least one program visible. */
+export async function archiveProgram(
+  type: ProgramType
+): Promise<{ ok: boolean; error?: string }> {
+  const available = await getAvailablePrograms();
+  if (available.length <= 1 && available.some((p) => p.type === type)) {
+    return { ok: false, error: "Keep at least one program on your main list." };
+  }
+
+  const archived = await getArchivedProgramTypes();
+  if (archived.includes(type)) return { ok: true };
+
+  const nextArchived = [...archived, type];
+  await saveSetting(ARCHIVED_PROGRAMS_KEY, nextArchived);
+
+  const active = await getSetting(ACTIVE_PROGRAM_KEY);
+  if (active === type) {
+    const remaining = (await getAllProgramInfos()).filter((p) => !nextArchived.includes(p.type));
+    if (remaining.length > 0) {
+      await setActiveProgram(remaining[0].type);
+    }
+  }
+
+  return { ok: true };
+}
+
+/** Restore a program to the main Programs screen. */
+export async function unarchiveProgram(type: ProgramType): Promise<void> {
+  const archived = await getArchivedProgramTypes();
+  await saveSetting(
+    ARCHIVED_PROGRAMS_KEY,
+    archived.filter((t) => t !== type)
+  );
 }
 
 // ============================================
