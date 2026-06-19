@@ -236,8 +236,10 @@ export default function ProgramPage() {
               <h3 className="font-bold text-yellow-900 dark:text-yellow-200 mb-3">💡 Training Tips</h3>
               <ul className="text-sm text-yellow-800 dark:text-yellow-300 space-y-2">
                 <li>• <strong>Rest Days:</strong> Saturday & Sunday — recovery or light walking</li>
-                <li>• <strong>Form first:</strong> Every exercise has a video + TL;DR — use them</li>
-                <li>• <strong>Pain rule:</strong> 0–3/10 okay · 4–5 reduce · 6+ stop</li>
+                <li>• <strong>Safety rule:</strong> 0–3/10 discomfort = okay · 4–5/10 = reduce load/range · 6+/10 or worse next day = stop</li>
+                <li>• <strong>Every exercise</strong> has step-by-step form cues, common mistakes, and stop conditions on its card</li>
+                <li>• <strong>Form first:</strong> Watch the embedded video on each exercise before loading up</li>
+                <li>• <strong>Wrist tip:</strong> Use neutral grips, push-up handles, or elevate hands if wrists complain</li>
                 <li>• <strong>Progression:</strong> Add weight/reps only when form stays clean</li>
               </ul>
               <ProgramStartDateControl
