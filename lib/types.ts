@@ -30,6 +30,8 @@ export type CustomProgramRow = {
   holdSeconds?: number;
   minutes?: number;
   description?: string;
+  /** YouTube watch URL, youtu.be link, embed URL, or 11-character video ID */
+  videoUrl?: string;
 };
 
 export type ProgramInfo = {

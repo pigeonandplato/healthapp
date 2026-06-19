@@ -234,7 +234,8 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
                     <th className="pb-2 pr-4">Day</th>
                     <th className="pb-2 pr-4">Block</th>
                     <th className="pb-2 pr-4">Exercise</th>
-                    <th className="pb-2">Sets/Reps</th>
+                    <th className="pb-2 pr-4">Sets/Reps</th>
+                    <th className="pb-2">Video</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -253,6 +254,7 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
                               ? `${row.minutes} min`
                               : "—"}
                       </td>
+                      <td className="py-2 text-[#8E8E93]">{row.videoUrl ? "▶️" : "—"}</td>
                     </tr>
                   ))}
                 </tbody>

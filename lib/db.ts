@@ -28,6 +28,7 @@ import {
   ADHD_PROGRAM_ID,
 } from "./adhdSeedData";
 import { supabase } from "./supabase";
+import { normalizeYoutubeEmbedUrl } from "./youtube";
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 
 // ============================================
@@ -708,12 +709,15 @@ export async function setCustomProgramStartDate(startDate: string): Promise<void
 
 function customRowToExercise(row: CustomProgramRow, week: number): Exercise {
   const slug = (row.exerciseName || "move").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 24);
+  const embed = row.videoUrl ? normalizeYoutubeEmbedUrl(row.videoUrl) : undefined;
   return {
     id: row.exerciseId || `custom-w${week}-${row.day}-${slug}`,
     name: row.exerciseName || "Exercise",
     description: row.description || "",
     phase: Phase.PHASE_0,
-    media: { type: "svg", alt: row.exerciseName || "Exercise" },
+    media: embed
+      ? { type: "video", videoUrl: embed, alt: row.exerciseName || "Exercise" }
+      : { type: "svg", alt: row.exerciseName || "Exercise" },
     prescription: {
       sets: row.sets,
       reps: row.reps,

@@ -17,6 +17,7 @@ export type CustomProgramJsonDoc = {
           holdSeconds?: number;
           minutes?: number;
           description?: string;
+          videoUrl?: string;
         }>;
       }>;
     }>;
@@ -52,13 +53,14 @@ export const CUSTOM_PROGRAM_JSON_TEMPLATE: CustomProgramJsonDoc = {
                   sets: 1,
                   reps: 10,
                   description: "Light pulse to warm up",
+                  videoUrl: "https://www.youtube.com/watch?v=UpH7rm0cYbM",
                 },
               ],
             },
             {
               name: "Main",
               exercises: [
-                { id: "w1-a-push", name: "Push-ups", sets: 3, reps: 10 },
+                { id: "w1-a-push", name: "Push-ups", sets: 3, reps: 10, videoUrl: "https://www.youtube.com/watch?v=IODxDxX7oi4" },
                 { id: "w1-a-row", name: "Dumbbell row", sets: 3, reps: 12 },
               ],
             },
@@ -110,7 +112,8 @@ OUTPUT RULES (follow exactly):
                   "name": "Exercise name",
                   "sets": 3,
                   "reps": 10,
-                  "description": "Optional form cue"
+                  "description": "Optional form cue",
+                  "videoUrl": "https://www.youtube.com/watch?v=VIDEO_ID"
                 }
               ]
             }
@@ -133,6 +136,14 @@ EXERCISE FIELDS:
 - Use "holdSeconds" for holds (e.g. plank 30).
 - Use "minutes" for timed/cardio (e.g. elliptical 15).
 - "description" is optional (form cues, notes).
+
+VIDEO RULES (important):
+- For EVERY exercise, search YouTube (use web search / browsing if you have it) for a clear, reputable form-demonstration video that matches the exact exercise.
+- Include "videoUrl" on each exercise: a full https://www.youtube.com/watch?v=... link, youtu.be link, or the 11-character video ID.
+- Prefer trusted channels: ATHLEAN-X, Squat University, Scott Herman Fitness, Jeff Nippard, Calisthenic Movement, Bob & Brad, or official equipment demos.
+- Match equipment in the video to the prescription (dumbbell vs barbell vs bodyweight).
+- Pick the clearest coaching video, not a random clip or meme.
+- If you cannot find a reliable video after searching, omit "videoUrl" for that exercise — do NOT invent or guess IDs.
 
 Now convert this program:
 
@@ -190,6 +201,7 @@ function nestedToRows(doc: CustomProgramJsonDoc): CustomProgramRow[] {
             holdSeconds: ex.holdSeconds != null ? Number(ex.holdSeconds) : undefined,
             minutes: ex.minutes != null ? Number(ex.minutes) : undefined,
             description: ex.description ? String(ex.description).trim() : undefined,
+            videoUrl: ex.videoUrl ? String(ex.videoUrl).trim() : undefined,
           });
         }
       }
@@ -219,6 +231,7 @@ function flatToRows(doc: CustomProgramJsonFlat): CustomProgramRow[] {
       holdSeconds: row.holdSeconds != null ? Number(row.holdSeconds) : undefined,
       minutes: row.minutes != null ? Number(row.minutes) : undefined,
       description: row.description ? String(row.description).trim() : undefined,
+      videoUrl: row.videoUrl ? String(row.videoUrl).trim() : undefined,
     };
   });
 }
