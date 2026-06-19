@@ -10,12 +10,13 @@ export enum Phase {
 }
 
 export type DayRotation = "A" | "B" | "C";
+export type ExtendedDayRotation = DayRotation | "D" | "E";
 
 // 24-week program phases (6 months)
 export type ProgramPhase = "P1" | "P2" | "P3" | "P4" | "P5";
 
 // Program types available in the app
-export type ProgramType = "gym" | "adhd" | "custom";
+export type ProgramType = "gym" | "adhd" | "custom" | "chacha";
 
 // A single row of a user-imported custom program (from CSV/Sheets).
 export type CustomProgramRow = {
@@ -45,7 +46,7 @@ export type ProgramMeta = {
   week: number; // 1-based
   phase: ProgramPhase;
   phaseWeek: number; // 1-based week within phase
-  day: DayRotation; // A/B/C rotation day
+  day: ExtendedDayRotation; // A/B/C rotation day (D/E used by Chacha Training)
 };
 
 export type ExerciseMedia = {

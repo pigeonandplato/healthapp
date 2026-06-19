@@ -10,6 +10,8 @@ import {
   setAdhdProgramStartDate,
   getGymProgramStartDate,
   setGymProgramStartDate,
+  getChachaProgramStartDate,
+  setChachaProgramStartDate,
   getCustomProgramStartDate,
   setCustomProgramStartDate,
   getCustomProgramName,
@@ -193,6 +195,55 @@ export default function ProgramPage() {
                 title="When did you start gym training?"
                 getStartDate={getGymProgramStartDate}
                 setStartDate={setGymProgramStartDate}
+              />
+            </div>
+          </div>
+        )}
+
+        {activeProgram === "chacha" && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">💪 Chacha Training</h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                5 days per week: <strong>Monday through Friday</strong>. Knee/back-friendly exercises with video guides and TL;DR cues for every move.
+              </p>
+
+              <div className="space-y-3">
+                {[
+                  { emoji: "🦵", day: "Monday", focus: "Legs — mobility, box squat, RDL, leg press, band walks, calves" },
+                  { emoji: "❤️", day: "Tuesday", focus: "Cardio / Grip / Core — elliptical, carries, hangs, McGill-style core" },
+                  { emoji: "💪", day: "Wednesday", focus: "Chest — push-ups, presses, flies, optional dips" },
+                  { emoji: "🔙", day: "Thursday", focus: "Back — pulldowns, supported rows, hip thrust, shrugs" },
+                  { emoji: "🏋️", day: "Friday", focus: "Arms & Shoulders — biceps, delts, triceps" },
+                ].map((d) => (
+                  <div
+                    key={d.day}
+                    className="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{d.emoji}</span>
+                      <div>
+                        <h3 className="font-bold text-gray-900 dark:text-white">{d.day}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{d.focus}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-2xl p-6 border-2 border-yellow-200 dark:border-yellow-800">
+              <h3 className="font-bold text-yellow-900 dark:text-yellow-200 mb-3">💡 Training Tips</h3>
+              <ul className="text-sm text-yellow-800 dark:text-yellow-300 space-y-2">
+                <li>• <strong>Rest Days:</strong> Saturday & Sunday — recovery or light walking</li>
+                <li>• <strong>Form first:</strong> Every exercise has a video + TL;DR — use them</li>
+                <li>• <strong>Pain rule:</strong> 0–3/10 okay · 4–5 reduce · 6+ stop</li>
+                <li>• <strong>Progression:</strong> Add weight/reps only when form stays clean</li>
+              </ul>
+              <ProgramStartDateControl
+                title="When did you start Chacha Training?"
+                getStartDate={getChachaProgramStartDate}
+                setStartDate={setChachaProgramStartDate}
               />
             </div>
           </div>

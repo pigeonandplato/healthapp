@@ -1302,7 +1302,8 @@ function removeExercise(blocks: ExerciseBlock[], exerciseId: string) {
 
 // Day-by-day generation with progression rules (phaseWeek-aware).
 export function getBlocksForProgramMeta(meta: ProgramMeta): ExerciseBlock[] {
-  const base = programBlocks[meta.phase]?.[meta.day] || programBlocks.P1.A;
+  const day = meta.day as DayRotation; // ADHD plan uses A/B/C only
+  const base = programBlocks[meta.phase]?.[day] || programBlocks.P1.A;
   const blocks = deepCloneBlocks(base);
 
   // P1 knee ladder (Weeks 1–4): Week 1–2 = simpler, Week 3–4 = add step-down + SL box squat and progress step-up.

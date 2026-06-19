@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import type { ProgramType, WorkoutDay } from "@/lib/types";
-import { getActiveProgram, getGymWorkoutByDate, getAdhdWorkoutByDate, getCustomWorkoutByDate } from "@/lib/db";
+import { getActiveProgram, getGymWorkoutByDate, getAdhdWorkoutByDate, getCustomWorkoutByDate, getChachaWorkoutByDate } from "@/lib/db";
 
 type ScheduleDay = {
   date: string;
@@ -44,9 +44,11 @@ export default function SchedulePage() {
         const workout =
           program === "gym"
             ? await getGymWorkoutByDate(dateStr)
-            : program === "custom"
-              ? await getCustomWorkoutByDate(dateStr)
-              : await getAdhdWorkoutByDate(dateStr);
+            : program === "chacha"
+              ? await getChachaWorkoutByDate(dateStr)
+              : program === "custom"
+                ? await getCustomWorkoutByDate(dateStr)
+                : await getAdhdWorkoutByDate(dateStr);
 
         items.push({
           date: dateStr,
@@ -83,7 +85,13 @@ export default function SchedulePage() {
   }, [] as ScheduleDay[][]);
 
   const programLabel =
-    activeProgram === "gym" ? "🏋️ Gym PPL" : activeProgram === "custom" ? "🗂️ Custom Program" : "🧠 ADHD Knee + Back";
+    activeProgram === "gym"
+      ? "🏋️ Gym PPL"
+      : activeProgram === "chacha"
+        ? "💪 Chacha Training"
+        : activeProgram === "custom"
+          ? "🗂️ Custom Program"
+          : "🧠 ADHD Knee + Back";
 
   return (
     <div className="bg-white dark:bg-black">
@@ -157,7 +165,7 @@ export default function SchedulePage() {
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              <div className="text-3xl">{isRestDay ? "😴" : activeProgram === "gym" ? "💪" : activeProgram === "custom" ? "🗂️" : "🧠"}</div>
+                              <div className="text-3xl">{isRestDay ? "😴" : activeProgram === "gym" ? "💪" : activeProgram === "chacha" ? "💪" : activeProgram === "custom" ? "🗂️" : "🧠"}</div>
                               <div>
                                 <div className="font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                                   {item.dayName}

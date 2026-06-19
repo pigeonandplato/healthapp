@@ -10,6 +10,8 @@ import {
   getActiveProgram,
   getGymWorkoutByDate,
   getGymDayForDate,
+  getChachaWorkoutByDate,
+  getChachaDayForDate,
   getAdhdWorkoutByDate,
   getCustomWorkoutByDate,
   getCustomProgramName,
@@ -39,6 +41,7 @@ import StickyProgressBar from "@/components/StickyProgressBar";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import DatePicker from "@/components/DatePicker";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
+import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -105,6 +108,11 @@ export default function TodayPage() {
           if (cancelled) return;
           setIsRestDay(!gymInfo.isGymDay);
           selectedWorkout = await getCustomWorkoutByDate(loadId);
+        } else if (currentProgram === "chacha") {
+          const chachaInfo = getChachaDayForDate(loadId);
+          if (cancelled) return;
+          setIsRestDay(!chachaInfo.isTrainingDay);
+          selectedWorkout = await getChachaWorkoutByDate(loadId);
         } else {
           if (cancelled) return;
           setIsRestDay(false);
@@ -223,15 +231,24 @@ export default function TodayPage() {
 
   const todayProgress = totalExercises > 0 ? Math.round((completedCount / totalExercises) * 100) : 0;
 
-  // Find the next Mon/Wed/Fri training day (gym/custom rest-day screen).
-  const getNextScheduledDay = (fromDate: Date): { date: Date; day: string } => {
+  // Find the next training day for schedule-based programs.
+  const getNextScheduledDay = (fromDate: Date, program: ProgramType): { date: Date; day: string } => {
     const d = new Date(fromDate);
     for (let i = 1; i <= 7; i++) {
       d.setDate(d.getDate() + 1);
       const dow = d.getDay();
-      if (dow === 1) return { date: new Date(d), day: "Monday" };
-      if (dow === 3) return { date: new Date(d), day: "Wednesday" };
-      if (dow === 5) return { date: new Date(d), day: "Friday" };
+      if (program === "chacha") {
+        if (dow >= 1 && dow <= 5) {
+          return {
+            date: new Date(d),
+            day: d.toLocaleDateString("en-US", { weekday: "long" }),
+          };
+        }
+      } else {
+        if (dow === 1) return { date: new Date(d), day: "Monday" };
+        if (dow === 3) return { date: new Date(d), day: "Wednesday" };
+        if (dow === 5) return { date: new Date(d), day: "Friday" };
+      }
     }
     return { date: d, day: "Monday" };
   };
@@ -267,10 +284,10 @@ export default function TodayPage() {
 
   // Rest-day screen for schedule-based programs (gym / custom).
   if (!workout) {
-    if ((activeProgram === "gym" || activeProgram === "custom") && isRestDay) {
+    if ((activeProgram === "gym" || activeProgram === "custom" || activeProgram === "chacha") && isRestDay) {
       const selectedDateObj = parseLocalDate(selectedDate);
       const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" });
-      const nextDay = getNextScheduledDay(selectedDateObj);
+      const nextDay = getNextScheduledDay(selectedDateObj, activeProgram);
       const nextDateStr = toLocalDateString(nextDay.date);
 
       return (
@@ -297,12 +314,21 @@ export default function TodayPage() {
 
             <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg">
               <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">JUMP TO WORKOUT</h3>
-              <div className="grid grid-cols-3 gap-2">
-                {[
-                  { d: 1, label: "Mon", emoji: "💪" },
-                  { d: 3, label: "Wed", emoji: "🔙" },
-                  { d: 5, label: "Fri", emoji: "🦵" },
-                ].map((b) => (
+              <div className={`grid gap-2 ${activeProgram === "chacha" ? "grid-cols-5" : "grid-cols-3"}`}>
+                {(activeProgram === "chacha"
+                  ? [
+                      { d: 1, label: "Mon", emoji: "🦵" },
+                      { d: 2, label: "Tue", emoji: "❤️" },
+                      { d: 3, label: "Wed", emoji: "💪" },
+                      { d: 4, label: "Thu", emoji: "🔙" },
+                      { d: 5, label: "Fri", emoji: "🏋️" },
+                    ]
+                  : [
+                      { d: 1, label: "Mon", emoji: "💪" },
+                      { d: 3, label: "Wed", emoji: "🔙" },
+                      { d: 5, label: "Fri", emoji: "🦵" },
+                    ]
+                ).map((b) => (
                   <button
                     key={b.d}
                     onClick={() => jumpToWeekday(b.d)}
@@ -345,7 +371,13 @@ export default function TodayPage() {
     .reduce((sum, b) => sum + b.estimatedMinutes, 0);
 
   const programBadge =
-    activeProgram === "gym" ? "🏋️ Gym PPL" : activeProgram === "custom" ? `🗂️ ${customName}` : "🧠 ADHD Knee + Back";
+    activeProgram === "gym"
+      ? "🏋️ Gym PPL"
+      : activeProgram === "chacha"
+        ? "💪 Chacha Training"
+        : activeProgram === "custom"
+          ? `🗂️ ${customName}`
+          : "🧠 ADHD Knee + Back";
 
   const viewLabels: Record<ViewMode, string> = { focus: "Focus", checklist: "List", coach: "Detail" };
 
@@ -381,12 +413,16 @@ export default function TodayPage() {
               </div>
               {programMeta && (
                 <p className="text-sm text-[#8E8E93]">
-                  {(activeProgram === "adhd" || activeProgram === "custom") && `Week ${programMeta.week} · `}
+                  {(activeProgram === "adhd" || activeProgram === "custom" || activeProgram === "chacha") &&
+                    `Week ${programMeta.week} · `}
                   {activeProgram === "gym" && (
                     <span>
                       Day {programMeta.day}{" "}
                       {programMeta.day === "A" ? "💪 Chest" : programMeta.day === "B" ? "🔙 Back + Biceps" : "🦵 Shoulders + Legs"}
                     </span>
+                  )}
+                  {activeProgram === "chacha" && programMeta.day in CHACHA_DAY_LABELS && (
+                    <span>{CHACHA_DAY_LABELS[programMeta.day as keyof typeof CHACHA_DAY_LABELS]}</span>
                   )}
                   {activeProgram === "adhd" && (
                     <span>
