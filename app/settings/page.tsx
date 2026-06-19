@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getYouTubeVideo, saveYouTubeVideo, getCompletionSoundSetting, setCompletionSoundSetting, clearChachaVideoOverrides } from "@/lib/db";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
-import GoogleSheetsImport from "@/components/GoogleSheetsImport";
+import CustomProgramImport from "@/components/CustomProgramImport";
 import ReminderSettings from "@/components/ReminderSettings";
 import { isSoundEnabled, setSoundEnabled, playCompletionChime } from "@/utils/haptics";
 
@@ -152,15 +152,15 @@ export default function SettingsPage() {
           />
         </div>
 
-        {/* Google Sheets Import Section */}
+        {/* Custom program import */}
         <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
             Import Custom Program
           </h2>
           <p className="text-sm text-[#8E8E93] mb-4">
-            Upload a CSV or Excel file to create a custom workout program. Download the template to see the required format.
+            Paste JSON (or upload a .json file) to create a custom workout program. Use the AI prompt to convert any plan from ChatGPT, Claude, or Gemini.
           </p>
-          <GoogleSheetsImport />
+          <CustomProgramImport />
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ export type ProgramPhase = "P1" | "P2" | "P3" | "P4" | "P5";
 // Program types available in the app
 export type ProgramType = "gym" | "adhd" | "custom" | "chacha";
 
-// A single row of a user-imported custom program (from CSV/Sheets).
+// A single row of a user-imported custom program (from JSON).
 export type CustomProgramRow = {
   week: number;
   day: string; // A, B, or C

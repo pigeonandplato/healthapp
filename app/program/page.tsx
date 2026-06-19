@@ -288,7 +288,7 @@ export default function ProgramPage() {
                 <strong>Friday (C)</strong>, advancing one week at a time. Weeks loop at the final week so you always have something to do.
               </p>
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 mb-4 border border-blue-200 dark:border-blue-800 text-sm text-blue-800 dark:text-blue-300">
-                Want to edit it? Re-import an updated CSV from <strong>Settings → Import Custom Program</strong>. The new file replaces this one.
+                Want to edit it? Re-import updated JSON from <strong>Settings → Import Custom Program</strong>. The new file replaces this one.
               </div>
               <ProgramStartDateControl
                 title="When did you start this program?"

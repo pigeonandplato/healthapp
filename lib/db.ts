@@ -665,7 +665,7 @@ export async function getAdhdWorkoutByDate(date: string): Promise<WorkoutDay> {
 }
 
 // ============================================
-// CUSTOM PROGRAM - User-imported (CSV / Sheets)
+// CUSTOM PROGRAM - User-imported (JSON)
 // ============================================
 export const CUSTOM_PROGRAM_ID = "custom-program-v1";
 
@@ -732,7 +732,7 @@ function buildCustomBlocks(rows: CustomProgramRow[], week: number, day: DayRotat
   const dayRows = rows.filter((r) => String(r.day).toUpperCase() === day && Number(r.week) === week);
   if (dayRows.length === 0) return [];
 
-  // Preserve block order as first seen in the CSV.
+  // Preserve block order as first seen in the import file.
   const order: string[] = [];
   const groups = new Map<string, CustomProgramRow[]>();
   for (const r of dayRows) {
