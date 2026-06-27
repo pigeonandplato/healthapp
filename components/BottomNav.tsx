@@ -82,7 +82,7 @@ const navItems = [
   },
   {
     href: "/diet",
-    label: "Diet",
+    label: "Blueprint",
     icon: () => (
       <span className="text-xl leading-none select-none" aria-hidden>
         🥗

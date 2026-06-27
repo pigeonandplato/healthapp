@@ -122,10 +122,18 @@ export default function DailyHabitsTab() {
                 >
                   {habit.habit_name}
                 </p>
-                {habit.target_time && (
-                  <p className="text-xs text-[#8E8E93] mt-0.5">{habit.target_time}</p>
-                )}
               </div>
+              {habit.target_time && (
+                <span
+                  className={`flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                    checked
+                      ? "bg-[#34C759]/20 text-[#34C759]"
+                      : "bg-[#FF2D55]/10 text-[#FF2D55]"
+                  }`}
+                >
+                  {habit.target_time}
+                </span>
+              )}
             </button>
           );
         })}
