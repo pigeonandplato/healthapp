@@ -70,7 +70,17 @@ export default function MealPlanTab() {
 
   useEffect(() => {
     const saved = getMealSelectionForDate(date);
-    setSelection(saved ?? buildDefaultSelection(date));
+    if (saved) {
+      const defaults = buildDefaultSelection(date);
+      // Fill in any meal not yet saved with the daily suggestion
+      setSelection({
+        lunch: saved.lunch ?? defaults.lunch,
+        dinner: saved.dinner ?? defaults.dinner,
+        snack: saved.snack ?? defaults.snack,
+      });
+    } else {
+      setSelection(buildDefaultSelection(date));
+    }
     setExpandedRecipe(null);
   }, [date]);
 
