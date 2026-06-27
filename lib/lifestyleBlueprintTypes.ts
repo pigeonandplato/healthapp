@@ -134,7 +134,7 @@ export interface LifestyleBlueprint {
   sleep_wake_time: string; // "6:00 AM"
   meditation_time: number; // minutes
   water_goal_liters: number;
-  sections: {
+  sections?: {
     sleep: LifestyleBlueprintSection;
     medication: LifestyleBlueprintSection;
     breakfast: LifestyleBlueprintSection;
