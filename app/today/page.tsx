@@ -35,9 +35,6 @@ import { Milestone } from "@/lib/progress";
 import ChecklistView from "@/components/ChecklistView";
 import CoachView from "@/components/CoachView";
 import FocusView from "@/components/FocusView";
-import DailyHabitsTab from "@/components/DailyHabitsTab";
-import MealPlanTab from "@/components/MealPlanTab";
-import FullBlueprintView from "@/components/FullBlueprintView";
 import StatsCard from "@/components/StatsCard";
 import LevelBar from "@/components/LevelBar";
 import WeeklyRecap from "@/components/WeeklyRecap";
@@ -49,8 +46,6 @@ import DayNavigator from "@/components/DayNavigator";
 import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
 import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
 import { isValidIsoDate, parseLocalDate as parseIsoDate } from "@/lib/dates";
-
-type MainTab = 'workouts' | 'habits' | 'meals' | 'plan';
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();
@@ -64,7 +59,6 @@ function parseLocalDate(dateStr: string): Date {
 }
 
 const VIEW_PREF_KEY = "preferredView";
-const TAB_PREF_KEY = "preferredMainTab";
 
 function TodayPageLoading() {
   return (
@@ -98,16 +92,10 @@ function TodayPageContent() {
   const searchParams = useSearchParams();
   const initialDateParam = searchParams.get("date");
   const initialViewParam = searchParams.get("view") as ViewMode | null;
-  const initialTabParam = searchParams.get("tab") as MainTab | null;
 
   const [selectedDate, setSelectedDateState] = useState<string>(() => {
     if (initialDateParam && isValidIsoDate(initialDateParam)) return initialDateParam;
     return toLocalDateString(new Date());
-  });
-  const [mainTab, setMainTab] = useState<MainTab>(() => {
-    if (initialTabParam && ['workouts', 'habits', 'meals', 'plan'].includes(initialTabParam)) return initialTabParam;
-    const saved = typeof window !== "undefined" ? localStorage.getItem(TAB_PREF_KEY) as MainTab | null : null;
-    return saved || 'workouts';
   });
   const [workout, setWorkout] = useState<WorkoutDay | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode | null>(null);
@@ -128,12 +116,11 @@ function TodayPageContent() {
   const allowedViews: ViewMode[] = activeProgram === "adhd" ? ["focus", "checklist", "coach"] : ["checklist", "coach"];
 
   const syncUrl = useCallback(
-    (date: string, view: ViewMode | null, tab: MainTab) => {
+    (date: string, view: ViewMode | null) => {
       const params = new URLSearchParams();
       const today = toLocalDateString(new Date());
       if (date !== today) params.set("date", date);
       if (view === "coach") params.set("view", "coach");
-      if (tab !== 'workouts') params.set("tab", tab);
       const qs = params.toString();
       router.replace(qs ? `/today?${qs}` : "/today", { scroll: false });
     },
@@ -143,22 +130,15 @@ function TodayPageContent() {
   const setSelectedDate = useCallback(
     (date: string) => {
       setSelectedDateState(date);
-      syncUrl(date, viewMode, mainTab);
+      syncUrl(date, viewMode);
     },
-    [syncUrl, viewMode, mainTab]
+    [syncUrl, viewMode]
   );
-
-  const handleMainTabChange = (tab: MainTab) => {
-    setMainTab(tab);
-    localStorage.setItem(TAB_PREF_KEY, tab);
-    syncUrl(selectedDate, viewMode, tab);
-  };
 
   useEffect(() => {
     if (initialDateParam && isValidIsoDate(initialDateParam) && initialDateParam !== selectedDate) {
       setSelectedDateState(initialDateParam);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialDateParam]);
   const defaultView: ViewMode = activeProgram === "adhd" ? "focus" : "checklist";
 
@@ -258,8 +238,6 @@ function TodayPageContent() {
 
       const pending: Milestone[] = [];
 
-      // Level-up celebration (only when level actually increases). State is
-      // synced to Supabase so it celebrates once across all devices.
       const prevLevel = await getLastSeenLevel();
       if (prevLevel === null) {
         await setLastSeenLevel(stats.level.level);
@@ -275,11 +253,9 @@ function TodayPageContent() {
         await setLastSeenLevel(stats.level.level);
       }
 
-      // Newly earned achievements (each celebrated once, synced to Supabase).
       const achievements = computeAchievements(stats);
       const seen = await getSeenAchievements();
       if (seen === null) {
-        // First run: seed without dumping every past achievement at once.
         await setSeenAchievements(earnedIds(achievements));
       } else {
         const fresh = pickNewlyEarned(achievements, seen);
@@ -316,7 +292,7 @@ function TodayPageContent() {
   const handleViewChange = (view: ViewMode) => {
     setViewMode(view);
     localStorage.setItem(VIEW_PREF_KEY, view);
-    syncUrl(selectedDate, view, mainTab);
+    syncUrl(selectedDate, view);
   };
 
   const getDaySubtitle = (): string | undefined => {
@@ -339,7 +315,6 @@ function TodayPageContent() {
 
   const todayProgress = totalExercises > 0 ? Math.round((completedCount / totalExercises) * 100) : 0;
 
-  // Find the next training day for schedule-based programs.
   const getNextScheduledDay = (fromDate: Date, program: ProgramType): { date: Date; day: string } => {
     const d = new Date(fromDate);
     for (let i = 1; i <= 7; i++) {
@@ -375,18 +350,6 @@ function TodayPageContent() {
     return <TodayPageLoading />;
   }
 
-  // Render non-workout tabs
-  if (mainTab === 'habits') {
-    return <DailyHabitsTab />;
-  }
-  if (mainTab === 'meals') {
-    return <MealPlanTab />;
-  }
-  if (mainTab === 'plan') {
-    return <FullBlueprintView />;
-  }
-
-  // Rest-day screen for schedule-based programs (gym / custom).
   if (!workout) {
     if ((activeProgram === "gym" || activeProgram === "custom" || activeProgram === "chacha") && isRestDay) {
       const selectedDateObj = parseLocalDate(selectedDate);
@@ -397,28 +360,6 @@ function TodayPageContent() {
       return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
           <div className="max-w-md mx-auto pt-4 space-y-4">
-            {/* Main Tab Navigation */}
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {[
-                { id: 'workouts' as MainTab, label: 'Workouts', icon: '💪' },
-                { id: 'habits' as MainTab, label: 'Habits', icon: '🎯' },
-                { id: 'meals' as MainTab, label: 'Meals', icon: '🍗' },
-                { id: 'plan' as MainTab, label: 'Plan', icon: '📖' },
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => handleMainTabChange(tab.id)}
-                  className={`px-4 py-2 rounded-lg whitespace-nowrap font-medium text-sm transition-all ${
-                    mainTab === tab.id
-                      ? 'bg-[#FF2D55] text-white'
-                      : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  {tab.icon} {tab.label}
-                </button>
-              ))}
-            </div>
-
             <DayNavigator
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
@@ -547,33 +488,6 @@ function TodayPageContent() {
       )}
       <StickyProgressBar progress={todayProgress} />
 
-      {/* Main Tab Navigation */}
-      <div className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A] sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 py-2">
-          <div className="flex gap-2 overflow-x-auto pb-1">
-            {[
-              { id: 'workouts' as MainTab, label: 'Workouts', icon: '💪' },
-              { id: 'habits' as MainTab, label: 'Habits', icon: '🎯' },
-              { id: 'meals' as MainTab, label: 'Meals', icon: '🍗' },
-              { id: 'plan' as MainTab, label: 'Plan', icon: '📖' },
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => handleMainTabChange(tab.id)}
-                className={`px-4 py-2 rounded-lg whitespace-nowrap font-medium text-sm transition-all ${
-                  mainTab === tab.id
-                    ? 'bg-[#FF2D55] text-white'
-                    : 'bg-[#F2F2F7] dark:bg-[#2C2C2E] text-gray-700 dark:text-gray-300 hover:bg-[#E5E5EA] dark:hover:bg-[#38383A]'
-                }`}
-              >
-                {tab.icon} {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Stats Section */}
       <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="mb-3">
@@ -660,7 +574,6 @@ function TodayPageContent() {
       </section>
 
       <main className="max-w-4xl mx-auto px-4 py-5">
-        {/* View switcher */}
         <div className="inline-flex w-full sm:w-auto rounded-2xl bg-[#F2F2F7] dark:bg-[#1C1C1E] p-1 mb-5">
           {allowedViews.map((v) => (
             <button
@@ -678,7 +591,6 @@ function TodayPageContent() {
           ))}
         </div>
 
-        {/* Active view — key forces remount when the date changes */}
         <div className="animate-fade-in">
           {viewMode === "focus" ? (
             <FocusView key={selectedDate} workout={workout} onProgressChange={handleProgressChange} />
@@ -694,7 +606,6 @@ function TodayPageContent() {
           )}
         </div>
 
-        {/* Habit Coach prompt (ADHD) */}
         {activeProgram === "adhd" && (
           <Link
             href="/habits"
@@ -711,7 +622,6 @@ function TodayPageContent() {
           </Link>
         )}
 
-        {/* Reminder nudge (ADHD) */}
         {activeProgram === "adhd" && (
           <Link
             href="/settings"
@@ -726,7 +636,6 @@ function TodayPageContent() {
           </Link>
         )}
 
-        {/* Motivation video */}
         <div className="mt-6">
           {!showVideoCard && !youtubeVideo && !isEditingVideo ? (
             <button
