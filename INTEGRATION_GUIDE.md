@@ -3,6 +3,8 @@
 ## Overview
 This guide explains how to integrate the new Lifestyle Blueprint features (Meal Plan, Daily Habits, Full Blueprint) into your existing health app WITHOUT disrupting current functionality.
 
+**Last updated:** 2026-06-27
+
 ---
 
 ## File Organization
