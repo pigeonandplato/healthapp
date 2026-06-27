@@ -145,7 +145,14 @@ export async function getHabitCompletionStats(startDate: string, endDate: string
       totalHabits: 0,
       completedToday: 0,
       completionPercentage: 0,
-      completionByCategory: {},
+      completionByCategory: {
+        sleep: { completed: 0, total: 0 },
+        nutrition: { completed: 0, total: 0 },
+        exercise: { completed: 0, total: 0 },
+        hydration: { completed: 0, total: 0 },
+        supplements: { completed: 0, total: 0 },
+        general: { completed: 0, total: 0 },
+      },
       weeklyTrend: [],
     };
   }
@@ -160,11 +167,19 @@ export async function getHabitCompletionStats(startDate: string, endDate: string
 
   if (completions.error) {
     console.error('Error fetching completion stats:', completions.error);
+    const emptyCategory = {
+      sleep: { completed: 0, total: 0 },
+      nutrition: { completed: 0, total: 0 },
+      exercise: { completed: 0, total: 0 },
+      hydration: { completed: 0, total: 0 },
+      supplements: { completed: 0, total: 0 },
+      general: { completed: 0, total: 0 },
+    };
     return {
       totalHabits: habits.length,
       completedToday: 0,
       completionPercentage: 0,
-      completionByCategory: {},
+      completionByCategory: emptyCategory,
       weeklyTrend: [],
     };
   }
