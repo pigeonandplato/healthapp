@@ -184,47 +184,41 @@ export const DEFAULT_DAILY_HABITS: Omit<DailyHabit, 'id' | 'user_id' | 'created_
   },
 ];
 
-// Weekly habits (not daily)
+// Weekly habits (not daily) - no target_time needed
 export const DEFAULT_WEEKLY_HABITS: Omit<DailyHabit, 'id' | 'user_id' | 'created_at'>[] = [
   {
     habit_name: 'Grocery shopping',
     category: 'nutrition',
-    target_time: null,
     frequency: 'weekly',
     is_active: true,
   },
   {
     habit_name: 'Meal prep (1 hour)',
     category: 'nutrition',
-    target_time: null,
     frequency: 'weekly',
     is_active: true,
   },
   {
     habit_name: 'Boil 14 eggs for week',
     category: 'nutrition',
-    target_time: null,
     frequency: 'weekly',
     is_active: true,
   },
   {
     habit_name: 'Plan restaurant for eating out',
     category: 'nutrition',
-    target_time: null,
     frequency: 'weekly',
     is_active: true,
   },
   {
     habit_name: 'Weigh yourself',
     category: 'general',
-    target_time: null,
     frequency: 'weekly',
     is_active: true,
   },
   {
     habit_name: 'Check gym sessions completed (5 target)',
     category: 'exercise',
-    target_time: null,
     frequency: 'weekly',
     is_active: true,
   },
