@@ -29,7 +29,22 @@ export default function DailyHabitsTab() {
   const [completions, setCompletions] = useState<Map<string, boolean>>(new Map());
   const [category, setCategory] = useState<HabitCategory | "all">("all");
 
-  const habits = useMemo(() => getBlueprintHabits().filter((h) => h.frequency === "daily"), []);
+  const habits = useMemo(() => {
+    const toMinutes = (t?: string) => {
+      if (!t) return 24 * 60; // no time → end of list
+      const match = t.match(/(\d+):(\d+)\s*(AM|PM)/i);
+      if (!match) return 24 * 60;
+      let h = parseInt(match[1]);
+      const m = parseInt(match[2]);
+      const pm = match[3].toUpperCase() === "PM";
+      if (pm && h !== 12) h += 12;
+      if (!pm && h === 12) h = 0;
+      return h * 60 + m;
+    };
+    return getBlueprintHabits()
+      .filter((h) => h.frequency === "daily")
+      .sort((a, b) => toMinutes(a.target_time) - toMinutes(b.target_time));
+  }, []);
 
   useEffect(() => {
     setCompletions(getHabitCompletionsForDate(selectedDate));
