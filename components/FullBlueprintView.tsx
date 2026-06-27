@@ -4,6 +4,12 @@ import { useState } from "react";
 
 const SECTIONS = [
   {
+    id: "grocery",
+    emoji: "🛒",
+    title: "Weekly grocery list (3 people)",
+    body: `Shop once per week. Covers all meals for you + family.\n\n🥩 PROTEINS\n• Chicken breasts, boneless skinless — 3 lbs\n• Ground beef 93/7 lean — 2 lbs\n• Sirloin steak — 1.5 lbs\n• Eggs, large — 2 dozen\n• Greek yogurt, plain 0% — 32 oz\n• Cottage cheese — 16 oz\n• String cheese — 1 pack\n\n🌾 CARBS\n• White rice (bulk) — 3 lbs\n• Sweet potatoes — 5–6 medium\n• Whole wheat pasta — 1 box\n• Oats (rolled) — 1 large container\n• Wraps / tortillas — 1 pack\n\n🍎 FRUITS\n• Apples — 1 dozen\n• Bananas — 2–3 bunches\n• Blueberries — 1–2 containers\n• Strawberries — 1 lb\n• Mixed frozen berries — 2 bags\n• Oranges — 1 bag\n• Pineapple — 1 fresh or canned\n• Lemons — 4–5\n\n🥦 VEGETABLES\n• Broccoli — 2–3 crowns\n• Spinach, fresh — 1 bag\n• Onions (yellow) — 3 lbs\n• Asparagus — 1 bunch\n• Green beans — 1 lb\n• Frozen broccoli (backup) — 2 bags\n• Frozen mixed veg — 2 bags\n• Snap peas — 1 lb\n• Garlic — 1 bulb\n• Ginger, fresh — 1 small root\n• Tomatoes — 3–4\n• Lettuce / mixed greens — 1 bag\n\n🧀 DAIRY\n• Milk 2% — 1 gallon\n• Butter — 1 lb\n• Shredded cheese — 8 oz\n\n🫙 PANTRY\n• Honey · olive oil · sesame oil\n• Low-sodium soy sauce · rice vinegar\n• Marinara sauce — 2 jars\n• Worcestershire sauce\n• Italian seasoning, paprika, garlic powder\n\n🥐 BAKERY (fresh)\n• Chocolate croissants — 5–7\n• Whole grain bread — 1 loaf\n\n💰 Estimate: $150–200/week for 3 people`,
+  },
+  {
     id: "sleep",
     emoji: "⏰",
     title: "Sleep (non-negotiable)",
@@ -66,7 +72,7 @@ const SECTIONS = [
 ];
 
 export default function FullBlueprintView() {
-  const [expanded, setExpanded] = useState<string | null>("sleep");
+  const [expanded, setExpanded] = useState<string | null>("grocery");
   const [query, setQuery] = useState("");
 
   const filtered = SECTIONS.filter(

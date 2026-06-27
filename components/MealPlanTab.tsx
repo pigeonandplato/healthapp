@@ -40,14 +40,37 @@ function combineMeal(
   return sumMacros(protein.macros, carb.macros, vegetable.macros);
 }
 
+/** Deterministic daily suggestion seeded by date string so it doesn't change mid-session. */
+function dailySuggestion(date: string): NonNullable<MealSelection["lunch"]> {
+  // Simple hash of the date string
+  const hash = date.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
+  const protein = PROTEIN_OPTIONS[hash % PROTEIN_OPTIONS.length];
+  const carb = CARB_OPTIONS[(hash + 1) % CARB_OPTIONS.length];
+  const vegetable = VEGGIE_OPTIONS[(hash + 2) % VEGGIE_OPTIONS.length];
+  const combinedMacros = sumMacros(protein.macros, carb.macros, vegetable.macros);
+  return { protein, carb, vegetable, combinedMacros };
+}
+
+function buildDefaultSelection(date: string): MealSelection {
+  const suggestion = dailySuggestion(date);
+  const snack = SNACK_OPTIONS[
+    date.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % SNACK_OPTIONS.length
+  ];
+  return {
+    lunch: suggestion,
+    dinner: suggestion, // same suggestion, user can swap
+    snack: { recipe: snack, macros: snack.macros },
+  };
+}
+
 export default function MealPlanTab() {
   const [date, setDate] = useState(todayString);
-  const [selection, setSelection] = useState<MealSelection>({});
+  const [selection, setSelection] = useState<MealSelection>(() => buildDefaultSelection(todayString()));
   const [expandedRecipe, setExpandedRecipe] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = getMealSelectionForDate(date);
-    setSelection(saved ?? {});
+    setSelection(saved ?? buildDefaultSelection(date));
     setExpandedRecipe(null);
   }, [date]);
 
@@ -65,10 +88,7 @@ export default function MealPlanTab() {
   }, [selection]);
 
   const pickSnack = (recipe: MealRecipe) => {
-    persist({
-      ...selection,
-      snack: { recipe, macros: recipe.macros },
-    });
+    persist({ ...selection, snack: { recipe, macros: recipe.macros } });
   };
 
   const pickMealPart = (
@@ -98,25 +118,23 @@ export default function MealPlanTab() {
         className="w-full text-sm px-3 py-2 rounded-xl bg-[#F2F2F7] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white"
       />
 
-      <MealBlock title="Breakfast" emoji="🍳" subtitle="Same every day">
-        <RecipeCard
-          recipe={BREAKFAST_RECIPE}
-          expanded={expandedRecipe === BREAKFAST_RECIPE.id}
-          onToggle={() =>
-            setExpandedRecipe(expandedRecipe === BREAKFAST_RECIPE.id ? null : BREAKFAST_RECIPE.id)
-          }
-        />
+      {/* Breakfast — fixed every day */}
+      <MealBlock title="Breakfast" emoji="🌅" subtitle="Same every day · 6:00 AM">
+        <RecipeCard recipe={BREAKFAST_RECIPE} expanded onToggle={() => {}} alwaysOpen />
       </MealBlock>
 
+      {/* Lunch */}
       <ComboMealBlock
         title="Lunch"
         emoji="🍗"
+        subtitle="12:30 PM"
         meal={selection.lunch}
         onPick={(part, recipe) => pickMealPart("lunch", part, recipe)}
         expandedRecipe={expandedRecipe}
         onToggleRecipe={setExpandedRecipe}
       />
 
+      {/* Snack */}
       <MealBlock title="Afternoon Snack" emoji="🥤" subtitle="3:00 PM — pick one">
         <div className="flex flex-wrap gap-2">
           {SNACK_OPTIONS.map((s) => (
@@ -141,9 +159,11 @@ export default function MealPlanTab() {
         )}
       </MealBlock>
 
+      {/* Dinner */}
       <ComboMealBlock
         title="Dinner"
         emoji="🍽️"
+        subtitle="6:30 PM"
         meal={selection.dinner}
         onPick={(part, recipe) => pickMealPart("dinner", part, recipe)}
         expandedRecipe={expandedRecipe}
@@ -157,7 +177,7 @@ function MacroSummary({ totals }: { totals: MealMacros }) {
   const targets = { protein: 170, carbs: 180, fat: 68 };
   return (
     <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
-      <p className="text-xs text-[#8E8E93] mb-3">Daily macros (target ~160–180g protein)</p>
+      <p className="text-xs text-[#8E8E93] mb-3">Daily macros · target 160–180g protein</p>
       <div className="grid grid-cols-4 gap-2 text-center">
         <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#FF2D55" />
         <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#34C759" />
@@ -169,25 +189,14 @@ function MacroSummary({ totals }: { totals: MealMacros }) {
 }
 
 function MacroPill({
-  label,
-  value,
-  target,
-  unit,
-  color,
+  label, value, target, unit, color,
 }: {
-  label: string;
-  value: number;
-  target: number;
-  unit: string;
-  color: string;
+  label: string; value: number; target: number; unit: string; color: string;
 }) {
   const pct = Math.min(100, Math.round((value / target) * 100));
   return (
     <div>
-      <p className="text-lg font-bold" style={{ color }}>
-        {Math.round(value)}
-        {unit}
-      </p>
+      <p className="text-lg font-bold" style={{ color }}>{Math.round(value)}{unit}</p>
       <p className="text-[10px] text-[#8E8E93]">{label}</p>
       <div className="mt-1 h-1 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
         <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
@@ -196,76 +205,86 @@ function MacroPill({
   );
 }
 
-function MealBlock({
-  title,
-  emoji,
-  subtitle,
-  children,
-}: {
-  title: string;
-  emoji: string;
-  subtitle?: string;
-  children: React.ReactNode;
+function MealBlock({ title, emoji, subtitle, children }: {
+  title: string; emoji: string; subtitle?: string; children: React.ReactNode;
 }) {
   return (
     <section className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
-      <h3 className="text-base font-bold text-[#1C1C1E] dark:text-white flex items-center gap-2 mb-1">
-        <span>{emoji}</span>
-        {title}
-      </h3>
-      {subtitle && <p className="text-xs text-[#8E8E93] mb-3">{subtitle}</p>}
+      <div className="flex items-center justify-between mb-1">
+        <h3 className="text-base font-bold text-[#1C1C1E] dark:text-white flex items-center gap-2">
+          <span>{emoji}</span>{title}
+        </h3>
+        {subtitle && <span className="text-xs font-semibold text-[#FF2D55]">{subtitle}</span>}
+      </div>
       <div className="space-y-3">{children}</div>
     </section>
   );
 }
 
 function ComboMealBlock({
-  title,
-  emoji,
-  meal,
-  onPick,
-  expandedRecipe,
-  onToggleRecipe,
+  title, emoji, subtitle, meal, onPick, expandedRecipe, onToggleRecipe,
 }: {
   title: string;
   emoji: string;
+  subtitle?: string;
   meal?: MealSelection["lunch"];
   onPick: (part: "protein" | "carb" | "vegetable", recipe: MealRecipe) => void;
   expandedRecipe: string | null;
   onToggleRecipe: (id: string | null) => void;
 }) {
   return (
-    <MealBlock title={title} emoji={emoji} subtitle="Pick protein + carb + vegetable">
-      <PickerRow label="Protein" options={PROTEIN_OPTIONS} selected={meal?.protein?.id} onPick={(r) => onPick("protein", r)} />
-      <PickerRow label="Carb" options={CARB_OPTIONS} selected={meal?.carb?.id} onPick={(r) => onPick("carb", r)} />
-      <PickerRow label="Veggie" options={VEGGIE_OPTIONS} selected={meal?.vegetable?.id} onPick={(r) => onPick("vegetable", r)} />
-      {meal?.combinedMacros && (
-        <p className="text-xs text-[#8E8E93]">
-          {Math.round(meal.combinedMacros.protein)}g P · {Math.round(meal.combinedMacros.carbs)}g C ·{" "}
-          {Math.round(meal.combinedMacros.fat)}g F
-        </p>
+    <MealBlock title={title} emoji={emoji} subtitle={subtitle}>
+      {/* Today's suggestion banner */}
+      {meal?.protein && (
+        <div className="bg-[#FF2D55]/8 border border-[#FF2D55]/20 rounded-xl p-3 mb-1">
+          <p className="text-[10px] font-semibold text-[#FF2D55] uppercase mb-1">Today&apos;s suggestion</p>
+          <p className="text-sm font-medium text-[#1C1C1E] dark:text-white">
+            {meal.protein.name}
+          </p>
+          <p className="text-xs text-[#8E8E93]">
+            + {meal.carb?.name} · {meal.vegetable?.name}
+          </p>
+          {meal.combinedMacros && (
+            <p className="text-[10px] text-[#8E8E93] mt-1">
+              {Math.round(meal.combinedMacros.protein)}g P · {Math.round(meal.combinedMacros.carbs)}g C · {Math.round(meal.combinedMacros.fat)}g F
+            </p>
+          )}
+        </div>
       )}
+
+      {/* Full recipe expanded by default for the protein */}
       {meal?.protein && (
         <RecipeCard
           recipe={meal.protein}
-          expanded={expandedRecipe === meal.protein.id}
-          onToggle={() => onToggleRecipe(expandedRecipe === meal.protein.id ? null : meal.protein.id)}
+          expanded={expandedRecipe !== `${title}-collapsed`}
+          onToggle={() =>
+            onToggleRecipe(
+              expandedRecipe === `${title}-collapsed` ? null : `${title}-collapsed`
+            )
+          }
         />
       )}
+
+      {/* Swap pickers */}
+      <details className="group">
+        <summary className="text-xs font-semibold text-[#8E8E93] cursor-pointer list-none flex items-center gap-1 pt-1">
+          <svg className="w-3 h-3 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+          Change meal
+        </summary>
+        <div className="pt-3 space-y-3">
+          <PickerRow label="Protein" options={PROTEIN_OPTIONS} selected={meal?.protein?.id} onPick={(r) => onPick("protein", r)} />
+          <PickerRow label="Carb" options={CARB_OPTIONS} selected={meal?.carb?.id} onPick={(r) => onPick("carb", r)} />
+          <PickerRow label="Veggie" options={VEGGIE_OPTIONS} selected={meal?.vegetable?.id} onPick={(r) => onPick("vegetable", r)} />
+        </div>
+      </details>
     </MealBlock>
   );
 }
 
-function PickerRow({
-  label,
-  options,
-  selected,
-  onPick,
-}: {
-  label: string;
-  options: MealRecipe[];
-  selected?: string;
-  onPick: (r: MealRecipe) => void;
+function PickerRow({ label, options, selected, onPick }: {
+  label: string; options: MealRecipe[]; selected?: string; onPick: (r: MealRecipe) => void;
 }) {
   return (
     <div>
@@ -279,23 +298,13 @@ function PickerRow({
   );
 }
 
-function Chip({
-  label,
-  active,
-  onClick,
-}: {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) {
+function Chip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-        active
-          ? "bg-[#FF2D55] text-white"
-          : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-[#E5E5EA]"
+        active ? "bg-[#FF2D55] text-white" : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-[#E5E5EA]"
       }`}
     >
       {label}
@@ -303,41 +312,40 @@ function Chip({
   );
 }
 
-function RecipeCard({
-  recipe,
-  expanded,
-  onToggle,
-}: {
-  recipe: MealRecipe;
-  expanded: boolean;
-  onToggle: () => void;
+function RecipeCard({ recipe, expanded, onToggle, alwaysOpen }: {
+  recipe: MealRecipe; expanded: boolean; onToggle: () => void; alwaysOpen?: boolean;
 }) {
   return (
     <div className="rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#38383A] overflow-hidden">
-      <button type="button" onClick={onToggle} className="w-full p-3 text-left">
-        <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">{recipe.name}</p>
-        <p className="text-xs text-[#8E8E93] mt-0.5">{recipe.description}</p>
-        <p className="text-[10px] text-[#8E8E93] mt-1">
-          {recipe.macros.protein}g P · {recipe.macros.carbs}g C · {recipe.macros.fat}g F ·{" "}
-          {recipe.prep_time_minutes} min
-        </p>
-      </button>
-      {expanded && (
-        <div className="px-3 pb-3 border-t border-[#E5E5EA] dark:border-[#38383A] pt-3 space-y-3">
+      {!alwaysOpen && (
+        <button type="button" onClick={onToggle} className="w-full p-3 text-left">
+          <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">{recipe.name}</p>
+          <p className="text-xs text-[#8E8E93] mt-0.5">{recipe.description}</p>
+          <p className="text-[10px] text-[#8E8E93] mt-1">
+            {recipe.macros.protein}g P · {recipe.macros.carbs}g C · {recipe.macros.fat}g F · {recipe.prep_time_minutes} min
+          </p>
+        </button>
+      )}
+      {(expanded || alwaysOpen) && (
+        <div className={`space-y-3 ${alwaysOpen ? "p-3" : "px-3 pb-3 border-t border-[#E5E5EA] dark:border-[#38383A] pt-3"}`}>
+          {alwaysOpen && (
+            <>
+              <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">{recipe.name}</p>
+              <p className="text-[10px] text-[#8E8E93]">
+                {recipe.macros.protein}g P · {recipe.macros.carbs}g C · {recipe.macros.fat}g F · {recipe.prep_time_minutes} min
+              </p>
+            </>
+          )}
           <div>
             <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-1">Ingredients</p>
             <ul className="text-xs text-[#1C1C1E] dark:text-[#E5E5EA] space-y-1 list-disc list-inside">
-              {recipe.ingredients.map((i) => (
-                <li key={i}>{i}</li>
-              ))}
+              {recipe.ingredients.map((i) => <li key={i}>{i}</li>)}
             </ul>
           </div>
           <div>
             <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-1">Steps</p>
             <ol className="text-xs text-[#1C1C1E] dark:text-[#E5E5EA] space-y-1 list-decimal list-inside">
-              {recipe.instructions.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
+              {recipe.instructions.map((s) => <li key={s}>{s}</li>)}
             </ol>
           </div>
         </div>
