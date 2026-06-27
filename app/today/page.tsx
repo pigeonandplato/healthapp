@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useState, useEffect, useCallback } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { WorkoutDay, ViewMode, ProgramType, ProgramMeta } from "@/lib/types";
@@ -32,20 +33,23 @@ import {
   CommitmentStats,
 } from "@/lib/gamification";
 import { Milestone } from "@/lib/progress";
+// Core view — loaded eagerly (always needed above the fold)
 import ChecklistView from "@/components/ChecklistView";
-import CoachView from "@/components/CoachView";
-import FocusView from "@/components/FocusView";
-import StatsCard from "@/components/StatsCard";
-import LevelBar from "@/components/LevelBar";
-import WeeklyRecap from "@/components/WeeklyRecap";
-import MilestoneCelebration from "@/components/MilestoneCelebration";
 import StickyProgressBar from "@/components/StickyProgressBar";
-import { StatsSkeleton } from "@/components/SkeletonLoader";
-import DatePicker from "@/components/DatePicker";
 import DayNavigator from "@/components/DayNavigator";
-import YouTubeVideoEditor from "@/components/YouTubeVideoEditor";
-import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
+import { StatsSkeleton } from "@/components/SkeletonLoader";
 import { isValidIsoDate, parseLocalDate as parseIsoDate } from "@/lib/dates";
+import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
+
+// Heavy components deferred until after first paint
+const CoachView = dynamic(() => import("@/components/CoachView"), { ssr: false });
+const FocusView = dynamic(() => import("@/components/FocusView"), { ssr: false });
+const StatsCard = dynamic(() => import("@/components/StatsCard"), { ssr: false });
+const LevelBar = dynamic(() => import("@/components/LevelBar"), { ssr: false });
+const WeeklyRecap = dynamic(() => import("@/components/WeeklyRecap"), { ssr: false });
+const MilestoneCelebration = dynamic(() => import("@/components/MilestoneCelebration"), { ssr: false });
+const DatePicker = dynamic(() => import("@/components/DatePicker"), { ssr: false });
+const YouTubeVideoEditor = dynamic(() => import("@/components/YouTubeVideoEditor"), { ssr: false });
 
 function toLocalDateString(date: Date): string {
   const year = date.getFullYear();

@@ -15,16 +15,36 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const SESSION_CACHE_KEY = "sb.cachedUser";
+
+function readCachedUser(): User | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(SESSION_CACHE_KEY);
+    return raw ? (JSON.parse(raw) as User) : null;
+  } catch {
+    return null;
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  // Initialise from cache so there's no spinner flash for returning users.
+  const [user, setUser] = useState<User | null>(() => readCachedUser());
   const [session, setSession] = useState<Session | null>(null);
-  const [loading, setLoading] = useState(true);
+  // If we already have a cached user we can skip the loading gate.
+  const [loading, setLoading] = useState<boolean>(() => readCachedUser() === null);
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser(session?.user ?? null);
+      const u = session?.user ?? null;
+      setUser(u);
+      if (u) {
+        localStorage.setItem(SESSION_CACHE_KEY, JSON.stringify(u));
+      } else {
+        localStorage.removeItem(SESSION_CACHE_KEY);
+      }
       setLoading(false);
     });
 
@@ -32,7 +52,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
-        setUser(session?.user ?? null);
+        const u = session?.user ?? null;
+        setUser(u);
+        if (u) {
+          localStorage.setItem(SESSION_CACHE_KEY, JSON.stringify(u));
+        } else {
+          localStorage.removeItem(SESSION_CACHE_KEY);
+        }
         setLoading(false);
       }
     );
