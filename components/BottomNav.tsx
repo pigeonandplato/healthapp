@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const navItems = [
   {
@@ -37,7 +37,7 @@ const navItems = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0121 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
         />
       </svg>
     ),
@@ -62,7 +62,7 @@ const navItems = [
     ),
   },
   {
-    href: "/habits",
+    href: "/today?tab=habits",
     label: "Habits",
     icon: (active: boolean) => (
       <svg
@@ -75,17 +75,17 @@ const navItems = [
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18"
+          d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
     ),
   },
   {
-    href: "/diet",
-    label: "Diet",
+    href: "/today?tab=meals",
+    label: "Meals",
     icon: () => (
       <span className="text-xl leading-none select-none" aria-hidden>
-        🥗
+        🍗
       </span>
     ),
   },
@@ -112,30 +112,45 @@ const navItems = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+
+  const isActive = (item: typeof navItems[0]): boolean => {
+    // Check if it's the Today tab
+    if (item.href === "/today") {
+      return pathname === "/today" || pathname === "/";
+    }
+
+    // Check if it's a tab query parameter
+    if (item.href.includes("tab=")) {
+      const tabValue = new URLSearchParams(item.href.split("?")[1]).get("tab");
+      return pathname === "/today" && tabParam === tabValue;
+    }
+
+    // Regular path matching
+    return pathname === item.href;
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-t border-[#E5E5EA] dark:border-[#38383A]">
       <div className="flex items-center justify-around max-w-xl mx-auto px-1 pb-[max(8px,env(safe-area-inset-bottom))] pt-2">
         {navItems.map((item) => {
-          const isActive =
-            item.href === "/today"
-              ? pathname === "/today" || pathname === "/"
-              : pathname === item.href;
+          const active = isActive(item);
           return (
             <Link
               key={item.href}
               href={item.href}
               className={`flex flex-col items-center justify-center py-1 px-1 sm:px-2 rounded-xl transition-all duration-200 flex-1 min-w-0 max-w-[16.66%] ${
-                isActive
+                active
                   ? "text-[#FF2D55]"
                   : "text-[#8E8E93] hover:text-[#1C1C1E] dark:hover:text-white"
               }`}
             >
-              <div className={`transition-transform duration-200 ${isActive ? "scale-110" : ""}`}>
-                {item.icon(isActive)}
+              <div className={`transition-transform duration-200 ${active ? "scale-110" : ""}`}>
+                {typeof item.icon === "function" ? item.icon(active) : item.icon}
               </div>
               <span
-                className={`text-[9px] sm:text-[10px] mt-1 font-medium text-center leading-tight ${isActive ? "font-semibold" : ""}`}
+                className={`text-[9px] sm:text-[10px] mt-1 font-medium text-center leading-tight ${active ? "font-semibold" : ""}`}
               >
                 {item.label}
               </span>
