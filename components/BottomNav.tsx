@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 const navItems = [
   {
@@ -62,7 +62,7 @@ const navItems = [
     ),
   },
   {
-    href: "/habits",
+    href: "/today?tab=habits",
     label: "Habits",
     icon: (active: boolean) => (
       <svg
@@ -81,7 +81,7 @@ const navItems = [
     ),
   },
   {
-    href: "/meals",
+    href: "/today?tab=meals",
     label: "Meals",
     icon: () => (
       <span className="text-xl leading-none select-none" aria-hidden>
@@ -112,11 +112,19 @@ const navItems = [
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
 
   const isActive = (item: typeof navItems[0]): boolean => {
     // Check if it's the Today tab
     if (item.href === "/today") {
-      return pathname === "/today" || pathname === "/";
+      return (pathname === "/today" || pathname === "/") && !tabParam;
+    }
+
+    // Check if it's a tab query parameter
+    if (item.href.includes("tab=")) {
+      const tabValue = new URLSearchParams(item.href.split("?")[1]).get("tab");
+      return pathname === "/today" && tabParam === tabValue;
     }
 
     // Regular path matching
