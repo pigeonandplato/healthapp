@@ -14,7 +14,7 @@ import { getWeeklyMealPlan, saveWeeklyMealPlan } from '@/lib/lifestyleBlueprintD
 
 export default function MealPlanTab() {
   const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [mealSelection, setMealSelection] = useState<MealSelection>({});
+  const [mealSelection, setMealSelection] = useState<MealSelection>({} as MealSelection);
   const [loading, setLoading] = useState(false);
   const [showRecipeDetails, setShowRecipeDetails] = useState<string | null>(null);
   const [savedMessage, setSavedMessage] = useState('');
@@ -174,7 +174,7 @@ export default function MealPlanTab() {
 
       {/* Breakfast (Fixed) */}
       <div className="border rounded-lg p-4 bg-blue-50">
-        <h3 className="font-semibold text-lg mb-3">Breakfast (Fixed)</h3>
+        <h3 className="font-semibold text-lg mb-3">🌅 Breakfast (Fixed)</h3>
         <div className="bg-white p-3 rounded border border-gray-200">
           <p className="font-medium">{BREAKFAST_RECIPE.name}</p>
           <p className="text-sm text-gray-600">{BREAKFAST_RECIPE.description}</p>
