@@ -354,7 +354,6 @@ export async function initializeLifestyleBlueprint(blueprintData: Partial<Lifest
       id,
       user_id: userId,
       blueprint_name: blueprintData.blueprint_name || 'My Lifestyle Blueprint',
-      blueprint_content: blueprintData.blueprint_content || {},
       sleep_bedtime: blueprintData.sleep_bedtime || '10:00 PM',
       sleep_wake_time: blueprintData.sleep_wake_time || '6:00 AM',
       meditation_time: blueprintData.meditation_time || 0,
