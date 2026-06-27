@@ -1,6 +1,1 @@
-'use client';
-import DailyHabitsTab from '@/components/DailyHabitsTab';
-
-export default function HabitsPage() {
-  return <DailyHabitsTab />;
-}
+export { default } from '@/app/today/page';
