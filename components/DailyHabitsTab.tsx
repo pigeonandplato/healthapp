@@ -1,1 +1,163 @@
-// Removed
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { DEFAULT_DAILY_HABITS } from "@/lib/defaultDailyHabits";
+import { HabitCategory } from "@/lib/lifestyleBlueprintTypes";
+import {
+  getBlueprintHabits,
+  getHabitCompletionsForDate,
+  setHabitComplete,
+} from "@/lib/lifestyleStorage";
+import { triggerHaptic } from "@/utils/haptics";
+
+const CATEGORY_LABELS: Record<HabitCategory, string> = {
+  sleep: "Sleep",
+  nutrition: "Nutrition",
+  exercise: "Movement",
+  hydration: "Hydration",
+  supplements: "Meds",
+  general: "Daily",
+};
+
+function todayString(): string {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+export default function DailyHabitsTab() {
+  const [selectedDate, setSelectedDate] = useState(todayString);
+  const [completions, setCompletions] = useState<Map<string, boolean>>(new Map());
+  const [category, setCategory] = useState<HabitCategory | "all">("all");
+
+  const habits = useMemo(() => getBlueprintHabits().filter((h) => h.frequency === "daily"), []);
+
+  useEffect(() => {
+    setCompletions(getHabitCompletionsForDate(selectedDate));
+  }, [selectedDate]);
+
+  const filtered =
+    category === "all" ? habits : habits.filter((h) => h.category === category);
+
+  const done = habits.filter((h) => completions.get(h.id)).length;
+  const pct = habits.length ? Math.round((done / habits.length) * 100) : 0;
+
+  const toggle = (habitId: string) => {
+    const next = !completions.get(habitId);
+    setHabitComplete(habitId, selectedDate, next);
+    setCompletions((prev) => new Map(prev).set(habitId, next));
+    if (next) triggerHaptic("light");
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-sm text-[#8E8E93]">Today&apos;s habits</p>
+            <p className="text-3xl font-bold text-[#1C1C1E] dark:text-white">{pct}%</p>
+          </div>
+          <div className="text-right">
+            <p className="text-sm font-semibold text-[#FF2D55]">
+              {done}/{habits.length}
+            </p>
+            <p className="text-xs text-[#8E8E93]">completed</p>
+          </div>
+        </div>
+        <div className="h-2 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
+          <div
+            className="h-full bg-[#FF2D55] rounded-full transition-all duration-300"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+        <input
+          type="date"
+          value={selectedDate}
+          onChange={(e) => setSelectedDate(e.target.value)}
+          className="mt-4 w-full text-sm px-3 py-2 rounded-xl bg-[#F2F2F7] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white"
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-2">
+        <FilterChip active={category === "all"} onClick={() => setCategory("all")} label="All" />
+        {(Object.keys(CATEGORY_LABELS) as HabitCategory[]).map((cat) => (
+          <FilterChip
+            key={cat}
+            active={category === cat}
+            onClick={() => setCategory(cat)}
+            label={CATEGORY_LABELS[cat]}
+          />
+        ))}
+      </div>
+
+      <div className="space-y-2">
+        {filtered.map((habit) => {
+          const checked = completions.get(habit.id) ?? false;
+          return (
+            <button
+              key={habit.id}
+              type="button"
+              onClick={() => toggle(habit.id)}
+              className={`w-full flex items-start gap-3 p-4 rounded-2xl border text-left transition-all active:scale-[0.99] ${
+                checked
+                  ? "bg-[#34C759]/10 border-[#34C759]/30"
+                  : "bg-white dark:bg-[#1C1C1E] border-[#E5E5EA] dark:border-[#38383A]"
+              }`}
+            >
+              <span
+                className={`mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                  checked ? "bg-[#34C759] border-[#34C759] text-white" : "border-[#C7C7CC]"
+                }`}
+              >
+                {checked && (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </span>
+              <div className="flex-1 min-w-0">
+                <p
+                  className={`text-sm font-medium ${
+                    checked ? "text-[#8E8E93] line-through" : "text-[#1C1C1E] dark:text-white"
+                  }`}
+                >
+                  {habit.habit_name}
+                </p>
+                {habit.target_time && (
+                  <p className="text-xs text-[#8E8E93] mt-0.5">{habit.target_time}</p>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <p className="text-xs text-[#8E8E93] text-center px-4">
+        Stack habits weekly — don&apos;t try everything at once. Week 1: sleep only. Build from there.
+      </p>
+    </div>
+  );
+}
+
+function FilterChip({
+  active,
+  onClick,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+        active
+          ? "bg-[#FF2D55] text-white"
+          : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#8E8E93]"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
