@@ -12,41 +12,75 @@ interface ChecklistViewProps {
   onOpenDetailView?: () => void;
 }
 
-function ExerciseDetailPreview({ exercise }: { exercise: Exercise }) {
+function formatPrescription(exercise: Exercise): string {
+  const p = exercise.prescription;
+  if (p.description) return p.description;
+  const parts: string[] = [];
+  if (p.sets) parts.push(`${p.sets}×`);
+  if (p.reps) parts.push(`${p.reps}`);
+  if (p.holdSeconds) parts.push(`${p.holdSeconds}s hold`);
+  if (p.minutes) parts.push(`${p.minutes} min`);
+  return parts.join(" ");
+}
+
+function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exercise; onOpenDetailView?: () => void }) {
   return (
-    <div className="mt-3 pl-9 space-y-2 text-xs text-gray-600 dark:text-gray-400">
+    <div className="pt-3 pb-1 space-y-3 text-sm">
       {exercise.description && (
-        <p className="text-sm text-gray-700 dark:text-gray-300">{exercise.description}</p>
+        <p className="text-[#3A3A3C] dark:text-[#D1D1D6] leading-relaxed">{exercise.description}</p>
       )}
       {exercise.instructions.length > 0 && (
         <div>
-          <p className="font-semibold text-gray-800 dark:text-gray-200 mb-1">How to do it</p>
-          <ul className="list-disc pl-4 space-y-1">
+          <p className="text-[10px] font-semibold text-[#8E8E93] uppercase tracking-wide mb-2">How to do it</p>
+          <ol className="space-y-1.5">
             {exercise.instructions.map((step, i) => (
-              <li key={i}>{step}</li>
+              <li key={i} className="flex gap-2.5 text-[#3A3A3C] dark:text-[#D1D1D6]">
+                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#8E8E93] text-[11px] font-bold flex items-center justify-center mt-0.5">
+                  {i + 1}
+                </span>
+                <span className="leading-relaxed">{step}</span>
+              </li>
             ))}
-          </ul>
+          </ol>
         </div>
       )}
       {exercise.commonMistakes.length > 0 && (
         <div>
-          <p className="font-semibold text-amber-800 dark:text-amber-200 mb-1">Watch out for</p>
-          <ul className="list-disc pl-4 space-y-1">
+          <p className="text-[10px] font-semibold text-[#CF9030] uppercase tracking-wide mb-2">Watch out for</p>
+          <ul className="space-y-1">
             {exercise.commonMistakes.map((m, i) => (
-              <li key={i}>{m}</li>
+              <li key={i} className="flex gap-2 text-[#3A3A3C] dark:text-[#D1D1D6]">
+                <span className="text-[#CF9030] flex-shrink-0 mt-0.5">·</span>
+                <span>{m}</span>
+              </li>
             ))}
           </ul>
         </div>
       )}
       {exercise.stopConditions.length > 0 && (
-        <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-2">
-          <p className="font-semibold text-red-800 dark:text-red-200 mb-1">Stop if</p>
-          <ul className="list-disc pl-4 space-y-1 text-red-700 dark:text-red-300">
+        <div className="bg-[#EF9D8C]/10 border border-[#EF9D8C]/30 rounded-xl p-3">
+          <p className="text-[10px] font-semibold text-[#EF9D8C] uppercase tracking-wide mb-1.5">Stop if</p>
+          <ul className="space-y-1">
             {exercise.stopConditions.map((s, i) => (
-              <li key={i}>{s}</li>
+              <li key={i} className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] flex gap-2">
+                <span className="text-[#EF9D8C] flex-shrink-0">·</span>
+                <span>{s}</span>
+              </li>
             ))}
           </ul>
         </div>
+      )}
+      {onOpenDetailView && exercise.media.type === "video" && (
+        <button
+          type="button"
+          onClick={onOpenDetailView}
+          className="text-xs font-semibold text-[#CF9030] flex items-center gap-1"
+        >
+          Watch video guide
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
       )}
     </div>
   );
@@ -68,194 +102,172 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
       const allCompletions = await getCompletionsByDate(workout.date);
       if (!active) return;
       const completionMap: Record<string, boolean> = {};
-      allCompletions.forEach((completion) => {
-        completionMap[completion.exerciseId] = completion.completed;
-      });
+      allCompletions.forEach((c) => { completionMap[c.exerciseId] = c.completed; });
       setCompletions(completionMap);
       setLoading(false);
-
       const completed = trackableExercises.filter((ex) => completionMap[ex.id]).length;
       onProgressChange?.(completed, trackableExercises.length);
     }
-
     loadCompletions();
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workout.date]);
 
-  const handleToggle = async (exerciseId: string) => {
+  const handleToggle = useCallback(async (exerciseId: string) => {
     const newCompleted = !completions[exerciseId];
     const next = { ...completions, [exerciseId]: newCompleted };
     setCompletions(next);
     if (newCompleted) triggerCompletion();
-
     await saveCompletion(exerciseId, workout.date, newCompleted);
-
     const completed = trackableExercises.filter((ex) => next[ex.id]).length;
     onProgressChange?.(completed, trackableExercises.length);
-  };
-
-  const formatPrescription = (exercise: WorkoutDay["blocks"][number]["exercises"][number]) => {
-    const p = exercise.prescription;
-    if (p.description) return p.description;
-
-    const parts: string[] = [];
-    if (p.sets) parts.push(`${p.sets}×`);
-    if (p.reps) parts.push(`${p.reps}`);
-    if (p.holdSeconds) parts.push(`${p.holdSeconds}s`);
-    if (p.minutes) parts.push(`${p.minutes}m`);
-
-    return parts.join(" ");
-  };
+  }, [completions, workout.date, trackableExercises, onProgressChange]);
 
   const completedCount = trackableExercises.filter((ex) => completions[ex.id]).length;
   const total = trackableExercises.length;
-  const percentage = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+  const pct = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
-  if (loading) {
-    return <WorkoutSkeleton />;
-  }
+  if (loading) return <WorkoutSkeleton />;
 
   return (
-    <div className="space-y-6 pb-8">
-      {/* Progress Summary */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-card border border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Progress</h2>
-          <span className="text-2xl font-bold text-[#CF9030]">{percentage}%</span>
-        </div>
-
-        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden mb-2">
-          <div
-            className="bg-gradient-to-r from-[#EF9D8C] to-[#CF9030] h-full transition-all duration-500"
-            style={{ width: `${percentage}%` }}
-          />
-        </div>
-
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          {completedCount} of {total} exercises completed
-        </p>
-      </div>
-
-      {/* Blocks */}
+    <div className="space-y-3 pb-8">
       {workout.blocks.map((block) => {
         const trackable = block.exercises.filter((ex) => ex.category !== "Guidance");
         if (trackable.length === 0) return null;
+        const blockDone = trackable.every((ex) => completions[ex.id]);
         const blockCompleted = trackable.filter((ex) => completions[ex.id]).length;
-        const blockTotal = trackable.length;
-        const blockDone = blockCompleted === blockTotal;
 
         return (
           <div
             key={block.id}
-            className="bg-white dark:bg-gray-800 rounded-2xl shadow-card border border-gray-200 dark:border-gray-700 overflow-hidden"
+            className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] overflow-hidden"
           >
-            {/* Block Header */}
-            <div className={`px-5 py-3 border-b border-gray-200 dark:border-gray-600 transition-colors ${blockDone ? "bg-green-50 dark:bg-green-900/20" : "bg-gray-50 dark:bg-gray-900/40"}`}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-bold text-gray-900 dark:text-gray-100">{block.name}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">~{block.estimatedMinutes} min</p>
-                </div>
-                <span className={`text-sm font-bold ${blockDone ? "text-[#34C759]" : "text-gray-600 dark:text-gray-300"}`}>
-                  {blockDone ? "✓ Done" : `${blockCompleted}/${blockTotal}`}
+            {/* Block header — clean row */}
+            <div className={`flex items-center justify-between px-5 py-3.5 ${blockDone ? "bg-[#3F6B40]/5 dark:bg-[#3F6B40]/10" : ""}`}>
+              <div className="flex items-center gap-2.5">
+                {blockDone ? (
+                  <span className="w-5 h-5 rounded-full bg-[#3F6B40] flex items-center justify-center flex-shrink-0">
+                    <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </span>
+                ) : (
+                  <span className="w-5 h-5 rounded-full border-2 border-[#EDE8DC] dark:border-[#38383A] flex-shrink-0" />
+                )}
+                <p className={`font-semibold text-sm ${blockDone ? "text-[#3F6B40]" : "text-[#1C1C1E] dark:text-white"}`}>
+                  {block.name}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-[#8E8E93]">
+                <span>~{block.estimatedMinutes} min</span>
+                <span className="text-[#EDE8DC] dark:text-[#38383A]">·</span>
+                <span className={`font-semibold ${blockDone ? "text-[#3F6B40]" : "text-[#8E8E93]"}`}>
+                  {blockCompleted}/{trackable.length}
                 </span>
               </div>
             </div>
 
-            {/* Exercise List */}
-            <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+            {/* Exercise rows — transaction-style list */}
+            <div className="divide-y divide-[#EDE8DC] dark:divide-[#38383A]">
               {trackable.map((exercise) => {
                 const isCompleted = completions[exercise.id] || false;
                 const isExpanded = expandedId === exercise.id;
                 const hasDetails =
-                  exercise.description ||
+                  !!exercise.description ||
                   exercise.instructions.length > 0 ||
                   exercise.commonMistakes.length > 0 ||
                   exercise.stopConditions.length > 0;
+                const prescription = formatPrescription(exercise);
 
                 return (
-                  <li
-                    key={exercise.id}
-                    className="px-5 py-3 hover:bg-gray-50 dark:hover:bg-gray-900/40 transition-colors"
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-0.5">
-                        <input
-                          type="checkbox"
-                          checked={isCompleted}
-                          onChange={() => handleToggle(exercise.id)}
-                          className="w-6 h-6 rounded-lg border-gray-300 dark:border-gray-600 text-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55] focus:ring-offset-0 cursor-pointer"
-                        />
-                      </div>
+                  <div key={exercise.id} className={`transition-colors ${isCompleted ? "bg-[#FDFAF6] dark:bg-[#1A1A1A]" : ""}`}>
+                    <div className="flex items-center gap-4 px-5 py-3.5">
+                      {/* Tap-to-complete circle */}
+                      <button
+                        type="button"
+                        onClick={() => handleToggle(exercise.id)}
+                        aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
+                        className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all active:scale-90 ${
+                          isCompleted
+                            ? "bg-[#3F6B40] border-[#3F6B40]"
+                            : "border-[#C7C7CC] dark:border-[#48484A] hover:border-[#CF9030]"
+                        }`}
+                      >
+                        {isCompleted && (
+                          <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </button>
 
-                      <div className="flex-1 min-w-0">
+                      {/* Name + prescription */}
+                      <button
+                        type="button"
+                        onClick={() => hasDetails && setExpandedId(isExpanded ? null : exercise.id)}
+                        className="flex-1 min-w-0 text-left"
+                        disabled={!hasDetails}
+                      >
+                        <p className={`text-sm font-medium leading-snug ${
+                          isCompleted
+                            ? "line-through text-[#C7C7CC] dark:text-[#48484A]"
+                            : "text-[#1C1C1E] dark:text-white"
+                        }`}>
+                          {exercise.name}
+                        </p>
+                        {prescription && (
+                          <p className={`text-xs mt-0.5 ${isCompleted ? "text-[#D1D1D6] dark:text-[#48484A]" : "text-[#8E8E93]"}`}>
+                            {prescription}
+                          </p>
+                        )}
+                      </button>
+
+                      {/* Right side: chevron if expandable */}
+                      {hasDetails && (
                         <button
                           type="button"
                           onClick={() => setExpandedId(isExpanded ? null : exercise.id)}
-                          className="w-full text-left"
-                          disabled={!hasDetails}
+                          className="flex-shrink-0 p-1 -mr-1"
+                          aria-label={isExpanded ? "Collapse" : "Expand"}
                         >
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1 min-w-0">
-                              <p
-                                className={`font-medium text-sm ${
-                                  isCompleted
-                                    ? "line-through text-gray-400 dark:text-gray-500"
-                                    : "text-gray-900 dark:text-gray-100"
-                                }`}
-                              >
-                                {exercise.name}
-                              </p>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                                {formatPrescription(exercise)}
-                              </p>
-                            </div>
-                            {hasDetails && (
-                              <svg
-                                className={`w-4 h-4 flex-shrink-0 text-gray-400 transition-transform mt-0.5 ${
-                                  isExpanded ? "rotate-180" : ""
-                                }`}
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                              </svg>
-                            )}
-                          </div>
-                        </button>
-
-                        {isExpanded && hasDetails && <ExerciseDetailPreview exercise={exercise} />}
-
-                        {isExpanded && onOpenDetailView && exercise.media.type === "video" && (
-                          <button
-                            type="button"
-                            onClick={onOpenDetailView}
-                            className="mt-2 ml-0 text-xs font-semibold text-[#007AFF]"
+                          <svg
+                            className={`w-4 h-4 text-[#C7C7CC] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                            fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
                           >
-                            Open Detail view for video →
-                          </button>
-                        )}
-                      </div>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
-                  </li>
+
+                    {/* Expandable detail */}
+                    {isExpanded && hasDetails && (
+                      <div className="px-5 pb-4 border-t border-[#EDE8DC] dark:border-[#38383A] bg-[#FDFAF6] dark:bg-[#161616]">
+                        <ExerciseDetailPreview
+                          exercise={exercise}
+                          onOpenDetailView={exercise.media.type === "video" ? onOpenDetailView : undefined}
+                        />
+                      </div>
+                    )}
+                  </div>
                 );
               })}
-            </ul>
+            </div>
           </div>
         );
       })}
 
-      {/* Completion Message */}
-      {percentage === 100 && total > 0 && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-2xl p-5 text-center">
-          <p className="text-lg font-bold text-green-800 dark:text-green-200 mb-1">🎉 All done!</p>
-          <p className="text-sm text-green-700 dark:text-green-300">
-            Great job finishing all {total} exercises today.
-          </p>
+      {/* All done */}
+      {pct === 100 && total > 0 && (
+        <div className="flex items-center gap-3 bg-[#3F6B40]/8 border border-[#3F6B40]/20 rounded-2xl px-5 py-4">
+          <span className="w-9 h-9 rounded-full bg-[#3F6B40] flex items-center justify-center flex-shrink-0">
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </span>
+          <div>
+            <p className="text-sm font-bold text-[#3F6B40]">All {total} done — great work</p>
+            <p className="text-xs text-[#8E8E93] mt-0.5">Your streak is safe. See you tomorrow.</p>
+          </div>
         </div>
       )}
     </div>

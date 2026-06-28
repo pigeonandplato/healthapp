@@ -45,7 +45,6 @@ import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
 const CoachView = dynamic(() => import("@/components/CoachView"), { ssr: false });
 const FocusView = dynamic(() => import("@/components/FocusView"), { ssr: false });
 const StatsCard = dynamic(() => import("@/components/StatsCard"), { ssr: false });
-const LevelBar = dynamic(() => import("@/components/LevelBar"), { ssr: false });
 const WeeklyRecap = dynamic(() => import("@/components/WeeklyRecap"), { ssr: false });
 const MilestoneCelebration = dynamic(() => import("@/components/MilestoneCelebration"), { ssr: false });
 const DatePicker = dynamic(() => import("@/components/DatePicker"), { ssr: false });
@@ -552,9 +551,26 @@ function TodayPageContent() {
           {commitment && (
             <Link
               href="/progress"
-              className="block mb-3 rounded-2xl p-4 bg-gradient-to-r from-[#B07828] to-[#CF9030] shadow-sm active:scale-[0.99] transition-transform"
+              className="block mb-3 bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] px-4 py-3 active:scale-[0.99] transition-transform"
             >
-              <LevelBar level={commitment.level} />
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-7 h-7 rounded-xl bg-[#CF9030]/10 flex items-center justify-center text-sm font-black text-[#CF9030]">
+                    {commitment.level.level}
+                  </span>
+                  <div className="leading-tight">
+                    <p className="text-sm font-bold text-[#1C1C1E] dark:text-white">Level {commitment.level.level}</p>
+                    <p className="text-[11px] text-[#8E8E93] -mt-0.5">{commitment.level.title}</p>
+                  </div>
+                </div>
+                <span className="text-[11px] text-[#8E8E93]">{commitment.level.xpToNextLevel} XP to next</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-[#EDE8DC] dark:bg-[#38383A] overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-[#CF9030] transition-all duration-700"
+                  style={{ width: `${commitment.level.progressPct}%` }}
+                />
+              </div>
             </Link>
           )}
 
@@ -619,7 +635,7 @@ function TodayPageContent() {
         {activeProgram === "adhd" && (
           <Link
             href="/habits"
-            className="mt-6 flex items-center gap-3 bg-[#5856D6]/10 hover:bg-[#5856D6]/15 rounded-2xl p-4 transition-colors"
+            className="mt-6 flex items-center gap-3 bg-[#CF9030]/8 hover:bg-[#CF9030]/12 rounded-2xl p-4 transition-colors"
           >
             <span className="text-2xl">💡</span>
             <div className="flex-1">
@@ -628,7 +644,7 @@ function TodayPageContent() {
                 Eating out, scrolling, skipping rehab? Get an instant intervention in Habit Coach.
               </p>
             </div>
-            <span className="text-[#5856D6]">→</span>
+            <span className="text-[#CF9030]">→</span>
           </Link>
         )}
 
@@ -655,7 +671,7 @@ function TodayPageContent() {
               + Add a motivation video
             </button>
           ) : (
-            <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+            <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 border border-[#EDE8DC] dark:border-[#38383A]">
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-sm font-semibold text-[#1C1C1E] dark:text-white">💪 Stay Motivated</h3>
                 {youtubeVideo && !isEditingVideo && (
