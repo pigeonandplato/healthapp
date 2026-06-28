@@ -9,13 +9,13 @@ interface ViewToggleProps {
 
 export default function ViewToggle({ currentView, onViewChange }: ViewToggleProps) {
   return (
-    <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-1 shadow-sm">
+    <div className="inline-flex rounded-lg border border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] p-1 shadow-sm">
       <button
         onClick={() => onViewChange("checklist")}
         className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
           currentView === "checklist"
-            ? "bg-blue-500 text-white shadow-sm"
-            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+            ? "bg-[#4A8FA8] text-white shadow-sm"
+            : "text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#1C1C1E] dark:hover:text-gray-100"
         }`}
         aria-pressed={currentView === "checklist"}
       >
@@ -41,8 +41,8 @@ export default function ViewToggle({ currentView, onViewChange }: ViewToggleProp
         onClick={() => onViewChange("coach")}
         className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
           currentView === "coach"
-            ? "bg-blue-500 text-white shadow-sm"
-            : "text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
+            ? "bg-[#4A8FA8] text-white shadow-sm"
+            : "text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#1C1C1E] dark:hover:text-gray-100"
         }`}
         aria-pressed={currentView === "coach"}
       >

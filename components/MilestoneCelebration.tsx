@@ -38,7 +38,7 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div
-        className={`bg-white dark:bg-[#1C1C1E] rounded-3xl p-8 max-w-sm w-full shadow-2xl transform transition-all duration-500 ${
+        className={`bg-white dark:bg-[#1C1C1E] rounded-3xl p-8 max-w-sm w-full  transform transition-all duration-500 ${
           isAnimating ? "scale-110 rotate-3" : "scale-100 rotate-0"
         }`}
       >

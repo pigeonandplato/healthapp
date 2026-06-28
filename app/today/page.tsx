@@ -73,9 +73,9 @@ function TodayPageLoading() {
       </section>
       <main className="max-w-4xl mx-auto px-4 py-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
-          <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
-          <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl" />
+          <div className="h-40 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-3xl" />
+          <div className="h-28 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-3xl" />
+          <div className="h-28 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-3xl" />
         </div>
       </main>
     </div>
@@ -361,7 +361,7 @@ function TodayPageContent() {
       const nextDateStr = toLocalDateString(nextDay.date);
 
       return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+        <div className="min-h-screen bg-[#FDFAF6] dark:bg-black p-4">
           <div className="max-w-md mx-auto pt-4 space-y-4">
             <DayNavigator
               selectedDate={selectedDate}
@@ -369,14 +369,14 @@ function TodayPageContent() {
               program={activeProgram}
             />
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
+            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl p-6 text-center">
               <div className="text-5xl mb-3">😴</div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Rest Day · {dayName}</h2>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Recovery is part of the program</p>
+              <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-1">Rest Day · {dayName}</h2>
+              <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Recovery is part of the program</p>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg mb-4">
-              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">NEXT WORKOUT</h3>
+            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl p-5 mb-4">
+              <h3 className="text-sm font-semibold text-[#8E8E93] dark:text-[#8E8E93] mb-3">NEXT WORKOUT</h3>
               <button
                 onClick={() => setSelectedDate(nextDateStr)}
                 className="w-full bg-gradient-to-r from-[#38788F] to-[#4A8FA8] rounded-xl p-4 text-left text-white hover:opacity-90 transition-opacity"
@@ -388,8 +388,8 @@ function TodayPageContent() {
               </button>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-lg">
-              <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">JUMP TO WORKOUT</h3>
+            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl p-5">
+              <h3 className="text-sm font-semibold text-[#8E8E93] dark:text-[#8E8E93] mb-3">JUMP TO WORKOUT</h3>
               <div className={`grid gap-2 ${activeProgram === "chacha" ? "grid-cols-5" : "grid-cols-3"}`}>
                 {(activeProgram === "chacha"
                   ? [
@@ -411,7 +411,7 @@ function TodayPageContent() {
                     className="bg-[#EDE8DC] dark:bg-[#2C2C2E] border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl p-3 text-center hover:border-[#4A8FA8] transition-colors"
                   >
                     <div className="text-xl mb-1">{b.emoji}</div>
-                    <div className="text-xs font-bold text-gray-700 dark:text-gray-300">{b.label}</div>
+                    <div className="text-xs font-bold text-[#3A3A3C] dark:text-[#D1D1D6]">{b.label}</div>
                   </button>
                 ))}
               </div>
@@ -424,7 +424,7 @@ function TodayPageContent() {
     return (
       <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
         <div className="max-w-md mx-auto pt-12 space-y-4">
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-8 text-center shadow-lg border border-[#E5E5EA] dark:border-[#38383A]">
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-8 text-center border border-[#E5E5EA] dark:border-[#38383A]">
             <div className="text-6xl mb-4">👋</div>
             <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-3">Welcome to Health Tracker</h2>
             <p className="text-sm text-[#8E8E93] mb-6">

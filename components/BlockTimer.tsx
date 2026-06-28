@@ -80,8 +80,8 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-3">
-      <div className="text-2xl font-mono font-bold text-gray-900 dark:text-gray-100 min-w-[80px]">
+    <div className="flex items-center gap-3 bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-lg p-3">
+      <div className="text-2xl font-mono font-bold text-[#1C1C1E] dark:text-white min-w-[80px]">
         {formatTime(elapsedSeconds)}
       </div>
       
@@ -90,8 +90,8 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
           onClick={handleStartPause}
           className={`px-4 py-2 rounded-md font-medium transition-colors ${
             isRunning
-              ? "bg-yellow-500 hover:bg-yellow-600 text-white"
-              : "bg-blue-500 hover:bg-blue-600 text-white"
+              ? "bg-[#EDE8DC]0 hover:bg-yellow-600 text-white"
+              : "bg-[#4A8FA8] hover:bg-[#4A8FA8] text-white"
           }`}
           aria-label={isRunning ? "Pause timer" : "Start timer"}
         >
@@ -100,7 +100,7 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
         
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 rounded-md font-medium transition-colors"
+          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-[#38383A] dark:hover:bg-[#48484A] text-[#1C1C1E] dark:text-white rounded-md font-medium transition-colors"
           aria-label="Reset timer"
         >
           Reset
@@ -109,7 +109,7 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
 
       {isRunning && (
         <div className="ml-auto">
-          <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+          <div className="w-2 h-2 bg-[#9DBFD0]/100 rounded-full animate-pulse" />
         </div>
       )}
     </div>

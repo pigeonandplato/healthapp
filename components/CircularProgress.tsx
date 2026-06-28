@@ -32,7 +32,7 @@ export default function CircularProgress({
           stroke="currentColor"
           strokeWidth={strokeWidth}
           fill="none"
-          className="text-gray-200 dark:text-gray-700"
+          className="text-gray-200 dark:text-[#3A3A3C]"
         />
         {/* Progress circle */}
         <circle
@@ -62,7 +62,7 @@ export default function CircularProgress({
           {Math.round(percentage)}%
         </span>
         {label && (
-          <span className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+          <span className="text-xs text-[#8E8E93] dark:text-[#8E8E93] mt-1">
             {label}
           </span>
         )}

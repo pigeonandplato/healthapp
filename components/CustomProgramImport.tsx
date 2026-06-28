@@ -201,13 +201,13 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
       )}
 
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+        <div className="bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 text-[#8E8E93] dark:text-[#8E8E93] px-4 py-3 rounded-xl text-sm">
           {error}
         </div>
       )}
 
       {success && (
-        <div className="bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 px-4 py-3 rounded-xl text-sm">
+        <div className="bg-green-50 dark:bg-[#3F6B40]/20/20 text-green-600 dark:text-green-400 px-4 py-3 rounded-xl text-sm">
           Imported and set as your active program! Runs Mon / Wed / Fri (A / B / C). Head to Today to start.
         </div>
       )}

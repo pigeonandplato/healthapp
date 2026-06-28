@@ -85,7 +85,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl">
+          <div className="w-20 h-20 bg-white rounded-3xl flex items-center justify-center mx-auto mb-4 ">
             <span className="text-4xl">💪</span>
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">Health Tracker</h1>
@@ -93,7 +93,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8">
+        <div className="bg-white rounded-3xl  p-8">
           <h2 className="text-2xl font-bold text-[#1C1C1E] text-center mb-6">
             {showForgotPassword ? "Reset Password" : isSignUp ? "Create Account" : "Welcome Back"}
           </h2>
@@ -131,7 +131,7 @@ export default function LoginPage() {
             )}
 
             {error && (
-              <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm">
+              <div className="bg-[#9DBFD0]/10 text-[#8E8E93] px-4 py-3 rounded-xl text-sm">
                 {error}
               </div>
             )}

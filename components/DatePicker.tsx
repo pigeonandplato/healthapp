@@ -137,7 +137,7 @@ export default function DatePicker({
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="fixed md:absolute bottom-0 md:bottom-auto left-0 md:left-auto right-0 md:right-0 top-auto md:top-full md:mt-2 z-50 bg-white dark:bg-[#1C1C1E] rounded-t-3xl md:rounded-2xl shadow-2xl border-t md:border border-[#E5E5EA] dark:border-[#38383A] p-6 md:p-4 w-full md:w-auto md:min-w-[320px] max-h-[85vh] overflow-y-auto animate-slide-up md:animate-none"
+            className="fixed md:absolute bottom-0 md:bottom-auto left-0 md:left-auto right-0 md:right-0 top-auto md:top-full md:mt-2 z-50 bg-white dark:bg-[#1C1C1E] rounded-t-3xl md:rounded-2xl  border-t md:border border-[#E5E5EA] dark:border-[#38383A] p-6 md:p-4 w-full md:w-auto md:min-w-[320px] max-h-[85vh] overflow-y-auto animate-slide-up md:animate-none"
           >
             <div className="md:hidden flex justify-center mb-4">
               <div className="w-12 h-1.5 bg-[#D2D2D7] dark:bg-[#38383A] rounded-full" />

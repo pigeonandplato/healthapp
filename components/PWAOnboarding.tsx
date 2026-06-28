@@ -48,7 +48,7 @@ export default function PWAOnboarding() {
           isVisible ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         }`}
       >
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 shadow-2xl border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-3xl p-6  border border-[#E5E5EA] dark:border-[#38383A]">
           {/* Close Button */}
           <button
             onClick={handleDismiss}

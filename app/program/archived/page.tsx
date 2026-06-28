@@ -30,8 +30,8 @@ export default function ArchivedProgramsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500" />
+      <div className="min-h-screen bg-[#FDFAF6] dark:bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#4A8FA8]" />
       </div>
     );
   }
@@ -66,7 +66,7 @@ export default function ArchivedProgramsPage() {
         {programs.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">📭</div>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">No archived programs yet.</p>
+            <p className="text-[#8E8E93] dark:text-[#8E8E93] mb-6">No archived programs yet.</p>
             <Link
               href="/program"
               className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[#FF2D55] text-white font-semibold hover:opacity-90 transition-opacity"

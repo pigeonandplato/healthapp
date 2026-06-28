@@ -207,7 +207,7 @@ export default function HabitsPage() {
           <button
             onClick={handleHelpNow}
             disabled={!label.trim()}
-            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-[0.98] shadow-lg mb-2"
+            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-[0.98] mb-2"
           >
             ⚡ Help me now
           </button>
@@ -390,7 +390,7 @@ function CoachPanel({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={thumb} alt={intervention.videoTitle || "Watch on YouTube"} className="w-full aspect-video object-cover" />
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-              <div className="w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+              <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center">
                 <svg className="w-7 h-7 text-[#FF2D55] ml-1" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
@@ -467,13 +467,13 @@ function InfoRow({ emoji, title, body }: { emoji: string; title: string; body: s
 function CoachSkeleton() {
   return (
     <div className="rounded-3xl border-2 border-[#5856D6]/20 bg-white dark:bg-[#1C1C1E] p-5 space-y-4 animate-pulse">
-      <div className="h-6 bg-gray-200 dark:bg-gray-800 rounded-lg w-3/4" />
+      <div className="h-6 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg w-3/4" />
       <div className="space-y-2">
-        <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-full" />
-        <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded w-5/6" />
+        <div className="h-4 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded w-full" />
+        <div className="h-4 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded w-5/6" />
       </div>
-      <div className="h-20 bg-gray-200 dark:bg-gray-800 rounded-2xl" />
-      <div className="h-20 bg-gray-200 dark:bg-gray-800 rounded-2xl" />
+      <div className="h-20 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-2xl" />
+      <div className="h-20 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-2xl" />
       <p className="text-center text-sm text-[#8E8E93]">Getting your intervention…</p>
     </div>
   );

@@ -129,7 +129,7 @@ export default function TopHeader() {
       {/* Slide-out Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 bottom-0 w-72 bg-[#FDFAF6] dark:bg-[#1C1C1E] z-50 shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed top-0 left-0 bottom-0 w-72 bg-[#FDFAF6] dark:bg-[#1C1C1E] z-50  transition-transform duration-300 ease-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -137,7 +137,7 @@ export default function TopHeader() {
           {/* Menu Header */}
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#38788F] to-[#9DBFD0] flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#38788F] to-[#9DBFD0] flex items-center justify-center">
                 <span className="text-2xl">💪</span>
               </div>
               <div>
@@ -189,7 +189,7 @@ export default function TopHeader() {
           {/* Sign Out Button */}
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 mt-4"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-[#9DBFD0]/10 dark:hover:bg-red-900/20 transition-all duration-200 mt-4"
           >
             <span className="text-xl">🚪</span>
             <span className="font-medium">Sign Out</span>

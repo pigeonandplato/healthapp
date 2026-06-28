@@ -22,14 +22,14 @@ export default function ProgramListCard({
   const actionClass =
     action?.variant === "restore"
       ? "text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-900/30"
-      : "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700/50";
+      : "text-[#8E8E93] hover:bg-[#EDE8DC] dark:text-[#8E8E93] dark:hover:bg-gray-700/50";
 
   return (
     <div
       className={`relative rounded-2xl border-2 transition-all ${
         isActive
           ? "border-[#4A8FA8] bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/20"
-          : "border-[#EDE8DC] dark:border-gray-700 bg-white dark:bg-gray-800"
+          : "border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E]"
       }`}
     >
       <button
@@ -37,12 +37,12 @@ export default function ProgramListCard({
         onClick={onSelect}
         disabled={!onSelect}
         className={`w-full p-5 text-left rounded-2xl ${
-          onSelect ? "hover:border-gray-300 dark:hover:border-gray-600" : "cursor-default"
+          onSelect ? "hover:border-[#EDE8DC] dark:hover:border-gray-600" : "cursor-default"
         }`}
       >
         <div className="text-3xl mb-2">{program.icon}</div>
-        <div className="font-bold text-gray-900 dark:text-white">{program.name}</div>
-        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{program.description}</div>
+        <div className="font-bold text-[#1C1C1E] dark:text-white">{program.name}</div>
+        <div className="text-xs text-[#8E8E93] dark:text-[#8E8E93] mt-1">{program.description}</div>
         {isActive && (
           <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#4A8FA8]">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">

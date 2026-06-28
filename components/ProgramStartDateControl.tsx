@@ -57,7 +57,7 @@ export default function ProgramStartDateControl({
   };
 
   if (loading) {
-    return <div className="h-24 animate-pulse bg-gray-100 dark:bg-gray-800 rounded-xl" />;
+    return <div className="h-24 animate-pulse bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-xl" />;
   }
 
   return (

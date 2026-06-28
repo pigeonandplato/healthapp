@@ -175,9 +175,9 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
   if (loading) {
     return (
       <div className="space-y-4">
-        <div className="h-40 bg-gray-200 dark:bg-gray-800 rounded-3xl animate-pulse" />
-        <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl animate-pulse" />
-        <div className="h-28 bg-gray-200 dark:bg-gray-800 rounded-3xl animate-pulse" />
+        <div className="h-40 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-3xl animate-pulse" />
+        <div className="h-28 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-3xl animate-pulse" />
+        <div className="h-28 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-3xl animate-pulse" />
       </div>
     );
   }
@@ -222,7 +222,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
               className={`rounded-3xl border-2 p-5 shadow-card transition-all ${
                 complete
                   ? "border-[#3F6B40]/40 bg-[#3F6B40]/5"
-                  : "border-gray-200 dark:border-gray-700 bg-white dark:bg-[#1C1C1E]"
+                  : "border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#1C1C1E]"
               }`}
             >
               <div className="flex items-start justify-between gap-3 mb-3">
@@ -308,7 +308,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
       {showMinimum && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setShowMinimum(false)}>
           <div
-            className="bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 max-w-md w-full shadow-2xl animate-slide-up"
+            className="bg-white dark:bg-[#1C1C1E] rounded-3xl p-6 max-w-md w-full  animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="text-center mb-4">
@@ -519,7 +519,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
         )}
 
         {exercise.stopConditions.length > 0 && (
-          <div className="bg-red-50 dark:bg-red-900/20 rounded-2xl p-3 text-xs text-red-700 dark:text-red-300">
+          <div className="bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 rounded-2xl p-3 text-xs text-[#8E8E93] dark:text-[#D1D1D6]">
             🛑 Stop if: {exercise.stopConditions.join(" · ")}
           </div>
         )}
@@ -537,7 +537,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
         ) : (
           <button
             onClick={handleDone}
-            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-bold py-4 rounded-2xl text-lg active:scale-[0.98] transition-all shadow-lg"
+            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-bold py-4 rounded-2xl text-lg active:scale-[0.98] transition-all"
           >
             Mark done ✓
           </button>
@@ -651,7 +651,7 @@ function Celebration({
   subtitle?: string;
 }) {
   const content = (
-    <div className="relative bg-white dark:bg-[#1C1C1E] rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center overflow-hidden">
+    <div className="relative bg-white dark:bg-[#1C1C1E] rounded-3xl p-8 max-w-sm w-full  text-center overflow-hidden">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(24)].map((_, i) => (
           <span

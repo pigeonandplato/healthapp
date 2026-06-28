@@ -271,8 +271,8 @@ export default function ExerciseCard({
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className={`group relative bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden transition-all duration-300 hover:shadow-3xl hover:scale-[1.01] hover:-translate-y-1 touch-pan-y ${
-        isCompleted ? "ring-4 ring-green-400/50" : ""
+      className={`group relative bg-white dark:bg-[#1C1C1E] rounded-2xl border overflow-hidden transition-colors touch-pan-y ${
+        isCompleted ? "border-[#3F6B40]/30 bg-[#3F6B40]/3 dark:bg-[#3F6B40]/5" : "border-[#EDE8DC] dark:border-[#38383A]"
       }`}
       style={{
         transform: `translateX(${swipeOffset}px)`,
@@ -282,7 +282,7 @@ export default function ExerciseCard({
       {/* Swipe indicator */}
       {swipeOffset > 20 && !isCompleted && (
         <div className="absolute left-4 top-1/2 -translate-y-1/2 z-30">
-          <div className="w-12 h-12 rounded-full bg-[#3F6B40] flex items-center justify-center text-white shadow-lg">
+          <div className="w-12 h-12 rounded-full bg-[#3F6B40] flex items-center justify-center text-white">
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
@@ -294,7 +294,7 @@ export default function ExerciseCard({
       {!isCompleted && (
         <button
           onClick={handleToggleComplete}
-          className="absolute bottom-4 right-4 w-14 h-14 bg-[#4A8FA8] rounded-full shadow-2xl flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
+          className="absolute bottom-4 right-4 w-14 h-14 bg-[#4A8FA8] rounded-full  flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
           aria-label="Complete exercise"
         >
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -305,7 +305,7 @@ export default function ExerciseCard({
       {/* Completion Badge - Top Left Corner */}
       {isCompleted && (
         <div className="absolute top-4 left-4 z-20">
-          <div className="bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full p-3 shadow-2xl animate-bounce-once">
+          <div className="bg-gradient-to-r from-[#87A87C] to-[#3F6B40] text-white rounded-full p-3  animate-bounce-once">
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"
@@ -334,7 +334,7 @@ export default function ExerciseCard({
               <div className="absolute top-2 right-2 flex gap-2 z-10">
                 <button
                   onClick={handleStartEditVideo}
-                  className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                  className="bg-[#4A8FA8] hover:bg-[#38788F] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                   title="Edit video"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -346,7 +346,7 @@ export default function ExerciseCard({
                   href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                  className="bg-[#8E8E93] hover:bg-[#6E6E73] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
@@ -357,7 +357,7 @@ export default function ExerciseCard({
                 {exercise.media.src && (
                   <button
                     onClick={() => setShowVideo(false)}
-                    className="bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105"
+                    className="bg-[#3A3A3C] hover:bg-[#48484A] text-white text-xs font-bold py-2 px-3 rounded-full transition-all"
                   >
                     Show Image
                   </button>
@@ -377,7 +377,7 @@ export default function ExerciseCard({
                 <div className="absolute top-2 right-2 flex gap-2 z-10">
                   <button
                     onClick={handleStartEditVideo}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                    className="bg-[#4A8FA8] hover:bg-[#38788F] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                     title="Edit video"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -389,7 +389,7 @@ export default function ExerciseCard({
                     href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                    className="bg-[#8E8E93] hover:bg-[#6E6E73] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
@@ -401,7 +401,7 @@ export default function ExerciseCard({
                       setShowVideo(true);
                       setVideoError(false);
                     }}
-                    className="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-2 px-3 rounded-full shadow-lg transition-all transform hover:scale-105 flex items-center gap-1"
+                    className="bg-[#4A8FA8] hover:bg-[#4A8FA8] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
@@ -411,7 +411,7 @@ export default function ExerciseCard({
                 </div>
               )}
               {videoError && (
-                <div className="absolute bottom-2 left-2 bg-yellow-500 text-black text-xs font-bold py-1 px-3 rounded-full">
+                <div className="absolute bottom-2 left-2 bg-[#EDE8DC]0 text-black text-xs font-bold py-1 px-3 rounded-full">
                   Video unavailable - showing image
                 </div>
               )}
@@ -419,7 +419,7 @@ export default function ExerciseCard({
           ) : exercise.media.type === "svg" && exercise.media.svg ? (
             /* SVG fallback */
             <div
-              className="w-full h-48 flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800 p-4"
+              className="w-full h-48 flex items-center justify-center bg-[#EDE8DC] dark:bg-[#2C2C2E] p-4"
               dangerouslySetInnerHTML={{ __html: exercise.media.svg }}
             />
           ) : null}
@@ -430,14 +430,14 @@ export default function ExerciseCard({
       <div className="p-6 space-y-4">
         {/* Header with Number Badge */}
         <div className="flex items-center gap-4 mb-4">
-          <div className="flex-shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-xl shadow-xl">
+          <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/20 flex items-center justify-center text-2xl">
             💪
           </div>
           <div className="flex-1">
-            <h3 className="text-2xl font-black text-gray-900 dark:text-gray-100 mb-1">
+            <h3 className="text-2xl font-black text-[#1C1C1E] dark:text-white mb-1">
               {exercise.name}
             </h3>
-            <p className="text-sm text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full inline-block">
+            <p className="text-sm text-[#4A8FA8] dark:text-[#9DBFD0] font-bold bg-[#4A8FA8]/8 dark:bg-[#4A8FA8]/20 px-3 py-1 rounded-full inline-block">
               {formatPrescription()}
             </p>
           </div>
@@ -445,10 +445,10 @@ export default function ExerciseCard({
           {/* Complete Toggle - Larger and More Prominent */}
           <button
             onClick={handleToggleComplete}
-            className={`flex-shrink-0 w-16 h-16 rounded-2xl border-3 flex items-center justify-center transition-all shadow-xl touch-manipulation ${
+            className={`flex-shrink-0 w-16 h-16 rounded-2xl border-3 flex items-center justify-center transition-all  touch-manipulation ${
               isCompleted
-                ? "bg-gradient-to-r from-green-400 to-emerald-500 border-green-300 scale-110"
-                : "bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 hover:border-green-400 hover:scale-105"
+                ? "bg-gradient-to-r from-[#87A87C] to-[#3F6B40] border-[#3F6B40]/30 scale-110"
+                : "bg-white dark:bg-[#38383A] border-[#EDE8DC] dark:border-[#38383A] hover:border-[#3F6B40] hover:scale-105"
             }`}
             aria-label={isCompleted ? "Mark as incomplete" : "Mark as complete"}
           >
@@ -467,26 +467,26 @@ export default function ExerciseCard({
                 />
               </svg>
             ) : (
-              <div className="w-8 h-8 rounded-full border-4 border-gray-300 dark:border-gray-600"></div>
+              <div className="w-8 h-8 rounded-full border-4 border-[#EDE8DC] dark:border-[#38383A]"></div>
             )}
           </button>
         </div>
 
         {/* Description */}
-        <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">
+        <p className="text-[#3A3A3C] dark:text-[#D1D1D6] text-sm mb-4">
           {exercise.description}
         </p>
 
         {/* Instructions */}
         <div className="mb-4">
-          <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <h4 className="font-semibold text-[#1C1C1E] dark:text-white mb-2">
             How to Perform:
           </h4>
           <ol className="list-decimal list-inside space-y-1.5">
             {exercise.instructions.map((instruction, idx) => (
               <li
                 key={idx}
-                className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed"
+                className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] leading-relaxed"
               >
                 {instruction}
               </li>
@@ -498,14 +498,14 @@ export default function ExerciseCard({
         <div className="mb-3">
           <button
             onClick={() => setShowMistakes(!showMistakes)}
-            className="w-full flex items-center justify-between p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-md hover:bg-yellow-100 dark:hover:bg-yellow-900/30 transition-colors"
+            className="w-full flex items-center justify-between p-3 bg-[#EDE8DC] dark:bg-[#38383A] rounded-xl hover:bg-[#E0D9C8] dark:hover:bg-[#48484A] transition-colors"
             aria-expanded={showMistakes}
           >
-            <span className="font-semibold text-yellow-900 dark:text-yellow-200 text-sm">
+            <span className="font-semibold text-[#1C1C1E] dark:text-white text-sm">
               ⚠️ Common Mistakes
             </span>
             <svg
-              className={`w-5 h-5 text-yellow-700 dark:text-yellow-300 transition-transform ${
+              className={`w-5 h-5 text-[#8E8E93] transition-transform ${
                 showMistakes ? "rotate-180" : ""
               }`}
               fill="none"
@@ -525,9 +525,9 @@ export default function ExerciseCard({
               {exercise.commonMistakes.map((mistake, idx) => (
                 <li
                   key={idx}
-                  className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed flex gap-2"
+                  className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] leading-relaxed flex gap-2"
                 >
-                  <span className="text-yellow-600 dark:text-yellow-400">•</span>
+                  <span className="text-[#8E8E93]">·</span>
                   <span>{mistake}</span>
                 </li>
               ))}
@@ -539,14 +539,14 @@ export default function ExerciseCard({
         <div className="mb-4">
           <button
             onClick={() => setShowStopConditions(!showStopConditions)}
-            className="w-full flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-md hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+            className="w-full flex items-center justify-between p-3 bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 rounded-xl hover:bg-[#9DBFD0]/15 dark:hover:bg-[#4A8FA8]/10 transition-colors"
             aria-expanded={showStopConditions}
           >
-            <span className="font-semibold text-red-900 dark:text-red-200 text-sm">
+            <span className="font-semibold text-[#1C1C1E] dark:text-white text-sm">
               🛑 Stop If You Feel
             </span>
             <svg
-              className={`w-5 h-5 text-red-700 dark:text-red-300 transition-transform ${
+              className={`w-5 h-5 text-[#8E8E93] dark:text-[#D1D1D6] transition-transform ${
                 showStopConditions ? "rotate-180" : ""
               }`}
               fill="none"
@@ -566,9 +566,9 @@ export default function ExerciseCard({
               {exercise.stopConditions.map((condition, idx) => (
                 <li
                   key={idx}
-                  className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed flex gap-2"
+                  className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] leading-relaxed flex gap-2"
                 >
-                  <span className="text-red-600 dark:text-red-400">•</span>
+                  <span className="text-[#8E8E93] dark:text-[#8E8E93]">•</span>
                   <span>{condition}</span>
                 </li>
               ))}
@@ -578,13 +578,13 @@ export default function ExerciseCard({
 
         {/* Gym Exercise Tracking - Weight/Reps/Sets */}
         {isStrengthTrackingExercise && (
-          <div className="mb-4 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-800">
-            <h4 className="font-bold text-purple-900 dark:text-purple-200 mb-3 flex items-center gap-2">
+          <div className="mb-4 bg-[#EDE8DC]/50 dark:bg-[#2C2C2E] rounded-2xl p-4 border border-[#EDE8DC] dark:border-[#38383A]">
+            <h4 className="font-bold text-[#1C1C1E] dark:text-white mb-3 flex items-center gap-2">
               <span>📊</span> Log Your Lift
             </h4>
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">
+                <label className="block text-xs font-medium text-[#8E8E93] dark:text-[#8E8E93] mb-1">
                   Weight (lbs)
                 </label>
                 <input
@@ -592,11 +592,11 @@ export default function ExerciseCard({
                   value={weight || ""}
                   onChange={(e) => handleWeightChange(e.target.value ? Number(e.target.value) : undefined)}
                   placeholder="0"
-                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:ring-2 focus:ring-[#4A8FA8] focus:border-[#4A8FA8]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">
+                <label className="block text-xs font-medium text-[#8E8E93] dark:text-[#8E8E93] mb-1">
                   Reps
                 </label>
                 <input
@@ -604,11 +604,11 @@ export default function ExerciseCard({
                   value={reps || ""}
                   onChange={(e) => handleRepsChange(e.target.value ? Number(e.target.value) : undefined)}
                   placeholder="0"
-                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:ring-2 focus:ring-[#4A8FA8] focus:border-[#4A8FA8]"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-purple-700 dark:text-purple-300 mb-1">
+                <label className="block text-xs font-medium text-[#8E8E93] dark:text-[#8E8E93] mb-1">
                   Sets
                 </label>
                 <input
@@ -616,12 +616,12 @@ export default function ExerciseCard({
                   value={sets || ""}
                   onChange={(e) => handleSetsChange(e.target.value ? Number(e.target.value) : undefined)}
                   placeholder="0"
-                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-purple-300 dark:border-purple-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  className="w-full px-3 py-2 text-center text-lg font-bold border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:ring-2 focus:ring-[#4A8FA8] focus:border-[#4A8FA8]"
                 />
               </div>
             </div>
             {weight && reps && sets && (
-              <div className="mt-3 text-center text-sm font-medium text-purple-800 dark:text-purple-200 bg-purple-100 dark:bg-purple-900/40 rounded-lg py-2">
+              <div className="mt-3 text-center text-sm font-medium text-[#4A8FA8] dark:text-white bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/20 rounded-lg py-2">
                 Total Volume: {weight * reps * sets} lbs
               </div>
             )}
@@ -632,7 +632,7 @@ export default function ExerciseCard({
         <div>
           <label
             htmlFor={`notes-${exercise.id}`}
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            className="block text-sm font-medium text-[#3A3A3C] dark:text-[#D1D1D6] mb-1"
           >
             Notes (optional)
           </label>
@@ -641,7 +641,7 @@ export default function ExerciseCard({
             value={notes}
             onChange={(e) => handleNotesChange(e.target.value)}
             placeholder={isStrengthTrackingExercise ? "How did the lift feel? Form notes?" : "How did this feel? Any modifications?"}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-[#EDE8DC] dark:border-[#38383A] rounded-md bg-white dark:bg-[#38383A] text-[#1C1C1E] dark:text-white text-sm focus:ring-2 focus:ring-[#4A8FA8] focus:border-[#4A8FA8]"
             rows={2}
           />
         </div>
@@ -650,13 +650,13 @@ export default function ExerciseCard({
       {/* Video Editor Modal */}
       {isEditingVideo && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 max-w-md w-full shadow-2xl">
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 max-w-md w-full ">
             <h3 className="text-lg font-bold mb-4 text-[#1C1C1E] dark:text-white">
               Edit Video for {exercise.name}
             </h3>
             {isAdmin && (
-              <div className="mb-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-3">
-                <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">
+              <div className="mb-4 bg-[#4A8FA8]/8 dark:bg-[#4A8FA8]/15 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30 rounded-xl p-3">
+                <p className="text-sm text-[#4A8FA8] dark:text-[#9DBFD0] font-medium">
                   ⚡ Admin Mode: This will update the master video for all users
                 </p>
               </div>
@@ -683,7 +683,7 @@ export default function ExerciseCard({
               </div>
 
               {videoEditError && (
-                <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+                <div className="bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 text-[#8E8E93] dark:text-[#8E8E93] px-4 py-3 rounded-xl text-sm">
                   {videoEditError}
                 </div>
               )}
@@ -700,7 +700,7 @@ export default function ExerciseCard({
                   <button
                     onClick={handleDeleteCustomVideo}
                     disabled={savingVideo}
-                    className="px-4 bg-red-600 hover:bg-red-700 text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
+                    className="px-4 bg-[#8E8E93] hover:bg-[#6E6E73] text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
                   >
                     Reset
                   </button>

@@ -104,7 +104,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
       </div>
 
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-4 py-3 rounded-xl text-sm">
+        <div className="bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 text-[#8E8E93] dark:text-[#8E8E93] px-4 py-3 rounded-xl text-sm">
           {error}
         </div>
       )}

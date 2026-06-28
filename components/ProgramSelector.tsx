@@ -49,19 +49,19 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
         {isOpen && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-            <div className="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-xl shadow-xl border border-gray-700 overflow-hidden z-50">
+            <div className="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-xl  border border-gray-700 overflow-hidden z-50">
               {programs.map((program) => (
                 <button
                   key={program.id}
                   onClick={() => handleSelect(program.type)}
                   className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-700 transition-colors ${
-                    program.type === activeProgram ? "bg-blue-600/30" : ""
+                    program.type === activeProgram ? "bg-[#4A8FA8]/30" : ""
                   }`}
                 >
                   <span className="text-2xl">{program.icon}</span>
                   <div className="text-left">
                     <div className="font-medium text-white">{program.name}</div>
-                    <div className="text-xs text-gray-400">{program.description}</div>
+                    <div className="text-xs text-[#8E8E93]">{program.description}</div>
                   </div>
                   {program.type === activeProgram && (
                     <svg className="w-5 h-5 text-blue-400 ml-auto" fill="currentColor" viewBox="0 0 20 20">
@@ -85,13 +85,13 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
           onClick={() => handleSelect(program.type)}
           className={`p-4 rounded-xl border-2 transition-all ${
             program.type === activeProgram
-              ? "border-blue-500 bg-blue-500/20"
+              ? "border-[#4A8FA8] bg-[#4A8FA8]/20"
               : "border-gray-700 bg-gray-800/50 hover:border-gray-600"
           }`}
         >
           <div className="text-3xl mb-2">{program.icon}</div>
           <div className="font-semibold text-white">{program.name}</div>
-          <div className="text-xs text-gray-400 mt-1">{program.description}</div>
+          <div className="text-xs text-[#8E8E93] mt-1">{program.description}</div>
         </button>
       ))}
     </div>

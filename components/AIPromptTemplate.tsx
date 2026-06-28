@@ -131,7 +131,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
           onClick={() => setSelectedModel("claude")}
           className={`p-3 rounded-xl font-medium transition-all ${
             selectedModel === "claude"
-              ? "bg-[#FF2D55] text-white shadow-lg"
+              ? "bg-[#FF2D55] text-white"
               : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white hover:bg-[#E5E5EA] dark:hover:bg-[#38383A]"
           }`}
         >
@@ -141,7 +141,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
           onClick={() => setSelectedModel("chatgpt")}
           className={`p-3 rounded-xl font-medium transition-all ${
             selectedModel === "chatgpt"
-              ? "bg-[#FF2D55] text-white shadow-lg"
+              ? "bg-[#FF2D55] text-white"
               : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white hover:bg-[#E5E5EA] dark:hover:bg-[#38383A]"
           }`}
         >
@@ -190,7 +190,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
       </div>
 
       {/* Tips */}
-      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-900/50 rounded-lg p-4">
+      <div className="bg-[#EDE8DC] dark:bg-[#38383A] border border-yellow-200 dark:border-yellow-900/50 rounded-lg p-4">
         <p className="text-sm text-yellow-700 dark:text-yellow-400 font-medium mb-2">⚡ Pro Tips:</p>
         <ul className="text-xs text-yellow-600 dark:text-yellow-400 space-y-1">
           <li>• Be specific: "Push-ups, 3 sets of 10 reps" works better than vague descriptions</li>
