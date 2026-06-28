@@ -13,22 +13,30 @@ export default function StatsCard({
   icon,
   color = "pink",
 }: StatsCardProps) {
+  // Map to company brand palette
   const colorClasses = {
-    pink: "text-[#FF2D55]",
-    green: "text-[#34C759]",
-    purple: "text-[#AF52DE]",
-    orange: "text-[#FF9500]",
+    pink: "text-[#EF9D8C]",    // company salmon
+    green: "text-[#87A87C]",   // company sage
+    purple: "text-[#9DBFD0]",  // company sky blue
+    orange: "text-[#CF9030]",  // company amber
+  };
+
+  const bgClasses = {
+    pink: "bg-[#EF9D8C]/10",
+    green: "bg-[#87A87C]/10",
+    purple: "bg-[#9DBFD0]/15",
+    orange: "bg-[#CF9030]/10",
   };
 
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] rounded-xl p-4 border border-[#E5E5EA] dark:border-[#38383A] shadow-minimal">
-      <div className="flex items-center justify-between mb-2">
-        <div className={`text-2xl font-bold ${colorClasses[color]}`}>
-          {value}
-        </div>
-        <div className="text-xl opacity-80">{icon}</div>
+    <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 border border-[#EDE8DC] dark:border-[#38383A]">
+      <div className={`w-9 h-9 rounded-xl ${bgClasses[color]} flex items-center justify-center mb-3`}>
+        <span className="text-lg">{icon}</span>
       </div>
-      <div className="text-xs text-[#8E8E93] font-medium uppercase tracking-wide">
+      <div className={`text-2xl font-bold ${colorClasses[color]} mb-0.5`}>
+        {value}
+      </div>
+      <div className="text-[11px] text-[#8E8E93] font-medium uppercase tracking-wide">
         {label}
       </div>
     </div>

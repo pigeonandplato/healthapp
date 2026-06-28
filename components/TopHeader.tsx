@@ -9,7 +9,8 @@ const menuItems = [
   { href: "/today", label: "Today's Workout", icon: "🏠" },
   { href: "/schedule", label: "Schedule", icon: "📅" },
   { href: "/progress", label: "Progress", icon: "📊" },
-  { href: "/diet", label: "Diet", icon: "🥗" },
+  { href: "/diet", label: "Blueprint", icon: "📋" },
+  { href: "/habits", label: "Habits", icon: "💡" },
   { href: "/program", label: "Program Overview", icon: "📈" },
   { href: "/settings", label: "Settings", icon: "⚙️" },
   { href: "/help", label: "Help & Setup", icon: "❓" },
@@ -65,7 +66,7 @@ export default function TopHeader() {
       case "/progress":
         return "Progress";
       case "/diet":
-        return "Diet";
+        return "Blueprint";
       case "/program":
         return "Program";
       case "/settings":
@@ -80,7 +81,7 @@ export default function TopHeader() {
   return (
     <>
       {/* Header Bar */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-[#E5E5EA] dark:border-[#38383A]">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#FDFAF6]/90 dark:bg-black/80 backdrop-blur-xl border-b border-[#EDE8DC] dark:border-[#38383A]">
         <div className="flex items-center justify-between px-4 pt-[max(12px,env(safe-area-inset-top))] pb-3">
           {/* Hamburger Button */}
           <button
@@ -128,7 +129,7 @@ export default function TopHeader() {
       {/* Slide-out Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-0 left-0 bottom-0 w-72 bg-white dark:bg-[#1C1C1E] z-50 shadow-2xl transition-transform duration-300 ease-out ${
+        className={`fixed top-0 left-0 bottom-0 w-72 bg-[#FDFAF6] dark:bg-[#1C1C1E] z-50 shadow-2xl transition-transform duration-300 ease-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -136,7 +137,7 @@ export default function TopHeader() {
           {/* Menu Header */}
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#FF2D55] to-[#FF6482] flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#B07828] to-[#EF9D8C] flex items-center justify-center shadow-lg">
                 <span className="text-2xl">💪</span>
               </div>
               <div>
@@ -172,7 +173,7 @@ export default function TopHeader() {
                   href={item.href}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? "bg-[#FF2D55]/10 text-[#FF2D55]"
+                      ? "bg-[#CF9030]/10 text-[#CF9030]"
                       : "text-[#1C1C1E] dark:text-white hover:bg-[#F2F2F7] dark:hover:bg-[#2C2C2E]"
                   }`}
                 >

@@ -13,11 +13,19 @@
   --health-orange: #FF9500;
   --health-blue: #007AFF;
   --health-purple: #AF52DE;
-  
+
+  /* Company Brand Palette */
+  --brand-salmon: #EF9D8C;   /* P. blob — warm salmon */
+  --brand-amber: #CF9030;    /* E. blob — golden amber */
+  --brand-amber-dark: #B07828; /* darker amber for gradients */
+  --brand-sky: #9DBFD0;      /* A. blob — powder blue */
+  --brand-cream: #EDE8C4;    /* G. blob — warm cream */
+  --brand-sage: #87A87C;     /* sage green */
+
   /* Neutrals - Clean & Minimal */
-  --background: #FFFFFF;
-  --card-background: #F9F9F9;
-  --border: #E5E5EA;
+  --background: #FDFAF6;
+  --card-background: #FAF7F2;
+  --border: #EDE8DC;
   --text-primary: #1C1C1E;
   --text-secondary: #8E8E93;
   --text-tertiary: #C7C7CC;

@@ -486,18 +486,18 @@ function TodayPageContent() {
   };
 
   return (
-    <div className="bg-white dark:bg-black">
+    <div className="bg-[#FDFAF6] dark:bg-black">
       {celebrations.length > 0 && (
         <MilestoneCelebration milestones={celebrations} onClose={() => setCelebrations([])} />
       )}
       <StickyProgressBar progress={todayProgress} />
 
-      <section className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A]">
+      <section className="bg-[#FDFAF6] dark:bg-black border-b border-[#EDE8DC] dark:border-[#38383A]">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="mb-3">
             <Link
               href="/program"
-              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#FF2D55]/10 dark:bg-[#FF2D55]/20 rounded-full text-sm font-medium text-[#FF2D55] hover:bg-[#FF2D55]/20 transition-colors max-w-full"
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#CF9030]/10 dark:bg-[#CF9030]/20 rounded-full text-sm font-medium text-[#CF9030] hover:bg-[#CF9030]/20 transition-colors max-w-full"
             >
               <span className="truncate">{programBadge}</span>
               <span className="text-xs opacity-70 flex-shrink-0">Change →</span>
@@ -557,7 +557,7 @@ function TodayPageContent() {
           {commitment && (
             <Link
               href="/progress"
-              className="block mb-3 rounded-2xl p-4 bg-gradient-to-r from-[#5856D6] to-[#7B7AE8] shadow-sm active:scale-[0.99] transition-transform"
+              className="block mb-3 rounded-2xl p-4 bg-gradient-to-r from-[#B07828] to-[#CF9030] shadow-sm active:scale-[0.99] transition-transform"
             >
               <LevelBar level={commitment.level} />
             </Link>
@@ -578,7 +578,7 @@ function TodayPageContent() {
       </section>
 
       <main className="max-w-4xl mx-auto px-4 py-5">
-        <div className="inline-flex w-full sm:w-auto rounded-2xl bg-[#F2F2F7] dark:bg-[#1C1C1E] p-1 mb-5">
+        <div className="inline-flex w-full sm:w-auto rounded-2xl bg-[#EDE8DC] dark:bg-[#1C1C1E] p-1 mb-5">
           {allowedViews.map((v) => (
             <button
               key={v}

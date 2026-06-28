@@ -52,10 +52,10 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
   }
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-[#1C1C1E] border border-[#E5E5EA] dark:border-[#38383A] p-4 shadow-sm">
+    <div className="rounded-2xl bg-white dark:bg-[#1C1C1E] border border-[#EDE8DC] dark:border-[#38383A] p-4 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-bold text-[#1C1C1E] dark:text-white">This Week</h3>
-        <span className="text-sm font-bold text-[#FF2D55]">{activeThisWeek}/7 days</span>
+        <span className="text-sm font-bold text-[#CF9030]">{activeThisWeek}/7 days</span>
       </div>
 
       <div className="flex items-center justify-between gap-1.5 mb-3">
@@ -65,11 +65,11 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
             <div
               className={`w-full aspect-square max-w-[40px] rounded-xl flex items-center justify-center text-sm font-bold transition-all ${
                 d.completed
-                  ? "bg-[#34C759] text-white shadow-sm"
+                  ? "bg-[#87A87C] text-white shadow-sm"
                   : d.isFuture
-                    ? "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
-                    : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
-              } ${d.isToday ? "ring-2 ring-[#FF2D55]" : ""}`}
+                    ? "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
+                    : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
+              } ${d.isToday ? "ring-2 ring-[#CF9030]" : ""}`}
             >
               {d.completed ? "✓" : ""}
             </div>
