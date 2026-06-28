@@ -138,9 +138,9 @@ export default function HabitsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-28">
+    <div className="min-h-screen bg-[#F6F3E9] dark:bg-black pb-28">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] text-white">
+      <section className="bg-gradient-to-br from-[#9DC1A5] to-[#79A98C] text-white">
         <div className="max-w-2xl mx-auto px-4 py-6">
           <p className="text-sm font-medium text-white/90 uppercase tracking-wide mb-1">Habit Coach</p>
           <h1 className="text-2xl font-bold leading-tight mb-2">Beat the urge in the moment</h1>
@@ -153,9 +153,9 @@ export default function HabitsPage() {
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Add habit */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 shadow-sm border border-[#F0E9CE] dark:border-[#3D3730]">
           {/* Kind toggle */}
-          <div className="inline-flex w-full rounded-2xl bg-[#F2F2F7] dark:bg-[#2C2C2E] p-1 mb-4">
+          <div className="inline-flex w-full rounded-2xl bg-[#F6F3E9] dark:bg-[#2C2622] p-1 mb-4">
             {(
               [
                 { k: "break" as HabitKind, label: "🛑 Stop doing" },
@@ -167,8 +167,8 @@ export default function HabitsPage() {
                 onClick={() => setKind(opt.k)}
                 className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                   kind === opt.k
-                    ? "bg-white dark:bg-[#1C1C1E] text-[#1C1C1E] dark:text-white shadow-sm"
-                    : "text-[#8E8E93]"
+                    ? "bg-white dark:bg-[#1B1714] text-[#1B1714] dark:text-white shadow-sm"
+                    : "text-[#8A7F78]"
                 }`}
                 aria-pressed={kind === opt.k}
               >
@@ -186,7 +186,7 @@ export default function HabitsPage() {
               if (e.key === "Enter") handleHelpNow();
             }}
             placeholder={kind === "break" ? "e.g. about to order pizza" : "e.g. cook dinner tonight"}
-            className="w-full rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-[#FAF7F2] dark:bg-[#2C2C2E] px-4 py-3.5 text-base text-[#1C1C1E] dark:text-white placeholder-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#4A8FA8] mb-3"
+            className="w-full rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] bg-[#FAF7F2] dark:bg-[#2C2622] px-4 py-3.5 text-base text-[#1B1714] dark:text-white placeholder-[#8A7F78] focus:outline-none focus:ring-2 focus:ring-[#79A98C] mb-3"
           />
 
           {/* Quick-add chips */}
@@ -195,7 +195,7 @@ export default function HabitsPage() {
               <button
                 key={chip.label}
                 onClick={() => setLabel(chip.label)}
-                className="px-3 py-2 rounded-full bg-[#EDE8DC] dark:bg-[#2C2C2E] text-sm font-medium text-[#1C1C1E] dark:text-white border border-transparent hover:border-[#4A8FA8] transition-colors active:scale-95"
+                className="px-3 py-2 rounded-full bg-[#F0E9CE] dark:bg-[#2C2622] text-sm font-medium text-[#1B1714] dark:text-white border border-transparent hover:border-[#79A98C] transition-colors active:scale-95"
               >
                 <span className="mr-1">{chip.emoji}</span>
                 {chip.label}
@@ -207,14 +207,14 @@ export default function HabitsPage() {
           <button
             onClick={handleHelpNow}
             disabled={!label.trim()}
-            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-[0.98] mb-2"
+            className="w-full bg-[#79A98C] hover:bg-[#5E8C6E] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-[0.98] mb-2"
           >
             ⚡ Help me now
           </button>
           <button
             onClick={handleSaveForLater}
             disabled={!label.trim()}
-            className="w-full bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] disabled:opacity-40 disabled:cursor-not-allowed text-[#1C1C1E] dark:text-white font-semibold py-3 rounded-2xl transition-all active:scale-[0.98]"
+            className="w-full bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] disabled:opacity-40 disabled:cursor-not-allowed text-[#1B1714] dark:text-white font-semibold py-3 rounded-2xl transition-all active:scale-[0.98]"
           >
             Save for later
           </button>
@@ -230,16 +230,16 @@ export default function HabitsPage() {
 
         {/* Saved habits */}
         <div>
-          <h2 className="text-lg font-bold text-[#1C1C1E] dark:text-white mb-3">
-            Your habits {habits.length > 0 && <span className="text-[#8E8E93] font-normal">({habits.length})</span>}
+          <h2 className="text-lg font-bold text-[#1B1714] dark:text-white mb-3">
+            Your habits {habits.length > 0 && <span className="text-[#8A7F78] font-normal">({habits.length})</span>}
           </h2>
 
           {habits.length === 0 ? (
-            <div className="text-center py-10 px-4 rounded-2xl border-2 border-dashed border-[#E5E5EA] dark:border-[#38383A]">
+            <div className="text-center py-10 px-4 rounded-2xl border-2 border-dashed border-[#F0E9CE] dark:border-[#3D3730]">
               <div className="text-4xl mb-2">💡</div>
-              <p className="text-sm text-[#8E8E93]">
+              <p className="text-sm text-[#8A7F78]">
                 No habits yet. Add one above — or when an urge hits, type it and tap{" "}
-                <span className="font-semibold text-[#4A8FA8]">Help me now</span>.
+                <span className="font-semibold text-[#79A98C]">Help me now</span>.
               </p>
             </div>
           ) : (
@@ -261,6 +261,20 @@ export default function HabitsPage() {
   );
 }
 
+function getTileColor(label: string, kind: "break" | "build"): { border: string; bg: string; badgeBg: string; badgeText: string } {
+  const lower = label.toLowerCase();
+  const isSleep = /sleep|phone|screen|focus|night|bed/.test(lower);
+  const isRehab = /rehab|stretch|mobility|knee|back|pain|physio|break/.test(lower);
+
+  if (isSleep) {
+    return { border: '#AFD4DD', bg: '#AFD4DD15', badgeBg: '#AFD4DD30', badgeText: '#2E7A8F' };
+  }
+  if (isRehab || kind === "break") {
+    return { border: '#FAC7B3', bg: '#FAC7B315', badgeBg: '#FAC7B330', badgeText: '#A05C3E' };
+  }
+  return { border: '#9DC1A5', bg: '#9DC1A515', badgeBg: '#9DC1A530', badgeText: '#3E7E57' };
+}
+
 function HabitCard({
   habit,
   onStruggling,
@@ -276,40 +290,36 @@ function HabitCard({
   const done = wonToday(habit);
   const streak = habitStreak(habit);
   const total = winCount(habit);
+  const tile = getTileColor(habit.label, habit.kind);
 
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-4 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+    <div
+      className="bg-white dark:bg-[#2C2622] rounded-2xl p-4 border dark:border-[#3D3730] overflow-hidden"
+      style={{ borderColor: tile.border, borderLeftWidth: '4px', background: `linear-gradient(135deg, ${tile.bg}, white)` }}
+    >
       <div className="flex items-start justify-between gap-3 mb-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <span
-              className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${
-                isBreak
-                  ? "bg-[#9DBFD0]/20 text-[#38788F]"
-                  : "bg-[#87A87C]/20 text-[#87A87C]"
-              }`}
+              className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+              style={{ background: tile.badgeBg, color: tile.badgeText }}
             >
               {isBreak ? "Stop" : "Build"}
             </span>
             {streak > 0 && (
-              <span className="text-[11px] font-semibold text-[#FF9500]">🔥 {streak}-day</span>
+              <span className="text-[11px] font-semibold text-[#E5B122]">🔥 {streak}-day</span>
             )}
-            {total > 0 && <span className="text-[11px] text-[#8E8E93]">{total} wins</span>}
+            {total > 0 && <span className="text-[11px] text-[#8A7F78]">{total} wins</span>}
           </div>
-          <p className="font-semibold text-[#1C1C1E] dark:text-white leading-snug break-words">{habit.label}</p>
+          <p className="font-semibold text-[#1B1714] dark:text-white leading-snug break-words">{habit.label}</p>
         </div>
         <button
           onClick={onDelete}
           aria-label="Delete habit"
-          className="flex-shrink-0 text-[#C7C7CC] hover:text-[#9DBFD0] transition-colors p-1"
+          className="flex-shrink-0 text-[#C5BDB6] hover:text-[#79A98C] transition-colors p-1"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.8}
-              d="M6 18L18 6M6 6l12 12"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -317,17 +327,17 @@ function HabitCard({
       <div className="flex gap-2">
         <button
           onClick={onToggleWin}
-          className={`flex-1 font-semibold py-2.5 rounded-xl text-sm transition-all active:scale-[0.98] ${
+          className={`flex-1 font-semibold py-2.5 rounded-xl text-sm transition-all active:scale-[0.97] ${
             done
-              ? "bg-[#34C759] text-white"
-              : "bg-[#34C759]/10 text-[#34C759] hover:bg-[#34C759]/20"
+              ? "bg-[#3E7E57] text-white"
+              : "bg-[#3E7E57]/10 text-[#3E7E57] hover:bg-[#3E7E57]/20"
           }`}
         >
           {done ? "✓ Logged today" : isBreak ? "I resisted today" : "I did it today"}
         </button>
         <button
           onClick={onStruggling}
-          className="px-4 bg-[#5856D6]/10 text-[#5856D6] hover:bg-[#5856D6]/20 font-semibold py-2.5 rounded-xl text-sm transition-all active:scale-[0.98]"
+          className="px-4 bg-[#E5B122]/10 text-[#E5B122] hover:bg-[#E5B122]/20 font-semibold py-2.5 rounded-xl text-sm transition-all active:scale-[0.97]"
         >
           I&apos;m struggling
         </button>
@@ -353,8 +363,8 @@ function CoachPanel({
     : null;
 
   return (
-    <div className="rounded-3xl border-2 border-[#5856D6]/30 bg-white dark:bg-[#1C1C1E] shadow-elevated overflow-hidden animate-fade-in">
-      <div className="bg-gradient-to-r from-[#38788F] to-[#4A8FA8] text-white px-5 py-4 flex items-start justify-between gap-3">
+    <div className="rounded-3xl border-2 border-[#E5B122]/30 bg-white dark:bg-[#1B1714] shadow-elevated overflow-hidden animate-fade-in">
+      <div className="bg-gradient-to-r from-[#3E7E57] to-[#79A98C] text-white px-5 py-4 flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <p className="text-[11px] uppercase tracking-wide text-white/80 mb-1 truncate">Coaching · {label}</p>
           <h3 className="text-lg font-black leading-snug">{intervention.headline}</h3>
@@ -369,14 +379,14 @@ function CoachPanel({
       <div className="p-5 space-y-4">
         <UnderstandSection intervention={intervention} />
 
-        <div className="rounded-2xl bg-[#5856D6]/8 border border-[#5856D6]/20 p-4">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#5856D6] mb-1">⚡ Do this instead (2 min)</p>
-          <p className="text-sm text-[#1C1C1E] dark:text-[#E5E5EA] leading-relaxed">{intervention.doInstead}</p>
+        <div className="rounded-2xl bg-[#E5B122]/8 border border-[#E5B122]/20 p-4">
+          <p className="text-xs font-bold uppercase tracking-wide text-[#E5B122] mb-1">⚡ Do this instead (2 min)</p>
+          <p className="text-sm text-[#1B1714] dark:text-[#F0E9CE] leading-relaxed">{intervention.doInstead}</p>
         </div>
 
-        <div className="rounded-2xl bg-[#34C759]/10 border border-[#34C759]/25 p-4">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#2DA84E] mb-1">🫶 Minimum win (this still counts)</p>
-          <p className="text-sm text-[#1C1C1E] dark:text-[#E5E5EA] leading-relaxed">{intervention.minimumWin}</p>
+        <div className="rounded-2xl bg-[#3E7E57]/10 border border-[#3E7E57]/25 p-4">
+          <p className="text-xs font-bold uppercase tracking-wide text-[#3E7E57] mb-1">🫶 Minimum win (this still counts)</p>
+          <p className="text-sm text-[#1B1714] dark:text-[#F0E9CE] leading-relaxed">{intervention.minimumWin}</p>
         </div>
 
         {/* Video */}
@@ -408,7 +418,7 @@ function CoachPanel({
           href={intervention.youtubeSearchUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-semibold py-3 rounded-xl transition-all text-sm"
+          className="flex items-center justify-center gap-2 w-full bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] text-[#1B1714] dark:text-white font-semibold py-3 rounded-xl transition-all text-sm"
         >
           <span>▶</span> Find a video on YouTube
         </a>
@@ -420,17 +430,17 @@ function CoachPanel({
 function UnderstandSection({ intervention }: { intervention: Intervention }) {
   const [open, setOpen] = useState(true);
   return (
-    <div className="rounded-2xl border border-[#E5E5EA] dark:border-[#38383A] overflow-hidden">
+    <div className="rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-[#F9F9FB] dark:bg-[#2C2C2E] text-left"
+        className="w-full flex items-center justify-between gap-2 px-4 py-3 bg-[#F6F3E9] dark:bg-[#2C2622] text-left"
         aria-expanded={open}
       >
-        <span className="text-sm font-bold text-[#1C1C1E] dark:text-white">
+        <span className="text-sm font-bold text-[#1B1714] dark:text-white">
           Why your brain does this &amp; how it harms you
         </span>
         <svg
-          className={`w-4 h-4 flex-shrink-0 text-[#8E8E93] transition-transform ${open ? "rotate-180" : ""}`}
+          className={`w-4 h-4 flex-shrink-0 text-[#8A7F78] transition-transform ${open ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -457,8 +467,8 @@ function InfoRow({ emoji, title, body }: { emoji: string; title: string; body: s
         {emoji}
       </span>
       <div>
-        <p className="text-xs font-bold uppercase tracking-wide text-[#8E8E93] mb-0.5">{title}</p>
-        <p className="text-sm text-[#1C1C1E] dark:text-[#E5E5EA] leading-relaxed">{body}</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-[#8A7F78] mb-0.5">{title}</p>
+        <p className="text-sm text-[#1B1714] dark:text-[#F0E9CE] leading-relaxed">{body}</p>
       </div>
     </div>
   );
@@ -466,15 +476,15 @@ function InfoRow({ emoji, title, body }: { emoji: string; title: string; body: s
 
 function CoachSkeleton() {
   return (
-    <div className="rounded-3xl border-2 border-[#5856D6]/20 bg-white dark:bg-[#1C1C1E] p-5 space-y-4 animate-pulse">
-      <div className="h-6 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg w-3/4" />
+    <div className="rounded-3xl border-2 border-[#E5B122]/20 bg-white dark:bg-[#1B1714] p-5 space-y-4 animate-pulse">
+      <div className="h-6 bg-[#F0E9CE] dark:bg-[#2C2622] rounded-lg w-3/4" />
       <div className="space-y-2">
-        <div className="h-4 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded w-full" />
-        <div className="h-4 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded w-5/6" />
+        <div className="h-4 bg-[#F0E9CE] dark:bg-[#2C2622] rounded w-full" />
+        <div className="h-4 bg-[#F0E9CE] dark:bg-[#2C2622] rounded w-5/6" />
       </div>
-      <div className="h-20 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-2xl" />
-      <div className="h-20 bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-2xl" />
-      <p className="text-center text-sm text-[#8E8E93]">Getting your intervention…</p>
+      <div className="h-20 bg-[#F0E9CE] dark:bg-[#2C2622] rounded-2xl" />
+      <div className="h-20 bg-[#F0E9CE] dark:bg-[#2C2622] rounded-2xl" />
+      <p className="text-center text-sm text-[#8A7F78]">Getting your intervention…</p>
     </div>
   );
 }

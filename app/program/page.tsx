@@ -75,15 +75,15 @@ export default function ProgramPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FDFAF6] dark:bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#4A8FA8]" />
+      <div className="min-h-screen bg-[#F6F3E9] dark:bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#79A98C]" />
       </div>
     );
   }
 
   return (
-    <div className="bg-[#FDFAF6] dark:bg-black">
-      <section className="bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] text-white">
+    <div className="bg-[#F6F3E9] dark:bg-black">
+      <section className="bg-gradient-to-br from-[#9DC1A5] to-[#79A98C] text-white">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <h2 className="text-2xl font-bold mb-2">Your Programs 🎯</h2>
           <p className="text-white/90 text-sm">Select which program to track today</p>
@@ -100,13 +100,13 @@ export default function ProgramPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {error && (
-          <div className="mb-6 rounded-xl bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 border border-[#EDE8DC] dark:border-[#38383A] px-4 py-3 text-sm text-[#1C1C1E] dark:text-white">
+          <div className="mb-6 rounded-xl bg-[#9DC1A5]/10 dark:bg-[#9DC1A5]/8 border border-[#F0E9CE] dark:border-[#3D3730] px-4 py-3 text-sm text-[#1B1714] dark:text-white">
             {error}
           </div>
         )}
 
         <div className="mb-8">
-          <h2 className="text-lg font-bold text-[#1C1C1E] dark:text-white mb-4">Choose Active Program</h2>
+          <h2 className="text-lg font-bold text-[#1B1714] dark:text-white mb-4">Choose Active Program</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {programs.map((prog) => (
               <ProgramListCard
@@ -125,19 +125,19 @@ export default function ProgramPage() {
         </div>
 
         {/* Create Custom Program */}
-        <div className="mb-8 bg-gradient-to-br from-[#4A8FA8]/10 to-[#9DBFD0]/10 dark:from-[#4A8FA8]/20 dark:to-[#9DBFD0]/20 rounded-2xl p-6 border-2 border-dashed border-[#4A8FA8]/40 dark:border-[#4A8FA8]/60">
+        <div className="mb-8 bg-gradient-to-br from-[#79A98C]/10 to-[#9DC1A5]/10 dark:from-[#79A98C]/20 dark:to-[#9DC1A5]/20 rounded-2xl p-6 border-2 border-dashed border-[#79A98C]/40 dark:border-[#79A98C]/60">
           <div className="flex items-start gap-4">
             <div className="text-3xl flex-shrink-0">🛠️</div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg font-bold text-[#1C1C1E] dark:text-white mb-2">
+              <h3 className="text-lg font-bold text-[#1B1714] dark:text-white mb-2">
                 Create Custom Program
               </h3>
-              <p className="text-sm text-[#8E8E93] mb-4">
+              <p className="text-sm text-[#8A7F78] mb-4">
                 Build your own program from scratch. Describe it to Claude or ChatGPT, get JSON, import here.
               </p>
               <Link
                 href="/settings#generate-with-ai"
-                className="inline-block bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold px-4 py-2 rounded-lg transition-all active:scale-95"
+                className="inline-block bg-[#79A98C] hover:bg-[#5E8C6E] text-white font-semibold px-4 py-2 rounded-lg transition-all active:scale-95"
               >
                 Go to Generate with AI →
               </Link>
@@ -147,21 +147,21 @@ export default function ProgramPage() {
 
         {activeProgram === "adhd" && (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl  p-6">
-              <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-4">🧠 ADHD Knee + Back Plan</h2>
-              <p className="text-[#8E8E93] dark:text-[#8E8E93] mb-4">
+            <div className="bg-white dark:bg-[#2C2622] rounded-2xl  p-6">
+              <h2 className="text-2xl font-bold text-[#1B1714] dark:text-white mb-4">🧠 ADHD Knee + Back Plan</h2>
+              <p className="text-[#8A7F78] dark:text-[#8A7F78] mb-4">
                 Three <strong>10–15 minute</strong> work-from-home breaks. Phase 1 weeks 1–4, Phase 2 weeks 5–8,
                 Phase 3 week 9+. Stay on each phase ~4 weeks before changing much.
               </p>
-              <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] space-y-2 list-disc pl-5 mb-4">
+              <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] space-y-2 list-disc pl-5 mb-4">
                 <li><strong>Break 1</strong> — Back Armor (McGill curl-up, side plank, bird dog) · daily</li>
                 <li><strong>Break 2</strong> — Knee strength · Mon / Wed / Fri</li>
                 <li><strong>Break 3</strong> — Walk + mobility/control · daily</li>
                 <li>Pain 0–3/10 okay · 4–5 reduce · 6+ or worse next day = stop/regress</li>
               </ul>
-              <div className="bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/15 rounded-xl p-4 mb-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
-                <h3 className="font-semibold text-[#1C1C1E] dark:text-white mb-2">Diet & supplements (summary)</h3>
-                <p className="text-sm text-[#4A8FA8] dark:text-[#8E8E93]">
+              <div className="bg-[#79A98C]/10 dark:bg-[#79A98C]/15 rounded-xl p-4 mb-4 border border-[#79A98C]/20 dark:border-[#79A98C]/30">
+                <h3 className="font-semibold text-[#1B1714] dark:text-white mb-2">Diet & supplements (summary)</h3>
+                <p className="text-sm text-[#79A98C] dark:text-[#8A7F78]">
                   Protein ~105–140 g/day at ~195 lb · protein-first meals · consider whey, creatine 3–5 g/day,
                   omega-3, curcumin, vitamin D if appropriate — check with your clinician.
                 </p>
@@ -178,52 +178,52 @@ export default function ProgramPage() {
 
         {activeProgram === "gym" && (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl  p-6">
-              <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-4">🏋️ Gym PPL Split</h2>
-              <p className="text-[#8E8E93] dark:text-[#8E8E93] mb-6">
+            <div className="bg-white dark:bg-[#2C2622] rounded-2xl  p-6">
+              <h2 className="text-2xl font-bold text-[#1B1714] dark:text-white mb-4">🏋️ Gym PPL Split</h2>
+              <p className="text-[#8A7F78] dark:text-[#8A7F78] mb-6">
                 3 days per week: <strong>Monday, Wednesday, Friday</strong>
               </p>
 
               <div className="space-y-4">
-                <div className="bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-xl p-4 border-2 border-[#EDE8DC] dark:border-[#38383A]">
+                <div className="bg-[#F6F3E9] dark:bg-[#2C2622] rounded-xl p-4 border-2 border-[#F0E9CE] dark:border-[#3D3730]">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">💪</span>
                     <div>
-                      <h3 className="font-bold text-[#1C1C1E] dark:text-white">Day A: Chest (Push)</h3>
-                      <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Monday</p>
+                      <h3 className="font-bold text-[#1B1714] dark:text-white">Day A: Chest (Push)</h3>
+                      <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">Monday</p>
                     </div>
                   </div>
-                  <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] pl-10 space-y-1">
+                  <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] pl-10 space-y-1">
                     <li>• Flat Chest Press & Fly (3×10)</li>
                     <li>• Decline Press & Fly (3×10)</li>
                     <li>• Incline Press & Fly (3×10)</li>
                   </ul>
                 </div>
 
-                <div className="bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-xl p-4 border-2 border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
+                <div className="bg-[#F6F3E9] dark:bg-[#2C2622] rounded-xl p-4 border-2 border-[#79A98C]/20 dark:border-[#79A98C]/30">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">🔙</span>
                     <div>
-                      <h3 className="font-bold text-[#1C1C1E] dark:text-white">Day B: Back + Biceps (Pull)</h3>
-                      <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Wednesday</p>
+                      <h3 className="font-bold text-[#1B1714] dark:text-white">Day B: Back + Biceps (Pull)</h3>
+                      <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">Wednesday</p>
                     </div>
                   </div>
-                  <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] pl-10 space-y-1">
+                  <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] pl-10 space-y-1">
                     <li>• Wide & Narrow Pulldown (3×10)</li>
                     <li>• Seated Row & Incline Row (3×10)</li>
                     <li>• Barbell, Dumbbell, Hammer & Mixed Curls (3×10)</li>
                   </ul>
                 </div>
 
-                <div className="bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-xl p-4 border-2 border-[#EDE8DC] dark:border-[#38383A]">
+                <div className="bg-[#F6F3E9] dark:bg-[#2C2622] rounded-xl p-4 border-2 border-[#F0E9CE] dark:border-[#3D3730]">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">🦵</span>
                     <div>
-                      <h3 className="font-bold text-[#1C1C1E] dark:text-white">Day C: Shoulders + Legs</h3>
-                      <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Friday</p>
+                      <h3 className="font-bold text-[#1B1714] dark:text-white">Day C: Shoulders + Legs</h3>
+                      <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">Friday</p>
                     </div>
                   </div>
-                  <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] pl-10 space-y-1">
+                  <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] pl-10 space-y-1">
                     <li>• DB & BB Overhead Press, Shrugs, Shoulder Fly (3×10-12)</li>
                     <li>• Squats, Walking Lunges, Step Up (3×12)</li>
                     <li>• Leg Extension & Leg Press (3×12)</li>
@@ -232,9 +232,9 @@ export default function ProgramPage() {
               </div>
             </div>
 
-            <div className="bg-[#EDE8DC] dark:bg-[#38383A] rounded-2xl p-6 border-2 border-[#EDE8DC] dark:border-[#48484A]">
-              <h3 className="font-bold text-[#1C1C1E] dark:text-white mb-3">💡 Training Tips</h3>
-              <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] space-y-2">
+            <div className="bg-[#F0E9CE] dark:bg-[#3D3730] rounded-2xl p-6 border-2 border-[#F0E9CE] dark:border-[#4A433E]">
+              <h3 className="font-bold text-[#1B1714] dark:text-white mb-3">💡 Training Tips</h3>
+              <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] space-y-2">
                 <li>• <strong>Rest Days:</strong> Tue, Thu, Sat, Sun - use for recovery or light cardio</li>
                 <li>• <strong>Progression:</strong> Increase weight when 3×10/12 feels comfortable</li>
                 <li>• <strong>Rest Between Sets:</strong> 60-90 seconds</li>
@@ -251,9 +251,9 @@ export default function ProgramPage() {
 
         {activeProgram === "chacha" && (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl  p-6">
-              <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-4">💪 Chacha Training</h2>
-              <p className="text-[#8E8E93] dark:text-[#8E8E93] mb-6">
+            <div className="bg-white dark:bg-[#2C2622] rounded-2xl  p-6">
+              <h2 className="text-2xl font-bold text-[#1B1714] dark:text-white mb-4">💪 Chacha Training</h2>
+              <p className="text-[#8A7F78] dark:text-[#8A7F78] mb-6">
                 5 days per week: <strong>Monday through Friday</strong>. Knee/back-friendly exercises with video guides and TL;DR cues for every move.
               </p>
 
@@ -267,13 +267,13 @@ export default function ProgramPage() {
                 ].map((d) => (
                   <div
                     key={d.day}
-                    className="bg-gradient-to-r from-[#4A8FA8]/5 to-[#9DBFD0]/5 dark:from-[#4A8FA8]/10 dark:to-[#9DBFD0]/10 rounded-xl p-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30"
+                    className="bg-gradient-to-r from-[#79A98C]/5 to-[#9DC1A5]/5 dark:from-[#79A98C]/10 dark:to-[#9DC1A5]/10 rounded-xl p-4 border border-[#79A98C]/20 dark:border-[#79A98C]/30"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{d.emoji}</span>
                       <div>
-                        <h3 className="font-bold text-[#1C1C1E] dark:text-white">{d.day}</h3>
-                        <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">{d.focus}</p>
+                        <h3 className="font-bold text-[#1B1714] dark:text-white">{d.day}</h3>
+                        <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">{d.focus}</p>
                       </div>
                     </div>
                   </div>
@@ -281,9 +281,9 @@ export default function ProgramPage() {
               </div>
             </div>
 
-            <div className="bg-[#EDE8DC] dark:bg-[#38383A] rounded-2xl p-6 border-2 border-[#EDE8DC] dark:border-[#48484A]">
-              <h3 className="font-bold text-[#1C1C1E] dark:text-white mb-3">💡 Training Tips</h3>
-              <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] space-y-2">
+            <div className="bg-[#F0E9CE] dark:bg-[#3D3730] rounded-2xl p-6 border-2 border-[#F0E9CE] dark:border-[#4A433E]">
+              <h3 className="font-bold text-[#1B1714] dark:text-white mb-3">💡 Training Tips</h3>
+              <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] space-y-2">
                 <li>• <strong>Rest Days:</strong> Saturday & Sunday — recovery or light walking</li>
                 <li>• <strong>Safety rule:</strong> 0–3/10 discomfort = okay · 4–5/10 = reduce load/range · 6+/10 or worse next day = stop</li>
                 <li>• <strong>Every exercise</strong> has step-by-step form cues, common mistakes, and stop conditions on its card</li>
@@ -302,13 +302,13 @@ export default function ProgramPage() {
 
         {activeProgram === "custom" && (
           <div className="space-y-6">
-            <div className="bg-white dark:bg-[#2C2C2E] rounded-2xl  p-6">
-              <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-4">🗂️ {customName}</h2>
-              <p className="text-[#8E8E93] dark:text-[#8E8E93] mb-4">
+            <div className="bg-white dark:bg-[#2C2622] rounded-2xl  p-6">
+              <h2 className="text-2xl font-bold text-[#1B1714] dark:text-white mb-4">🗂️ {customName}</h2>
+              <p className="text-[#8A7F78] dark:text-[#8A7F78] mb-4">
                 Your imported program. Workouts run on <strong>Monday (A)</strong>, <strong>Wednesday (B)</strong> and{" "}
                 <strong>Friday (C)</strong>, advancing one week at a time. Weeks loop at the final week so you always have something to do.
               </p>
-              <div className="bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/15 rounded-xl p-4 mb-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30 text-sm text-[#4A8FA8] dark:text-[#9DBFD0]">
+              <div className="bg-[#79A98C]/10 dark:bg-[#79A98C]/15 rounded-xl p-4 mb-4 border border-[#79A98C]/20 dark:border-[#79A98C]/30 text-sm text-[#79A98C] dark:text-[#9DC1A5]">
                 Want to edit it? Re-import updated JSON from <strong>Settings → Import Custom Program</strong>. The new file replaces this one.
               </div>
               <ProgramStartDateControl

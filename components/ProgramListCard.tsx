@@ -21,15 +21,15 @@ export default function ProgramListCard({
 }: ProgramListCardProps) {
   const actionClass =
     action?.variant === "restore"
-      ? "text-[#3F6B40] hover:bg-[#3F6B40]/10 dark:text-[#87A87C] dark:hover:bg-[#3F6B40]/20"
-      : "text-[#8E8E93] hover:bg-[#EDE8DC] dark:text-[#8E8E93] dark:hover:bg-[#38383A]/50";
+      ? "text-[#3E7E57] hover:bg-[#3E7E57]/10 dark:text-[#9DC1A5] dark:hover:bg-[#3E7E57]/20"
+      : "text-[#8A7F78] hover:bg-[#F0E9CE] dark:text-[#8A7F78] dark:hover:bg-[#3D3730]/50";
 
   return (
     <div
       className={`relative rounded-2xl border-2 transition-all ${
         isActive
-          ? "border-[#4A8FA8] bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/20"
-          : "border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E]"
+          ? "border-[#79A98C] bg-[#79A98C]/10 dark:bg-[#79A98C]/20"
+          : "border-[#F0E9CE] dark:border-[#3D3730] bg-white dark:bg-[#2C2622]"
       }`}
     >
       <button
@@ -37,14 +37,14 @@ export default function ProgramListCard({
         onClick={onSelect}
         disabled={!onSelect}
         className={`w-full p-5 text-left rounded-2xl ${
-          onSelect ? "hover:border-[#EDE8DC] dark:hover:border-[#48484A]" : "cursor-default"
+          onSelect ? "hover:border-[#F0E9CE] dark:hover:border-[#4A433E]" : "cursor-default"
         }`}
       >
         <div className="text-3xl mb-2">{program.icon}</div>
-        <div className="font-bold text-[#1C1C1E] dark:text-white">{program.name}</div>
-        <div className="text-xs text-[#8E8E93] dark:text-[#8E8E93] mt-1">{program.description}</div>
+        <div className="font-bold text-[#1B1714] dark:text-white">{program.name}</div>
+        <div className="text-xs text-[#8A7F78] dark:text-[#8A7F78] mt-1">{program.description}</div>
         {isActive && (
-          <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#4A8FA8]">
+          <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#79A98C]">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"

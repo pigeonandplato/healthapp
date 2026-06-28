@@ -52,24 +52,24 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
   }
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-[#1C1C1E] border border-[#EDE8DC] dark:border-[#38383A] p-4 shadow-sm">
+    <div className="rounded-2xl bg-white dark:bg-[#1B1714] border border-[#F0E9CE] dark:border-[#3D3730] p-4 shadow-sm">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-bold text-[#1C1C1E] dark:text-white">This Week</h3>
-        <span className="text-sm font-bold text-[#4A8FA8]">{activeThisWeek}/7 days</span>
+        <h3 className="text-sm font-bold text-[#1B1714] dark:text-white">This Week</h3>
+        <span className="text-sm font-bold text-[#79A98C]">{activeThisWeek}/7 days</span>
       </div>
 
       <div className="flex items-center justify-between gap-1.5 mb-3">
         {days.map((d, i) => (
           <div key={i} className="flex flex-col items-center gap-1.5 flex-1">
-            <span className="text-[10px] font-semibold text-[#8E8E93]">{d.letter}</span>
+            <span className="text-[10px] font-semibold text-[#8A7F78]">{d.letter}</span>
             <div
               className={`w-full aspect-square max-w-[40px] rounded-xl flex items-center justify-center text-sm font-bold transition-all ${
                 d.completed
-                  ? "bg-[#87A87C] text-white shadow-sm"
+                  ? "bg-[#9DC1A5] text-white shadow-sm"
                   : d.isFuture
-                    ? "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
-                    : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
-              } ${d.isToday ? "ring-2 ring-[#4A8FA8]" : ""}`}
+                    ? "bg-[#F0E9CE] dark:bg-[#2C2622] text-[#C5BDB6] dark:text-[#4A433E]"
+                    : "bg-[#F0E9CE] dark:bg-[#2C2622] text-[#C5BDB6] dark:text-[#4A433E]"
+              } ${d.isToday ? "ring-2 ring-[#79A98C]" : ""}`}
             >
               {d.completed ? "✓" : ""}
             </div>
@@ -78,7 +78,7 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
       </div>
 
       <div className="flex items-center justify-between">
-        <p className="text-xs text-[#8E8E93]">{message}</p>
+        <p className="text-xs text-[#8A7F78]">{message}</p>
         {typeof streak === "number" && streak > 0 && (
           <span className="text-xs font-semibold text-[#FF9500] flex-shrink-0 ml-2">🔥 {streak}-day streak</span>
         )}

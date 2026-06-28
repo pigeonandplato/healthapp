@@ -63,7 +63,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
   if (!editing && initialUrl) {
     return (
       <div className="space-y-4">
-        <div className="aspect-video rounded-xl overflow-hidden bg-[#E5E5EA] dark:bg-[#38383A]">
+        <div className="aspect-video rounded-xl overflow-hidden bg-[#F0E9CE] dark:bg-[#3D3730]">
           <iframe
             src={initialUrl}
             title="Motivation Video"
@@ -74,7 +74,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
         </div>
         <button
           onClick={() => setEditing(true)}
-          className="w-full bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl transition-all"
+          className="w-full bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] text-[#1B1714] dark:text-white font-medium py-3 rounded-xl transition-all"
         >
           Edit Video
         </button>
@@ -85,7 +85,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
   return (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-[#1C1C1E] dark:text-white mb-2">
+        <label className="block text-sm font-medium text-[#1B1714] dark:text-white mb-2">
           YouTube Video URL
         </label>
         <input
@@ -96,15 +96,15 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
             setError("");
           }}
           placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full px-4 py-3 rounded-xl border border-[#E5E5EA] dark:border-[#38383A] focus:border-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55]/20 outline-none transition text-[#1C1C1E] dark:text-white bg-white dark:bg-[#1C1C1E]"
+          className="w-full px-4 py-3 rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] focus:border-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55]/20 outline-none transition text-[#1B1714] dark:text-white bg-white dark:bg-[#1B1714]"
         />
-        <p className="text-xs text-[#8E8E93] mt-2">
+        <p className="text-xs text-[#8A7F78] mt-2">
           Enter a YouTube URL or video ID. Examples: youtube.com/watch?v=..., youtu.be/..., or just the video ID
         </p>
       </div>
 
       {error && (
-        <div className="bg-[#9DBFD0]/10 dark:bg-[#9DBFD0]/8 text-[#8E8E93] dark:text-[#8E8E93] px-4 py-3 rounded-xl text-sm">
+        <div className="bg-[#9DC1A5]/10 dark:bg-[#9DC1A5]/8 text-[#8A7F78] dark:text-[#8A7F78] px-4 py-3 rounded-xl text-sm">
           {error}
         </div>
       )}
@@ -121,7 +121,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
           <button
             onClick={handleCancel}
             disabled={saving}
-            className="px-6 bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
+            className="px-6 bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] text-[#1B1714] dark:text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
           >
             Cancel
           </button>

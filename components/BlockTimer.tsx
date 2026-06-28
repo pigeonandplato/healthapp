@@ -80,8 +80,8 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
   };
 
   return (
-    <div className="flex items-center gap-3 bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-lg p-3">
-      <div className="text-2xl font-mono font-bold text-[#1C1C1E] dark:text-white min-w-[80px]">
+    <div className="flex items-center gap-3 bg-[#F6F3E9] dark:bg-[#2C2622] rounded-lg p-3">
+      <div className="text-2xl font-mono font-bold text-[#1B1714] dark:text-white min-w-[80px]">
         {formatTime(elapsedSeconds)}
       </div>
       
@@ -90,8 +90,8 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
           onClick={handleStartPause}
           className={`px-4 py-2 rounded-md font-medium transition-colors ${
             isRunning
-              ? "bg-[#4A8FA8] hover:bg-[#38788F] text-white"
-              : "bg-[#4A8FA8] hover:bg-[#38788F] text-white"
+              ? "bg-[#79A98C] hover:bg-[#5E8C6E] text-white"
+              : "bg-[#79A98C] hover:bg-[#5E8C6E] text-white"
           }`}
           aria-label={isRunning ? "Pause timer" : "Start timer"}
         >
@@ -100,7 +100,7 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
         
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-[#EDE8DC] hover:bg-[#D8D3C7] dark:bg-[#38383A] dark:hover:bg-[#48484A] text-[#1C1C1E] dark:text-white rounded-md font-medium transition-colors"
+          className="px-4 py-2 bg-[#F0E9CE] hover:bg-[#D8D3C7] dark:bg-[#3D3730] dark:hover:bg-[#4A433E] text-[#1B1714] dark:text-white rounded-md font-medium transition-colors"
           aria-label="Reset timer"
         >
           Reset
@@ -109,7 +109,7 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
 
       {isRunning && (
         <div className="ml-auto">
-          <div className="w-2 h-2 bg-[#9DBFD0]/100 rounded-full animate-pulse" />
+          <div className="w-2 h-2 bg-[#9DC1A5]/100 rounded-full animate-pulse" />
         </div>
       )}
     </div>

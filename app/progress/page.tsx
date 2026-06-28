@@ -71,8 +71,8 @@ export default function ProgressPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#4A8FA8] mx-auto mb-3" />
-          <p className="text-[#8E8E93] text-sm">Loading progress...</p>
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#79A98C] mx-auto mb-3" />
+          <p className="text-[#8A7F78] text-sm">Loading progress...</p>
         </div>
       </div>
     );
@@ -83,39 +83,39 @@ export default function ProgressPage() {
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="text-center max-w-xs">
           <p className="text-4xl mb-3">💪</p>
-          <p className="text-[#1C1C1E] dark:text-white font-semibold mb-1">No progress yet</p>
-          <p className="text-sm text-[#8E8E93]">Complete your first workout on Today to see stats here.</p>
+          <p className="text-[#1B1714] dark:text-white font-semibold mb-1">No progress yet</p>
+          <p className="text-sm text-[#8A7F78]">Complete your first workout on Today to see stats here.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-24">
+    <div className="min-h-screen bg-[#F6F3E9] dark:bg-black pb-24">
       <div className="max-w-2xl mx-auto px-4 pt-5 pb-4">
         {/* Page heading */}
-        <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white">Progress</h1>
-        <p className="text-sm text-[#8E8E93] mt-0.5">
+        <h1 className="text-3xl font-bold text-[#1B1714] dark:text-white">Progress</h1>
+        <p className="text-sm text-[#8A7F78] mt-0.5">
           {stats.totalWorkouts} workout{stats.totalWorkouts !== 1 ? "s" : ""} logged
         </p>
       </div>
 
       <div className="max-w-2xl mx-auto px-4 pb-4 space-y-3">
         {newWins.length > 0 && (
-          <div className="bg-[#3F6B40]/10 border border-[#3F6B40]/20 rounded-2xl p-4 flex items-start gap-3">
+          <div className="bg-[#3E7E57]/10 border border-[#3E7E57]/20 rounded-2xl p-4 flex items-start gap-3">
             <span className="text-2xl">{newWins[0].emoji}</span>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">
+              <p className="text-sm font-semibold text-[#1B1714] dark:text-white">
                 {newWins.length === 1 ? "New win!" : `${newWins.length} new wins!`}
               </p>
-              <p className="text-xs text-[#8E8E93] mt-0.5">
+              <p className="text-xs text-[#8A7F78] mt-0.5">
                 {newWins.map((w) => w.title).join(" · ")}
               </p>
             </div>
             <button
               type="button"
               onClick={() => setNewWins([])}
-              className="text-[#8E8E93] text-sm px-2"
+              className="text-[#8A7F78] text-sm px-2"
               aria-label="Dismiss"
             >
               ✕
@@ -124,9 +124,9 @@ export default function ProgressPage() {
         )}
 
         {/* 4-stat row */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A]">
-          <div className="grid grid-cols-4 divide-x divide-[#EDE8DC] dark:divide-[#38383A]">
-            <StatCell label="STREAK" value={commitment.currentStreak} />
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730]">
+          <div className="grid grid-cols-4 divide-x divide-[#F0E9CE] dark:divide-[#3D3730]">
+            <StatCell label="STREAK" value={`${commitment.currentStreak}🔥`} gold />
             <StatCell label="WORKOUTS" value={stats.totalWorkouts} />
             <StatCell label="30-DAY" value={`${commitment.rollingConsistency}%`} />
             <StatCell label="BEST" value={`${stats.longestStreak}d`} />
@@ -134,26 +134,29 @@ export default function ProgressPage() {
         </div>
 
         {/* Standalone XP / Level bar */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] px-4 py-3">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] px-4 py-3">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold text-[#1C1C1E] dark:text-white">
-              Level {commitment.level.level} · <span className="text-[#8E8E93] font-normal">{commitment.level.title}</span>
+            <span className="text-sm font-semibold text-[#1B1714] dark:text-white">
+              Level {commitment.level.level} · <span className="text-[#8A7F78] font-normal">{commitment.level.title}</span>
             </span>
-            <span className="text-xs text-[#8E8E93]">{commitment.level.xpToNextLevel} XP to {commitment.level.level + 1}</span>
+            <span className="text-xs text-[#8A7F78]">{commitment.level.xpToNextLevel} XP to {commitment.level.level + 1}</span>
           </div>
-          <div className="w-full h-2.5 rounded-full bg-[#EDE8DC] dark:bg-[#38383A] overflow-hidden">
+          <div className="w-full h-2.5 rounded-full bg-[#F0E9CE] dark:bg-[#3D3730] overflow-hidden">
             <div
-              className="h-full rounded-full bg-[#4A8FA8] transition-all duration-700"
-              style={{ width: `${commitment.level.progressPct}%` }}
+              className="h-full rounded-full animate-progress"
+              style={{
+                width: `${commitment.level.progressPct}%`,
+                background: 'linear-gradient(90deg, #E5B122, #C99A1A)',
+              }}
             />
           </div>
         </div>
 
         {/* Weekly bar chart — prominent */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] px-4 pt-4 pb-5">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] px-4 pt-4 pb-5">
           <div className="flex items-center justify-between mb-4">
-            <p className="font-semibold text-[#1C1C1E] dark:text-white">Minutes per week</p>
-            <p className="text-xs text-[#8E8E93]">last 8 weeks</p>
+            <p className="font-semibold text-[#1B1714] dark:text-white">Minutes per week</p>
+            <p className="text-xs text-[#8A7F78]">last 8 weeks</p>
           </div>
           <WeeklyBarChart data={stats.weeklyStats} />
         </div>
@@ -185,15 +188,15 @@ export default function ProgressPage() {
         >
           <div className="space-y-6 pt-2">
             <div>
-              <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-3">Last 12 weeks</p>
+              <p className="text-xs font-semibold text-[#8A7F78] uppercase mb-3">Last 12 weeks</p>
               <WeeklyChart data={stats.weeklyStats} />
             </div>
             <div>
-              <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-3">Monthly</p>
+              <p className="text-xs font-semibold text-[#8A7F78] uppercase mb-3">Monthly</p>
               <MonthlyChart data={stats.monthlyStats} />
             </div>
             <div>
-              <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-3">Top exercises</p>
+              <p className="text-xs font-semibold text-[#8A7F78] uppercase mb-3">Top exercises</p>
               <ExerciseList exercises={stats.exerciseStats} />
             </div>
           </div>
@@ -206,23 +209,26 @@ export default function ProgressPage() {
 function MiniStat({ label, value }: { label: string; value: string | number }) {
   return (
     <div>
-      <p className="text-lg font-bold text-[#1C1C1E] dark:text-white">{value}</p>
-      <p className="text-[10px] text-[#8E8E93]">{label}</p>
+      <p className="text-lg font-bold text-[#1B1714] dark:text-white">{value}</p>
+      <p className="text-[10px] text-[#8A7F78]">{label}</p>
     </div>
   );
 }
 
-function StatCell({ label, value }: { label: string; value: string | number }) {
+function StatCell({ label, value, gold }: { label: string; value: string | number; gold?: boolean }) {
   return (
     <div className="py-4 text-center">
-      <p className="text-2xl font-bold text-[#1C1C1E] dark:text-white leading-none mb-1">{value}</p>
-      <p className="text-[10px] font-medium text-[#8E8E93] uppercase tracking-wider">{label}</p>
+      <p className={`text-2xl font-bold leading-none mb-1 ${gold ? 'text-[#E5B122]' : 'text-[#1B1714] dark:text-white'}`}
+         style={gold ? { fontFamily: "'DM Sans', sans-serif" } : {}}>
+        {value}
+      </p>
+      <p className="text-[10px] font-medium text-[#8A7F78] uppercase tracking-wider">{label}</p>
     </div>
   );
 }
 
 function WeeklyBarChart({ data }: { data: ProgressStats["weeklyStats"] }) {
-  if (data.length === 0) return <p className="text-[#8E8E93] text-sm text-center py-4">No data yet</p>;
+  if (data.length === 0) return <p className="text-[#8A7F78] text-sm text-center py-4">No data yet</p>;
   const recent = data.slice().reverse().slice(0, 8);
   const max = Math.max(...recent.map((d) => d.workoutsCompleted * 30), 1);
   const lastIdx = recent.length - 1;
@@ -238,12 +244,16 @@ function WeeklyBarChart({ data }: { data: ProgressStats["weeklyStats"] }) {
             <div className="w-full flex items-end" style={{ height: "88px" }}>
               <div
                 className={`w-full rounded-t-lg transition-all ${
-                  isCurrent ? "bg-[#3F6B40]" : "bg-[#EDE8DC] dark:bg-[#2C2C2E]"
+                  isCurrent ? "" : "bg-[#F0E9CE] dark:bg-[#2C2622]"
                 }`}
-                style={{ height: `${pct * 100}%`, minHeight: val > 0 ? "8px" : "0" }}
+                style={{
+                  height: `${pct * 100}%`,
+                  minHeight: val > 0 ? "8px" : "0",
+                  background: isCurrent ? '#E5B122' : undefined,
+                }}
               />
             </div>
-            <span className={`text-[9px] font-medium ${isCurrent ? "text-[#3F6B40]" : "text-[#8E8E93]"}`}>
+            <span className={`text-[9px] font-medium ${isCurrent ? "text-[#E5B122]" : "text-[#8A7F78]"}`}>
               {label}
             </span>
           </div>
@@ -271,25 +281,25 @@ function Collapsible({
   const toggle = onToggle ?? (() => setInternalOpen(!internalOpen));
 
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] overflow-hidden">
+    <div className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden">
       <button
         type="button"
         onClick={toggle}
         className="w-full flex items-center justify-between p-4 text-left"
       >
         <div>
-          <p className="font-semibold text-[#1C1C1E] dark:text-white">{title}</p>
-          <p className="text-xs text-[#8E8E93]">{subtitle}</p>
+          <p className="font-semibold text-[#1B1714] dark:text-white">{title}</p>
+          <p className="text-xs text-[#8A7F78]">{subtitle}</p>
         </div>
-        <span className="text-[#8E8E93] text-sm">{isOpen ? "Hide" : "Show"}</span>
+        <span className="text-[#8A7F78] text-sm">{isOpen ? "Hide" : "Show"}</span>
       </button>
-      {isOpen && <div className="px-4 pb-4 border-t border-[#EDE8DC] dark:border-[#38383A]">{children}</div>}
+      {isOpen && <div className="px-4 pb-4 border-t border-[#F0E9CE] dark:border-[#3D3730]">{children}</div>}
     </div>
   );
 }
 
 function WeeklyChart({ data }: { data: ProgressStats["weeklyStats"] }) {
-  if (data.length === 0) return <p className="text-[#8E8E93] text-sm">No data yet</p>;
+  if (data.length === 0) return <p className="text-[#8A7F78] text-sm">No data yet</p>;
   const max = Math.max(...data.map((d) => d.workoutsCompleted), 1);
   return (
     <div className="space-y-2">
@@ -299,14 +309,14 @@ function WeeklyChart({ data }: { data: ProgressStats["weeklyStats"] }) {
         .slice(0, 8)
         .map((week) => (
           <div key={week.week} className="flex items-center gap-2">
-            <span className="text-[10px] text-[#8E8E93] w-14 flex-shrink-0 truncate">{week.dateRange}</span>
-            <div className="flex-1 h-2 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
+            <span className="text-[10px] text-[#8A7F78] w-14 flex-shrink-0 truncate">{week.dateRange}</span>
+            <div className="flex-1 h-2 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#3F6B40] rounded-full"
+                className="h-full bg-[#3E7E57] rounded-full"
                 style={{ width: `${(week.workoutsCompleted / max) * 100}%` }}
               />
             </div>
-            <span className="text-xs text-[#8E8E93] w-4 text-right">{week.workoutsCompleted}</span>
+            <span className="text-xs text-[#8A7F78] w-4 text-right">{week.workoutsCompleted}</span>
           </div>
         ))}
     </div>
@@ -314,7 +324,7 @@ function WeeklyChart({ data }: { data: ProgressStats["weeklyStats"] }) {
 }
 
 function MonthlyChart({ data }: { data: ProgressStats["monthlyStats"] }) {
-  if (data.length === 0) return <p className="text-[#8E8E93] text-sm">No data yet</p>;
+  if (data.length === 0) return <p className="text-[#8A7F78] text-sm">No data yet</p>;
   const max = Math.max(...data.map((d) => d.workoutsCompleted), 1);
   return (
     <div className="space-y-2">
@@ -324,16 +334,16 @@ function MonthlyChart({ data }: { data: ProgressStats["monthlyStats"] }) {
         .slice(0, 6)
         .map((month) => (
           <div key={month.month} className="flex items-center gap-2">
-            <span className="text-xs text-[#8E8E93] w-16 flex-shrink-0">
+            <span className="text-xs text-[#8A7F78] w-16 flex-shrink-0">
               {month.monthName.split(" ")[0]}
             </span>
-            <div className="flex-1 h-2.5 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
+            <div className="flex-1 h-2.5 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#9DBFD0] to-[#4A8FA8] rounded-full"
+                className="h-full bg-gradient-to-r from-[#9DC1A5] to-[#79A98C] rounded-full"
                 style={{ width: `${(month.workoutsCompleted / max) * 100}%` }}
               />
             </div>
-            <span className="text-xs font-medium text-[#1C1C1E] dark:text-white w-6 text-right">
+            <span className="text-xs font-medium text-[#1B1714] dark:text-white w-6 text-right">
               {month.workoutsCompleted}
             </span>
           </div>
@@ -343,26 +353,26 @@ function MonthlyChart({ data }: { data: ProgressStats["monthlyStats"] }) {
 }
 
 function ExerciseList({ exercises }: { exercises: ProgressStats["exerciseStats"] }) {
-  if (exercises.length === 0) return <p className="text-[#8E8E93] text-sm">No data yet</p>;
+  if (exercises.length === 0) return <p className="text-[#8A7F78] text-sm">No data yet</p>;
   const top = exercises.slice(0, 8);
   const max = Math.max(...top.map((e) => e.timesCompleted), 1);
   return (
     <div className="space-y-2">
       {top.map((exercise, i) => (
         <div key={exercise.exerciseId} className="flex items-center gap-2">
-          <span className="text-[10px] text-[#8E8E93] w-4">{i + 1}</span>
+          <span className="text-[10px] text-[#8A7F78] w-4">{i + 1}</span>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-medium text-[#1C1C1E] dark:text-white truncate">
+            <p className="text-xs font-medium text-[#1B1714] dark:text-white truncate">
               {exercise.exerciseName}
             </p>
-            <div className="mt-1 h-1.5 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
+            <div className="mt-1 h-1.5 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#3F6B40] rounded-full"
+                className="h-full bg-[#3E7E57] rounded-full"
                 style={{ width: `${(exercise.timesCompleted / max) * 100}%` }}
               />
             </div>
           </div>
-          <span className="text-xs text-[#8E8E93]">{exercise.timesCompleted}</span>
+          <span className="text-xs text-[#8A7F78]">{exercise.timesCompleted}</span>
         </div>
       ))}
     </div>

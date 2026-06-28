@@ -30,15 +30,15 @@ export default function ArchivedProgramsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FDFAF6] dark:bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#4A8FA8]" />
+      <div className="min-h-screen bg-[#F6F3E9] dark:bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#79A98C]" />
       </div>
     );
   }
 
   return (
     <div className="bg-white dark:bg-black min-h-screen">
-      <section className="bg-gradient-to-br from-[#2C2C2E] via-[#1C1C1E] to-black text-white">
+      <section className="bg-gradient-to-br from-[#2C2622] via-[#1B1714] to-black text-white">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <Link
             href="/program"
@@ -58,7 +58,7 @@ export default function ArchivedProgramsPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {message && (
-          <div className="mb-6 rounded-xl bg-[#3F6B40]/10 dark:bg-[#3F6B40]/20 border border-[#3F6B40]/20 dark:border-[#3F6B40]/40 px-4 py-3 text-sm text-[#3F6B40] dark:text-[#87A87C]">
+          <div className="mb-6 rounded-xl bg-[#3E7E57]/10 dark:bg-[#3E7E57]/20 border border-[#3E7E57]/20 dark:border-[#3E7E57]/40 px-4 py-3 text-sm text-[#3E7E57] dark:text-[#9DC1A5]">
             {message}
           </div>
         )}
@@ -66,7 +66,7 @@ export default function ArchivedProgramsPage() {
         {programs.length === 0 ? (
           <div className="text-center py-16">
             <div className="text-5xl mb-4">📭</div>
-            <p className="text-[#8E8E93] dark:text-[#8E8E93] mb-6">No archived programs yet.</p>
+            <p className="text-[#8A7F78] dark:text-[#8A7F78] mb-6">No archived programs yet.</p>
             <Link
               href="/program"
               className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[#FF2D55] text-white font-semibold hover:opacity-90 transition-opacity"

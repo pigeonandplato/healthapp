@@ -24,10 +24,10 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+          <div className="w-16 h-16 bg-gradient-to-br from-[#9DC1A5] to-[#79A98C] rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
             <span className="text-3xl">💪</span>
           </div>
-          <p className="text-[#8E8E93]">Loading...</p>
+          <p className="text-[#8A7F78]">Loading...</p>
         </div>
       </div>
     );

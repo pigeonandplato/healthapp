@@ -27,15 +27,15 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
   return (
     <div className="pt-3 pb-1 space-y-3 text-sm">
       {exercise.description && (
-        <p className="text-[#3A3A3C] dark:text-[#D1D1D6] leading-relaxed">{exercise.description}</p>
+        <p className="text-[#3D3730] dark:text-[#D4CFC9] leading-relaxed">{exercise.description}</p>
       )}
       {exercise.instructions.length > 0 && (
         <div>
-          <p className="text-[10px] font-semibold text-[#8E8E93] uppercase tracking-wide mb-2">How to do it</p>
+          <p className="text-[10px] font-semibold text-[#8A7F78] uppercase tracking-wide mb-2">How to do it</p>
           <ol className="space-y-1.5">
             {exercise.instructions.map((step, i) => (
-              <li key={i} className="flex gap-2.5 text-[#3A3A3C] dark:text-[#D1D1D6]">
-                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#8E8E93] text-[11px] font-bold flex items-center justify-center mt-0.5">
+              <li key={i} className="flex gap-2.5 text-[#3D3730] dark:text-[#D4CFC9]">
+                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-[#F0E9CE] dark:bg-[#2C2622] text-[#8A7F78] text-[11px] font-bold flex items-center justify-center mt-0.5">
                   {i + 1}
                 </span>
                 <span className="leading-relaxed">{step}</span>
@@ -46,11 +46,11 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
       )}
       {exercise.commonMistakes.length > 0 && (
         <div>
-          <p className="text-[10px] font-semibold text-[#4A8FA8] uppercase tracking-wide mb-2">Watch out for</p>
+          <p className="text-[10px] font-semibold text-[#79A98C] uppercase tracking-wide mb-2">Watch out for</p>
           <ul className="space-y-1">
             {exercise.commonMistakes.map((m, i) => (
-              <li key={i} className="flex gap-2 text-[#3A3A3C] dark:text-[#D1D1D6]">
-                <span className="text-[#4A8FA8] flex-shrink-0 mt-0.5">·</span>
+              <li key={i} className="flex gap-2 text-[#3D3730] dark:text-[#D4CFC9]">
+                <span className="text-[#79A98C] flex-shrink-0 mt-0.5">·</span>
                 <span>{m}</span>
               </li>
             ))}
@@ -58,12 +58,12 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
         </div>
       )}
       {exercise.stopConditions.length > 0 && (
-        <div className="bg-[#9DBFD0]/10 border border-[#9DBFD0]/30 rounded-xl p-3">
-          <p className="text-[10px] font-semibold text-[#9DBFD0] uppercase tracking-wide mb-1.5">Stop if</p>
+        <div className="bg-[#9DC1A5]/10 border border-[#9DC1A5]/30 rounded-xl p-3">
+          <p className="text-[10px] font-semibold text-[#9DC1A5] uppercase tracking-wide mb-1.5">Stop if</p>
           <ul className="space-y-1">
             {exercise.stopConditions.map((s, i) => (
-              <li key={i} className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] flex gap-2">
-                <span className="text-[#9DBFD0] flex-shrink-0">·</span>
+              <li key={i} className="text-sm text-[#3D3730] dark:text-[#D4CFC9] flex gap-2">
+                <span className="text-[#9DC1A5] flex-shrink-0">·</span>
                 <span>{s}</span>
               </li>
             ))}
@@ -74,7 +74,7 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
         <button
           type="button"
           onClick={onOpenDetailView}
-          className="text-xs font-semibold text-[#4A8FA8] flex items-center gap-1"
+          className="text-xs font-semibold text-[#79A98C] flex items-center gap-1"
         >
           Watch video guide
           <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -140,35 +140,35 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
         return (
           <div
             key={block.id}
-            className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] overflow-hidden"
+            className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden"
           >
             {/* Block header — clean row */}
-            <div className={`flex items-center justify-between px-5 py-3.5 ${blockDone ? "bg-[#3F6B40]/5 dark:bg-[#3F6B40]/10" : ""}`}>
+            <div className={`flex items-center justify-between px-5 py-3.5 ${blockDone ? "bg-[#3E7E57]/5 dark:bg-[#3E7E57]/10" : ""}`}>
               <div className="flex items-center gap-2.5">
                 {blockDone ? (
-                  <span className="w-5 h-5 rounded-full bg-[#3F6B40] flex items-center justify-center flex-shrink-0">
+                  <span className="w-5 h-5 rounded-full bg-[#3E7E57] flex items-center justify-center flex-shrink-0">
                     <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </span>
                 ) : (
-                  <span className="w-5 h-5 rounded-full border-2 border-[#EDE8DC] dark:border-[#38383A] flex-shrink-0" />
+                  <span className="w-5 h-5 rounded-full border-2 border-[#F0E9CE] dark:border-[#3D3730] flex-shrink-0" />
                 )}
-                <p className={`font-semibold text-sm ${blockDone ? "text-[#3F6B40]" : "text-[#1C1C1E] dark:text-white"}`}>
+                <p className={`font-semibold text-sm ${blockDone ? "text-[#3E7E57]" : "text-[#1B1714] dark:text-white"}`}>
                   {block.name}
                 </p>
               </div>
-              <div className="flex items-center gap-2 text-xs text-[#8E8E93]">
+              <div className="flex items-center gap-2 text-xs text-[#8A7F78]">
                 <span>~{block.estimatedMinutes} min</span>
-                <span className="text-[#EDE8DC] dark:text-[#38383A]">·</span>
-                <span className={`font-semibold ${blockDone ? "text-[#3F6B40]" : "text-[#8E8E93]"}`}>
+                <span className="text-[#F0E9CE] dark:text-[#3D3730]">·</span>
+                <span className={`font-semibold ${blockDone ? "text-[#3E7E57]" : "text-[#8A7F78]"}`}>
                   {blockCompleted}/{trackable.length}
                 </span>
               </div>
             </div>
 
             {/* Exercise rows — transaction-style list */}
-            <div className="divide-y divide-[#EDE8DC] dark:divide-[#38383A]">
+            <div className="divide-y divide-[#F0E9CE] dark:divide-[#3D3730]">
               {trackable.map((exercise) => {
                 const isCompleted = completions[exercise.id] || false;
                 const isExpanded = expandedId === exercise.id;
@@ -180,7 +180,7 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
                 const prescription = formatPrescription(exercise);
 
                 return (
-                  <div key={exercise.id} className={`transition-colors ${isCompleted ? "bg-[#FDFAF6] dark:bg-[#1A1A1A]" : ""}`}>
+                  <div key={exercise.id} className={`transition-colors ${isCompleted ? "bg-[#F6F3E9] dark:bg-[#1A1A1A]" : ""}`}>
                     <div className="flex items-center gap-4 px-5 py-3.5">
                       {/* Tap-to-complete circle */}
                       <button
@@ -189,8 +189,8 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
                         aria-label={isCompleted ? "Mark incomplete" : "Mark complete"}
                         className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all active:scale-90 ${
                           isCompleted
-                            ? "bg-[#3F6B40] border-[#3F6B40]"
-                            : "border-[#C7C7CC] dark:border-[#48484A] hover:border-[#4A8FA8]"
+                            ? "bg-[#3E7E57] border-[#3E7E57]"
+                            : "border-[#C5BDB6] dark:border-[#4A433E] hover:border-[#79A98C]"
                         }`}
                       >
                         {isCompleted && (
@@ -209,13 +209,13 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
                       >
                         <p className={`text-sm font-medium leading-snug ${
                           isCompleted
-                            ? "line-through text-[#C7C7CC] dark:text-[#48484A]"
-                            : "text-[#1C1C1E] dark:text-white"
+                            ? "line-through text-[#C5BDB6] dark:text-[#4A433E]"
+                            : "text-[#1B1714] dark:text-white"
                         }`}>
                           {exercise.name}
                         </p>
                         {prescription && (
-                          <p className={`text-xs mt-0.5 ${isCompleted ? "text-[#D1D1D6] dark:text-[#48484A]" : "text-[#8E8E93]"}`}>
+                          <p className={`text-xs mt-0.5 ${isCompleted ? "text-[#D4CFC9] dark:text-[#4A433E]" : "text-[#8A7F78]"}`}>
                             {prescription}
                           </p>
                         )}
@@ -230,7 +230,7 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
                           aria-label={isExpanded ? "Collapse" : "Expand"}
                         >
                           <svg
-                            className={`w-4 h-4 text-[#C7C7CC] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                            className={`w-4 h-4 text-[#C5BDB6] transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                             fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"
                           >
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -241,7 +241,7 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
 
                     {/* Expandable detail */}
                     {isExpanded && hasDetails && (
-                      <div className="px-5 pb-4 border-t border-[#EDE8DC] dark:border-[#38383A] bg-[#FDFAF6] dark:bg-[#161616]">
+                      <div className="px-5 pb-4 border-t border-[#F0E9CE] dark:border-[#3D3730] bg-[#F6F3E9] dark:bg-[#161616]">
                         <ExerciseDetailPreview
                           exercise={exercise}
                           onOpenDetailView={exercise.media.type === "video" ? onOpenDetailView : undefined}
@@ -258,15 +258,15 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
 
       {/* All done */}
       {pct === 100 && total > 0 && (
-        <div className="flex items-center gap-3 bg-[#3F6B40]/8 border border-[#3F6B40]/20 rounded-2xl px-5 py-4">
-          <span className="w-9 h-9 rounded-full bg-[#3F6B40] flex items-center justify-center flex-shrink-0">
+        <div className="flex items-center gap-3 bg-[#3E7E57]/8 border border-[#3E7E57]/20 rounded-2xl px-5 py-4">
+          <span className="w-9 h-9 rounded-full bg-[#3E7E57] flex items-center justify-center flex-shrink-0">
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </span>
           <div>
-            <p className="text-sm font-bold text-[#3F6B40]">All {total} done — great work</p>
-            <p className="text-xs text-[#8E8E93] mt-0.5">Your streak is safe. See you tomorrow.</p>
+            <p className="text-sm font-bold text-[#3E7E57]">All {total} done — great work</p>
+            <p className="text-xs text-[#8A7F78] mt-0.5">Your streak is safe. See you tomorrow.</p>
           </div>
         </div>
       )}

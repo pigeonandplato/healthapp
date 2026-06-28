@@ -49,23 +49,23 @@ export default function ConsistencyCalendar({ completedDates }: ConsistencyCalen
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={goPrev}
-          className="w-9 h-9 rounded-full bg-[#F2F2F7] dark:bg-[#2C2C2E] flex items-center justify-center text-[#1C1C1E] dark:text-white"
+          className="w-9 h-9 rounded-full bg-[#F6F3E9] dark:bg-[#2C2622] flex items-center justify-center text-[#1B1714] dark:text-white"
           aria-label="Previous month"
         >
           ‹
         </button>
         <div className="text-center">
-          <p className="font-bold text-[#1C1C1E] dark:text-white">
+          <p className="font-bold text-[#1B1714] dark:text-white">
             {MONTHS[month]} {year}
           </p>
-          <p className="text-xs text-[#8E8E93]">
+          <p className="text-xs text-[#8A7F78]">
             {doneThisMonth} of {pastDays} days active
           </p>
         </div>
         <button
           onClick={goNext}
           disabled={isCurrentMonth}
-          className="w-9 h-9 rounded-full bg-[#F2F2F7] dark:bg-[#2C2C2E] flex items-center justify-center text-[#1C1C1E] dark:text-white disabled:opacity-30"
+          className="w-9 h-9 rounded-full bg-[#F6F3E9] dark:bg-[#2C2622] flex items-center justify-center text-[#1B1714] dark:text-white disabled:opacity-30"
           aria-label="Next month"
         >
           ›
@@ -74,7 +74,7 @@ export default function ConsistencyCalendar({ completedDates }: ConsistencyCalen
 
       <div className="grid grid-cols-7 gap-1.5 mb-2">
         {WEEKDAYS.map((d, i) => (
-          <div key={i} className="text-center text-[10px] font-semibold text-[#8E8E93]">
+          <div key={i} className="text-center text-[10px] font-semibold text-[#8A7F78]">
             {d}
           </div>
         ))}
@@ -89,10 +89,10 @@ export default function ConsistencyCalendar({ completedDates }: ConsistencyCalen
               key={i}
               className={`aspect-square rounded-lg flex items-center justify-center text-xs font-semibold transition-all ${
                 cell.completed
-                  ? "bg-[#34C759] text-white shadow-sm"
+                  ? "bg-[#3E7E57] text-white shadow-sm"
                   : cell.isFuture
-                    ? "bg-[#F2F2F7] dark:bg-[#1C1C1E] text-[#C7C7CC] dark:text-[#48484A]"
-                    : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#8E8E93]"
+                    ? "bg-[#F6F3E9] dark:bg-[#1B1714] text-[#C5BDB6] dark:text-[#4A433E]"
+                    : "bg-[#F6F3E9] dark:bg-[#2C2622] text-[#8A7F78]"
               } ${cell.isToday ? "ring-2 ring-[#FF2D55]" : ""}`}
               title={cell.completed ? `${cell.date} — active` : cell.date}
             >
@@ -102,7 +102,7 @@ export default function ConsistencyCalendar({ completedDates }: ConsistencyCalen
         })}
       </div>
 
-      <p className="text-xs text-[#8E8E93] mt-4 text-center">
+      <p className="text-xs text-[#8A7F78] mt-4 text-center">
         Green = you showed up. Miss a day? Just fill in the next one — progress is never lost.
       </p>
     </div>

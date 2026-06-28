@@ -1,58 +1,58 @@
+/* DM Sans for headings — loaded via Google Fonts (display=swap, low perf cost) */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,600;9..40,700;9..40,800&display=swap');
+
 @import "tailwindcss";
 
-/* Self-hosted Inter via next/font — no external network call */
+/* Inter body via next/font (self-hosted, no FOUT) */
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
 :root {
-  /* Apple Health-inspired Color System */
-  --health-pink: #FF2D55;
-  --health-pink-light: #FF6482;
-  --health-green: #34C759;
-  --health-orange: #FF9500;
-  --health-blue: #007AFF;
-  --health-purple: #AF52DE;
+  /* ── Brand Palette: Sage / Gold / Paper ── */
+  --brand-sage-light: #9DC1A5;   /* light sage — tints, gradient starts, tile bg */
+  --brand-sage:       #79A98C;   /* primary sage — CTAs, active states */
+  --brand-sage-dark:  #5E8C6E;   /* dark sage — hovers, gradient ends */
+  --brand-sage-deep:  #3E7E57;   /* deep sage — completion, done indicators */
+  --brand-sage-ink:   #2E5641;   /* darkest sage — text on sage bg */
+  --brand-gold:       #E5B122;   /* accent gold — XP, streaks, milestones */
+  --brand-gold-dark:  #C99A1A;   /* dark gold — hover / pressed */
+  --brand-peach:      #FAC7B3;   /* rehab habit tile */
+  --brand-sky-tile:   #AFD4DD;   /* sleep/focus habit tile */
+  --brand-cream:      #F0E9CE;   /* warm cream — card borders, secondary bg */
+  --brand-paper:      #F6F3E9;   /* main background */
 
-  /* Company Brand Palette */
-  --brand-sky-light: #9DBFD0;  /* A. blob — soft sky blue (tints, gradient starts) */
-  --brand-sky: #4A8FA8;        /* primary blue (CTAs, active states, progress bars) */
-  --brand-sky-dark: #38788F;   /* dark blue (hovers, gradient ends) */
-  --brand-cream: #EDE8DC;      /* G. blob — warm cream (borders, secondary bg) */
-  --brand-sage: #3F6B40;       /* deep sage green (completion states, done indicators) */
-  --brand-sage-light: #87A87C; /* light sage (accents) */
+  /* Semantic tokens */
+  --background:      #F6F3E9;
+  --card-background: #FFFFFF;
+  --border:          #F0E9CE;
+  --text-primary:    #1B1714;
+  --text-secondary:  #8A7F78;
+  --text-tertiary:   #C5BDB6;
 
-  /* Neutrals - Clean & Minimal */
-  --background: #FDFAF6;
-  --card-background: #FAF7F2;
-  --border: #EDE8DC;
-  --text-primary: #1C1C1E;
-  --text-secondary: #8E8E93;
-  --text-tertiary: #C7C7CC;
-  
   /* Minimal shadows */
-  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.08);
-  
+  --shadow-subtle:   0 1px 3px rgba(27, 23, 20, 0.04);
+  --shadow-card:     0 2px 8px rgba(27, 23, 20, 0.06);
+  --shadow-elevated: 0 4px 16px rgba(27, 23, 20, 0.08);
+
   /* Safe area insets */
-  --safe-area-top: env(safe-area-inset-top);
+  --safe-area-top:    env(safe-area-inset-top);
   --safe-area-bottom: env(safe-area-inset-bottom);
-  --safe-area-left: env(safe-area-inset-left);
-  --safe-area-right: env(safe-area-inset-right);
+  --safe-area-left:   env(safe-area-inset-left);
+  --safe-area-right:  env(safe-area-inset-right);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #000000;
-    --card-background: #1C1C1E;
-    --border: #38383A;
-    --text-primary: #FFFFFF;
-    --text-secondary: #8E8E93;
-    --text-tertiary: #48484A;
-    
-    --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.4);
+    --background:      #1B1714;
+    --card-background: #2C2622;
+    --border:          #3D3730;
+    --text-primary:    #F6F3E9;
+    --text-secondary:  #8A7F78;
+    --text-tertiary:   #4A433E;
+
+    --shadow-subtle:   0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-card:     0 2px 8px rgba(0, 0, 0, 0.4);
     --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.5);
   }
 }
@@ -72,6 +72,12 @@ body {
   line-height: 1.5;
 }
 
+/* DM Sans applied to all headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'DM Sans', var(--font-sans);
+  letter-spacing: -0.3px;
+}
+
 /* Smooth scrolling with momentum */
 * {
   -webkit-overflow-scrolling: touch;
@@ -81,55 +87,67 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Minimal animations - Apple style */
+/* ── Animations ── */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes slide-up {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(10px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
 @keyframes scale-in {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(0.95); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
 }
 
-/* Animation classes - subtle only */
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out;
+/* Progress bar bounce-in — from CURSOR_HANDOFF.md spec */
+@keyframes progress-fill {
+  from { width: 0%; }
+  to   { width: var(--target-width, 100%); }
 }
 
-.animate-slide-up {
-  animation: slide-up 0.4s ease-out;
+@keyframes bar-grow {
+  0%   { transform: scaleY(0); }
+  60%  { transform: scaleY(1.06); }
+  80%  { transform: scaleY(0.97); }
+  100% { transform: scaleY(1); }
 }
 
-.animate-scale-in {
-  animation: scale-in 0.3s ease-out;
+.animate-fade-in    { animation: fade-in  0.3s ease-out; }
+.animate-slide-up   { animation: slide-up 0.4s ease-out; }
+.animate-scale-in   { animation: scale-in 0.3s ease-out; }
+.animate-progress   {
+  animation: progress-fill 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: left;
+}
+.animate-bar-grow {
+  animation: bar-grow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  transform-origin: bottom;
 }
 
-/* Apple Health-style card */
+/* ── Glass / iOS effects ── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 233, 206, 0.8);
+  border-radius: 20px;
+}
+
+.glass-card-dark {
+  background: rgba(44, 38, 34, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(61, 55, 48, 0.6);
+}
+
+/* ── Card helpers ── */
 .health-card {
   background: var(--card-background);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 16px;
   box-shadow: var(--shadow-card);
   border: 1px solid var(--border);
@@ -137,31 +155,28 @@ html {
 
 .health-card-white {
   background: var(--background);
-  border-radius: 12px;
+  border-radius: 16px;
   padding: 16px;
   box-shadow: var(--shadow-card);
   border: 1px solid var(--border);
 }
 
-/* Minimal button */
+/* ── Buttons ── */
 .health-button {
-  background: var(--health-pink);
+  background: var(--brand-sage);
   color: white;
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 14px 20px;
-  font-weight: 600;
-  font-size: 17px;
+  font-weight: 700;
+  font-size: 16px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-subtle);
+  transition: background 0.15s ease, transform 0.1s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.health-button:active {
-  transform: scale(0.97);
-  opacity: 0.9;
-}
+.health-button:hover  { background: var(--brand-sage-dark); }
+.health-button:active { transform: scale(0.97); opacity: 0.9; }
 
 .health-button-secondary {
   background: var(--card-background);
@@ -169,14 +184,22 @@ html {
   border: 1px solid var(--border);
 }
 
-/* Clean list item */
+/* Universal press-down for interactive elements */
+button:active, a:active {
+  transform: scale(0.97);
+}
+button, a {
+  transition: transform 0.1s ease, opacity 0.15s ease;
+}
+
+/* ── List items ── */
 .health-list-item {
   background: var(--background);
   padding: 16px;
-  border-radius: 12px;
+  border-radius: 14px;
   margin-bottom: 8px;
   border: 1px solid var(--border);
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
@@ -186,7 +209,7 @@ html {
   background: var(--card-background);
 }
 
-/* Minimal divider */
+/* ── Divider ── */
 .health-divider {
   height: 1px;
   background: var(--border);
@@ -194,44 +217,26 @@ html {
   border: none;
 }
 
-/* Safe area padding */
-.safe-top {
-  padding-top: max(20px, var(--safe-area-top));
-}
+/* ── Safe area ── */
+.safe-top    { padding-top:    max(20px, var(--safe-area-top)); }
+.safe-bottom { padding-bottom: max(20px, var(--safe-area-bottom)); }
 
-.safe-bottom {
-  padding-bottom: max(20px, var(--safe-area-bottom));
-}
-
-/* Clean focus states */
+/* ── Focus states ── */
 *:focus-visible {
-  outline: 2px solid var(--health-blue);
+  outline: 2px solid var(--brand-sage);
   outline-offset: 2px;
   border-radius: 8px;
 }
 
-/* Better scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text-tertiary); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--text-tertiary);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
-}
-
-/* Clean badge */
+/* ── Badge ── */
 .health-badge {
-  background: var(--health-pink);
+  background: var(--brand-sage);
   color: white;
   border-radius: 10px;
   padding: 2px 8px;
@@ -240,7 +245,7 @@ html {
   display: inline-block;
 }
 
-/* Touch-friendly */
+/* ── Touch ── */
 .touch-target {
   min-height: 44px;
   min-width: 44px;
@@ -249,124 +254,53 @@ html {
   justify-content: center;
 }
 
-.touch-manipulation {
-  touch-action: manipulation;
-}
+.touch-manipulation { touch-action: manipulation; }
 
 /* Hide scrollbar but keep functionality */
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+.hide-scrollbar               { -ms-overflow-style: none; scrollbar-width: none; }
+.hide-scrollbar::-webkit-scrollbar { display: none; }
 
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Clean input */
+/* ── Inputs ── */
 input, textarea {
   background: var(--background);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 12px 16px;
-  font-size: 17px;
+  font-size: 16px;
   font-family: inherit;
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: var(--health-blue);
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+  border-color: var(--brand-sage);
+  box-shadow: 0 0 0 3px rgba(121, 169, 140, 0.15);
 }
 
-/* Typography scale - Apple Health style */
-.text-title {
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.5px;
-}
+/* ── Typography scale ── */
+.text-title       { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; font-family: 'DM Sans', var(--font-sans); }
+.text-headline    { font-size: 28px; font-weight: 700; line-height: 1.25; letter-spacing: -0.3px; font-family: 'DM Sans', var(--font-sans); }
+.text-body-large  { font-size: 20px; font-weight: 600; line-height: 1.4; }
+.text-body        { font-size: 16px; font-weight: 400; line-height: 1.5; }
+.text-caption     { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--text-secondary); }
+.text-footnote    { font-size: 12px; font-weight: 400; line-height: 1.3; color: var(--text-secondary); }
 
-.text-headline {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.3;
-  letter-spacing: -0.3px;
-}
+/* ── Accent helpers ── */
+.accent-sage  { color: var(--brand-sage); }
+.accent-gold  { color: var(--brand-gold); }
+.bg-accent-sage { background: var(--brand-sage); }
+.bg-accent-gold { background: var(--brand-gold); }
 
-.text-body-large {
-  font-size: 20px;
-  font-weight: 600;
-  line-height: 1.4;
-}
+/* ── Shadows ── */
+.shadow-minimal  { box-shadow: var(--shadow-subtle); }
+.shadow-card     { box-shadow: var(--shadow-card); }
+.shadow-elevated { box-shadow: var(--shadow-elevated); }
 
-.text-body {
-  font-size: 17px;
-  font-weight: 400;
-  line-height: 1.5;
-}
+/* Status bar space */
+.status-bar-space { height: max(44px, calc(var(--safe-area-top) + 44px)); }
 
-.text-caption {
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.4;
-  color: var(--text-secondary);
-}
-
-.text-footnote {
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.3;
-  color: var(--text-secondary);
-}
-
-/* Accent colors */
-.accent-pink { color: var(--health-pink); }
-.accent-green { color: var(--health-green); }
-.accent-orange { color: var(--health-orange); }
-.accent-blue { color: var(--health-blue); }
-
-.bg-accent-pink { background: var(--health-pink); }
-.bg-accent-green { background: var(--health-green); }
-.bg-accent-orange { background: var(--health-orange); }
-.bg-accent-blue { background: var(--health-blue); }
-
-/* Minimal shadows */
-.shadow-minimal {
-  box-shadow: var(--shadow-subtle);
-}
-
-.shadow-card {
-  box-shadow: var(--shadow-card);
-}
-
-.shadow-elevated {
-  box-shadow: var(--shadow-elevated);
-}
-
-/* Clean status bar space */
-.status-bar-space {
-  height: max(44px, calc(var(--safe-area-top) + 44px));
-}
-
-/* Minimal spacing system */
-.space-xs { margin: 4px; }
-.space-sm { margin: 8px; }
-.space-md { margin: 16px; }
-.space-lg { margin: 24px; }
-.space-xl { margin: 32px; }
-
-/* Clean card hover (subtle) */
-.card-hover {
-  transition: all 0.2s ease;
-}
-
-.card-hover:hover {
-  box-shadow: var(--shadow-elevated);
-}
-
-.card-hover:active {
-  transform: scale(0.99);
-}
+/* Card hover */
+.card-hover { transition: all 0.15s ease; }
+.card-hover:hover  { box-shadow: var(--shadow-elevated); }
+.card-hover:active { transform: scale(0.99); }

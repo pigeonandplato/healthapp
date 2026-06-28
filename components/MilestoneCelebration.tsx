@@ -38,7 +38,7 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
       <div
-        className={`bg-white dark:bg-[#1C1C1E] rounded-3xl p-8 max-w-sm w-full  transform transition-all duration-500 ${
+        className={`bg-white dark:bg-[#1B1714] rounded-3xl p-8 max-w-sm w-full  transform transition-all duration-500 ${
           isAnimating ? "scale-110 rotate-3" : "scale-100 rotate-0"
         }`}
       >
@@ -51,7 +51,7 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                backgroundColor: ['#9DBFD0', '#4A8FA8', '#3F6B40', '#9DBFD0', '#38788F'][i % 5],
+                backgroundColor: ['#9DC1A5', '#79A98C', '#3E7E57', '#9DC1A5', '#5E8C6E'][i % 5],
                 animationDelay: `${Math.random() * 0.5}s`,
                 animationDuration: `${1 + Math.random()}s`,
               }}
@@ -66,12 +66,12 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
           </div>
 
           {/* Title */}
-          <h2 className="text-3xl font-bold text-[#1C1C1E] dark:text-white mb-2">
+          <h2 className="text-3xl font-bold text-[#1B1714] dark:text-white mb-2">
             {milestone.title}
           </h2>
 
           {/* Description */}
-          <p className="text-[#8E8E93] mb-6">
+          <p className="text-[#8A7F78] mb-6">
             {milestone.description}
           </p>
 
@@ -83,10 +83,10 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
                   key={index}
                   className={`h-2 rounded-full transition-all ${
                     index === currentMilestone
-                      ? "w-8 bg-[#4A8FA8]"
+                      ? "w-8 bg-[#79A98C]"
                       : index < currentMilestone
-                      ? "w-2 bg-[#4A8FA8]/50"
-                      : "w-2 bg-[#EDE8DC] dark:bg-[#38383A]"
+                      ? "w-2 bg-[#79A98C]/50"
+                      : "w-2 bg-[#F0E9CE] dark:bg-[#3D3730]"
                   }`}
                 />
               ))}
@@ -96,7 +96,7 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
           {/* Button */}
           <button
             onClick={handleNext}
-            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98]"
+            className="w-full bg-[#79A98C] hover:bg-[#5E8C6E] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98]"
           >
             {isLast ? "Awesome! 🎉" : "Next Milestone →"}
           </button>

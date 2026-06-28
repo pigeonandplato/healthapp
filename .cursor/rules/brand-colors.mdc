@@ -4,72 +4,99 @@ globs: **/*.tsx, **/*.ts, **/*.css
 alwaysApply: true
 ---
 
-# Brand Color Palette — Health Tracker PWA
+# Brand Color Palette — Sage / Gold / Paper
 
-All UI must use these exact hex values. Never use Tailwind semantic color classes like `blue-500`, `gray-200`, `purple-*`, `red-*`, `green-*`, `yellow-*`, `indigo-*`, or `emerald-*`.
+> Source: CURSOR_HANDOFF.md — "Why sage primary: calm, sustainable care. Why gold: energy for milestones."
+
+All UI must use these exact hex values. **Never** use Tailwind semantic color classes like `blue-500`, `gray-200`, `purple-*`, `red-*`, `green-*`, `yellow-*`, `indigo-*`, or `emerald-*`.
 
 ## Palette
 
 | Role | Hex | Usage |
 |------|-----|-------|
-| Primary blue | `#4A8FA8` | CTAs, active states, progress bars, links |
-| Light blue | `#9DBFD0` | Gradient starts, tints, soft backgrounds |
-| Dark blue | `#38788F` | Hover states, gradient ends |
-| Sage green | `#3F6B40` | Completion only (checked boxes, done states) |
-| Light sage | `#87A87C` | Sage gradients/accents |
-| Cream border | `#EDE8DC` | All card borders, dividers, input borders |
-| Page bg | `#FDFAF6` | Page backgrounds |
-| Text primary | `#1C1C1E` | Headings, body |
-| Text secondary | `#8E8E93` | Subtitles, labels, metadata |
-| Text muted | `#C7C7CC` | Placeholders, disabled |
-| Dark surface | `#2C2C2E` | Dark mode inputs |
-| Dark border | `#38383A` | Dark mode borders |
+| Light sage | `#9DC1A5` | Tints, gradient starts, habit tile bg |
+| Primary sage | `#79A98C` | CTAs, active states, links |
+| Dark sage | `#5E8C6E` | Hover states, gradient ends |
+| Deep sage | `#3E7E57` | Completion / done indicators |
+| Sage ink | `#2E5641` | Text on sage backgrounds |
+| **Gold** | `#E5B122` | XP bar, streak counter, milestones |
+| Dark gold | `#C99A1A` | Gold hover / pressed |
+| Peach | `#FAC7B3` | Break/rehab habit tile accent |
+| Sky tile | `#AFD4DD` | Sleep/focus habit tile accent |
+| Cream | `#F0E9CE` | Card borders, secondary backgrounds |
+| Paper | `#F6F3E9` | Page backgrounds |
+| Dark ink | `#1B1714` | Headings, body text |
+| Warm gray | `#8A7F78` | Secondary text, labels |
+| Muted | `#C5BDB6` | Placeholders, disabled |
+| Dark card | `#2C2622` | Dark mode card surface |
+| Dark border | `#3D3730` | Dark mode borders |
+| Dark hover | `#4A433E` | Dark mode hover states |
 
 ## Rules
 
 ```tsx
 // ❌ NEVER use Tailwind semantic colors
-className="bg-blue-500 text-gray-700 border-red-200"
+className="bg-blue-500 text-gray-700 border-green-200"
 className="from-purple-50 to-indigo-100"
 
 // ✅ ALWAYS use brand hex values
-className="bg-[#4A8FA8] text-[#8E8E93] border-[#EDE8DC]"
-className="from-[#9DBFD0] to-[#4A8FA8]"
+className="bg-[#79A98C] text-[#8A7F78] border-[#F0E9CE]"
+className="from-[#9DC1A5] to-[#79A98C]"
 ```
 
 ## Common Patterns
 
 ```tsx
 // CTA button
-className="bg-[#4A8FA8] hover:bg-[#38788F] text-white"
+className="bg-[#79A98C] hover:bg-[#5E8C6E] text-white active:scale-[0.97]"
 
 // Ghost/tint button
-className="bg-[#4A8FA8]/10 text-[#4A8FA8] hover:bg-[#4A8FA8]/15"
+className="bg-[#79A98C]/10 text-[#79A98C] hover:bg-[#79A98C]/15"
 
-// Card
-className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A]"
+// Card (light mode)
+className="bg-white rounded-2xl border border-[#F0E9CE]"
+
+// Card (with dark mode)
+className="bg-white dark:bg-[#2C2622] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730]"
+
+// Page background
+className="bg-[#F6F3E9] dark:bg-[#1B1714]"
 
 // Progress bar track
-className="bg-[#EDE8DC] dark:bg-[#38383A]"
+className="bg-[#F0E9CE] dark:bg-[#3D3730]"
 
-// Progress bar fill (primary)
-className="bg-[#4A8FA8]"
+// XP / milestone progress fill
+style={{ background: 'linear-gradient(90deg, #E5B122, #C99A1A)' }}
 
 // Completion (done/checked)
-className="bg-[#3F6B40] border-[#3F6B40] text-white"
+className="bg-[#3E7E57] text-white"
+
+// Streak counter
+className="text-[#E5B122] font-semibold"
 
 // Active bottom nav
-className="text-[#4A8FA8]"
+className="text-[#79A98C]"
 
-// Input focus ring
-className="focus:ring-[#4A8FA8] focus:border-[#4A8FA8]"
+// Habit tile: break/rehab (peach)
+style={{ borderLeftColor: '#FAC7B3', background: '#FAC7B315' }}
 
-// Muted info panel (e.g. stop conditions)
-className="bg-[#9DBFD0]/10 border-[#9DBFD0]/20"
+// Habit tile: sleep/focus (sky)
+style={{ borderLeftColor: '#AFD4DD', background: '#AFD4DD15' }}
+
+// Habit tile: build/movement (sage)
+style={{ borderLeftColor: '#9DC1A5', background: '#9DC1A515' }}
+
+// Input focus
+className="focus:ring-[#79A98C] focus:border-[#79A98C]"
 ```
 
+## Typography
+- **Headlines / numbers**: `font-family: 'DM Sans'` (weight 700–800)
+- **Body / labels**: Inter (default)
+- Apply DM Sans inline: `style={{ fontFamily: "'DM Sans', sans-serif" }}`
+
 ## Never Use
-- `shadow-xl`, `shadow-2xl`, `shadow-3xl` (use no shadow or `shadow-sm` only)
+- `shadow-xl`, `shadow-2xl`, `shadow-3xl` — use `shadow-sm` or none
 - Any `bg-gray-*`, `text-gray-*`, `border-gray-*`
-- Any `blue-*`, `purple-*`, `indigo-*`, `red-*`, `green-*`, `yellow-*`, `emerald-*`
-- Hardcoded gradients unless from→to uses only brand hex values above
+- Any `blue-*`, `purple-*`, `indigo-*`, `red-*`, `green-*`, `yellow-*`, `emerald-*`, `orange-*`, `pink-*`
+- Hardcoded gradients unless using the palette hex values above

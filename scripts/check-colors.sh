@@ -1,5 +1,5 @@
 #!/bin/bash
-# Brand Color Audit Script
+# Brand Color Audit Script — Sage/Gold/Paper Palette
 # Run: bash scripts/check-colors.sh
 # Fails with exit code 1 if off-brand Tailwind color classes are found.
 
@@ -65,11 +65,10 @@ BANNED_PATTERNS=(
 
 FOUND=0
 
-echo "🎨 Brand Color Audit"
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "🎨 Brand Color Audit  —  Sage / Gold / Paper"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 for pattern in "${BANNED_PATTERNS[@]}"; do
-  # Search TSX and TS files; exclude node_modules
   matches=$(rg --glob "*.tsx" --glob "*.ts" --glob "*.css" \
     --ignore-file .gitignore \
     -l "$pattern" $SRC_DIRS 2>/dev/null || true)
@@ -85,7 +84,7 @@ for pattern in "${BANNED_PATTERNS[@]}"; do
 done
 
 echo ""
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 if [ "$FOUND" -eq 0 ]; then
   echo "✅  All clear — no off-brand colors detected."

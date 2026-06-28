@@ -32,8 +32,12 @@ export default function LevelBar({ level, compact = false }: LevelBarProps) {
       </div>
       <div className="w-full h-2.5 rounded-full bg-white/25 overflow-hidden">
         <div
-          className="h-full rounded-full bg-white transition-all duration-700 ease-out"
-          style={{ width: `${level.progressPct}%` }}
+          className="h-full rounded-full"
+          style={{
+            width: `${level.progressPct}%`,
+            background: 'linear-gradient(90deg, #F5D76E, #E5B122)',
+            transition: 'width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          }}
         />
       </div>
     </div>

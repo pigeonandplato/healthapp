@@ -120,7 +120,7 @@ export default function DatePicker({
         <button
           ref={buttonRef}
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] rounded-xl transition-all text-sm font-medium text-[#1C1C1E] dark:text-white active:scale-95 touch-target"
+          className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] rounded-xl transition-all text-sm font-medium text-[#1B1714] dark:text-white active:scale-95 touch-target"
         >
           <span className="text-base">📅</span>
           <span className="text-xs md:text-sm whitespace-nowrap">{formatShortDate(selectedDate)}</span>
@@ -137,31 +137,31 @@ export default function DatePicker({
         {isOpen && (
           <div
             ref={dropdownRef}
-            className="fixed md:absolute bottom-0 md:bottom-auto left-0 md:left-auto right-0 md:right-0 top-auto md:top-full md:mt-2 z-50 bg-white dark:bg-[#1C1C1E] rounded-t-3xl md:rounded-2xl  border-t md:border border-[#E5E5EA] dark:border-[#38383A] p-6 md:p-4 w-full md:w-auto md:min-w-[320px] max-h-[85vh] overflow-y-auto animate-slide-up md:animate-none"
+            className="fixed md:absolute bottom-0 md:bottom-auto left-0 md:left-auto right-0 md:right-0 top-auto md:top-full md:mt-2 z-50 bg-white dark:bg-[#1B1714] rounded-t-3xl md:rounded-2xl  border-t md:border border-[#F0E9CE] dark:border-[#3D3730] p-6 md:p-4 w-full md:w-auto md:min-w-[320px] max-h-[85vh] overflow-y-auto animate-slide-up md:animate-none"
           >
             <div className="md:hidden flex justify-center mb-4">
-              <div className="w-12 h-1.5 bg-[#D2D2D7] dark:bg-[#38383A] rounded-full" />
+              <div className="w-12 h-1.5 bg-[#D2D2D7] dark:bg-[#3D3730] rounded-full" />
             </div>
 
             <div className="grid grid-cols-3 gap-2 mb-4">
               <button
                 type="button"
                 onClick={() => handleQuickSelect(-1)}
-                className="px-3 py-2.5 text-xs font-medium bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg text-[#1C1C1E] dark:text-white touch-target"
+                className="px-3 py-2.5 text-xs font-medium bg-[#F6F3E9] dark:bg-[#2C2622] rounded-lg text-[#1B1714] dark:text-white touch-target"
               >
                 Yesterday
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickSelect(0)}
-                className="px-3 py-2.5 text-xs font-semibold bg-[#4A8FA8] text-white rounded-lg touch-target"
+                className="px-3 py-2.5 text-xs font-semibold bg-[#79A98C] text-white rounded-lg touch-target"
               >
                 Today
               </button>
               <button
                 type="button"
                 onClick={() => handleQuickSelect(1)}
-                className="px-3 py-2.5 text-xs font-medium bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg text-[#1C1C1E] dark:text-white touch-target"
+                className="px-3 py-2.5 text-xs font-medium bg-[#F6F3E9] dark:bg-[#2C2622] rounded-lg text-[#1B1714] dark:text-white touch-target"
               >
                 Tomorrow
               </button>
@@ -169,7 +169,7 @@ export default function DatePicker({
 
             {showKneeDayHints && (
               <div className="mb-4">
-                <p className="text-xs font-medium text-[#8E8E93] mb-2">Jump to knee day (Break 2)</p>
+                <p className="text-xs font-medium text-[#8A7F78] mb-2">Jump to knee day (Break 2)</p>
                 <div className="grid grid-cols-3 gap-2">
                   {[
                     { dow: 1, label: "Mon", emoji: "🦵" },
@@ -180,7 +180,7 @@ export default function DatePicker({
                       key={b.dow}
                       type="button"
                       onClick={() => jumpToWeekday(b.dow)}
-                      className="py-2.5 rounded-lg bg-[#4A8FA8]/10 text-[#4A8FA8] text-xs font-bold touch-target"
+                      className="py-2.5 rounded-lg bg-[#79A98C]/10 text-[#79A98C] text-xs font-bold touch-target"
                     >
                       {b.emoji} {b.label}
                     </button>
@@ -190,7 +190,7 @@ export default function DatePicker({
             )}
 
             <div className="mb-4">
-              <label className="block text-xs font-medium text-[#8E8E93] mb-2">Select Date</label>
+              <label className="block text-xs font-medium text-[#8A7F78] mb-2">Select Date</label>
               <input
                 type="date"
                 value={tempDate}
@@ -202,15 +202,15 @@ export default function DatePicker({
                 }}
                 min={defaultMinDate}
                 max={defaultMaxDate}
-                className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:border-[#4A8FA8] outline-none text-base touch-target"
+                className="w-full px-4 py-3 rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] bg-white dark:bg-[#2C2622] text-[#1B1714] dark:text-white focus:border-[#79A98C] outline-none text-base touch-target"
               />
 
               {isValidIsoDate(tempDate) && (
                 <div
                   className={`mt-3 rounded-xl p-3 text-sm ${
                     previewKnee?.isGymDay
-                      ? "bg-[#3F6B40]/10 text-[#3F6B40]"
-                      : "bg-[#4A8FA8]/10 text-[#4A8FA8]"
+                      ? "bg-[#3E7E57]/10 text-[#3E7E57]"
+                      : "bg-[#79A98C]/10 text-[#79A98C]"
                   }`}
                 >
                   <strong>{formatLongDate(tempDate)}</strong>
@@ -229,14 +229,14 @@ export default function DatePicker({
               <button
                 type="button"
                 onClick={() => handleDateSelect(tempDate)}
-                className="flex-1 bg-[#4A8FA8] text-white font-semibold py-3 rounded-xl touch-target text-sm"
+                className="flex-1 bg-[#79A98C] text-white font-semibold py-3 rounded-xl touch-target text-sm"
               >
                 View this day
               </button>
               <button
                 type="button"
                 onClick={closeWithoutApply}
-                className="px-4 bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl touch-target text-sm"
+                className="px-4 bg-[#F6F3E9] dark:bg-[#2C2622] text-[#1B1714] dark:text-white font-medium py-3 rounded-xl touch-target text-sm"
               >
                 Cancel
               </button>

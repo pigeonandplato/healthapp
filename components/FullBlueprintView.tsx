@@ -88,7 +88,7 @@ export default function FullBlueprintView() {
         placeholder="Search blueprint..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full text-sm px-4 py-3 rounded-xl bg-[#F2F2F7] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white placeholder:text-[#8E8E93]"
+        className="w-full text-sm px-4 py-3 rounded-xl bg-[#F6F3E9] dark:bg-[#2C2622] border-0 text-[#1B1714] dark:text-white placeholder:text-[#8A7F78]"
       />
 
       {filtered.map((section) => {
@@ -96,22 +96,22 @@ export default function FullBlueprintView() {
         return (
           <section
             key={section.id}
-            className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#E5E5EA] dark:border-[#38383A] overflow-hidden"
+            className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden"
           >
             <button
               type="button"
               onClick={() => setExpanded(open ? null : section.id)}
               className="w-full flex items-center justify-between p-4 text-left"
             >
-              <span className="font-semibold text-[#1C1C1E] dark:text-white flex items-center gap-2">
+              <span className="font-semibold text-[#1B1714] dark:text-white flex items-center gap-2">
                 <span className="text-xl">{section.emoji}</span>
                 {section.title}
               </span>
-              <span className="text-[#8E8E93] text-lg">{open ? "−" : "+"}</span>
+              <span className="text-[#8A7F78] text-lg">{open ? "−" : "+"}</span>
             </button>
             {open && (
-              <div className="px-4 pb-4 border-t border-[#E5E5EA] dark:border-[#38383A] pt-3">
-                <p className="text-sm text-[#1C1C1E] dark:text-[#E5E5EA] whitespace-pre-wrap leading-relaxed">
+              <div className="px-4 pb-4 border-t border-[#F0E9CE] dark:border-[#3D3730] pt-3">
+                <p className="text-sm text-[#1B1714] dark:text-[#F0E9CE] whitespace-pre-wrap leading-relaxed">
                   {section.body}
                 </p>
               </div>
@@ -120,7 +120,7 @@ export default function FullBlueprintView() {
         );
       })}
 
-      <p className="text-xs text-[#8E8E93] text-center pt-2">
+      <p className="text-xs text-[#8A7F78] text-center pt-2">
         Gilly&apos;s Complete Lifestyle Blueprint · Updated June 27, 2026
       </p>
     </div>

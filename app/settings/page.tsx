@@ -90,25 +90,25 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#4A8FA8]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#79A98C]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-24">
+    <div className="min-h-screen bg-[#F6F3E9] dark:bg-black pb-24">
       <div className="max-w-2xl mx-auto px-4 pt-5 pb-4">
-        <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white">Settings</h1>
-        <p className="text-sm text-[#8E8E93] mt-0.5">App preferences &amp; configuration</p>
+        <h1 className="text-3xl font-bold text-[#1B1714] dark:text-white">Settings</h1>
+        <p className="text-sm text-[#8A7F78] mt-0.5">App preferences &amp; configuration</p>
       </div>
       <div className="max-w-2xl mx-auto px-4 space-y-3">
 
         {/* Completion Sound Section */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
-              <h2 className="text-base font-semibold text-[#1C1C1E] dark:text-white mb-1">🔊 Completion Sound</h2>
-              <p className="text-sm text-[#8E8E93]">
+              <h2 className="text-base font-semibold text-[#1B1714] dark:text-white mb-1">🔊 Completion Sound</h2>
+              <p className="text-sm text-[#8A7F78]">
                 Play a little chime each time you check off an exercise. An instant audio reward — on by choice, off if it&apos;s too much.
               </p>
             </div>
@@ -118,7 +118,7 @@ export default function SettingsPage() {
               aria-checked={soundOn}
               onClick={toggleSound}
               className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors ${
-                soundOn ? "bg-[#3F6B40]" : "bg-[#EDE8DC] dark:bg-[#38383A]"
+                soundOn ? "bg-[#3E7E57]" : "bg-[#F0E9CE] dark:bg-[#3D3730]"
               }`}
             >
               <span
@@ -131,18 +131,18 @@ export default function SettingsPage() {
         </div>
 
         {/* Break Reminders Section */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
-          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">⏰ Break Reminders</h2>
-          <p className="text-sm text-[#8E8E93] mb-4">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+          <h2 className="text-lg font-semibold text-[#1B1714] dark:text-white mb-1">⏰ Break Reminders</h2>
+          <p className="text-sm text-[#8A7F78] mb-4">
             Get nudged for each of your daily breaks. Out of sight is out of mind — these keep you on track.
           </p>
           <ReminderSettings />
         </div>
 
         {/* Chacha video reset */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
-          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">💪 Chacha exercise videos</h2>
-          <p className="text-sm text-[#8E8E93] mb-4">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+          <h2 className="text-lg font-semibold text-[#1B1714] dark:text-white mb-1">💪 Chacha exercise videos</h2>
+          <p className="text-sm text-[#8A7F78] mb-4">
             Clears any saved video overrides so the latest built-in guides play for all 38 Chacha moves.
           </p>
           <button
@@ -175,16 +175,16 @@ export default function SettingsPage() {
               : "Reset Chacha exercise videos to defaults"}
           </button>
           {chachaVideoResetStatus && (
-            <p className="mt-3 text-sm text-[#8E8E93]">{chachaVideoResetStatus}</p>
+            <p className="mt-3 text-sm text-[#8A7F78]">{chachaVideoResetStatus}</p>
           )}
         </div>
 
         {/* YouTube Video Section */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
-          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+          <h2 className="text-lg font-semibold text-[#1B1714] dark:text-white mb-4">
             Motivation Video
           </h2>
-          <p className="text-sm text-[#8E8E93] mb-4">
+          <p className="text-sm text-[#8A7F78] mb-4">
             Add a YouTube video link to help you stay motivated and maintain discipline.
           </p>
           <YouTubeVideoEditor
@@ -197,22 +197,22 @@ export default function SettingsPage() {
         </div>
 
         {/* AI Prompt Template */}
-        <div id="generate-with-ai" className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
-          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-2">
+        <div id="generate-with-ai" className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+          <h2 className="text-lg font-semibold text-[#1B1714] dark:text-white mb-2">
             🧠 Generate with AI
           </h2>
-          <p className="text-sm text-[#8E8E93] mb-4">
+          <p className="text-sm text-[#8A7F78] mb-4">
             Copy a prompt and paste your program into Claude or ChatGPT. It'll return perfect JSON to import below.
           </p>
           <AIPromptTemplate />
         </div>
 
         {/* Custom program import */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
-          <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+          <h2 className="text-lg font-semibold text-[#1B1714] dark:text-white mb-4">
             📥 Import Custom Program
           </h2>
-          <p className="text-sm text-[#8E8E93] mb-4">
+          <p className="text-sm text-[#8A7F78] mb-4">
             Paste the JSON you got from the AI (above), or upload a .json file directly.
           </p>
           <CustomProgramImport />
@@ -220,21 +220,21 @@ export default function SettingsPage() {
 
         {/* Export Custom Program */}
         {hasCustomProgram && (
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
-            <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
+          <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+            <h2 className="text-lg font-semibold text-[#1B1714] dark:text-white mb-4">
               📤 Export Custom Program
             </h2>
-            <p className="text-sm text-[#8E8E93] mb-4">
+            <p className="text-sm text-[#8A7F78] mb-4">
               Download &quot;{customProgramName}&quot; as a JSON file. Perfect for backup or sharing with others.
             </p>
             <button
               onClick={handleExportProgram}
               disabled={exporting}
-              className="w-full bg-[#34C759] hover:bg-[#30B050] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#3E7E57] hover:bg-[#30B050] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {exporting ? "Exporting..." : "⬇️ Download as JSON"}
             </button>
-            <p className="text-xs text-[#8E8E93] mt-3">
+            <p className="text-xs text-[#8A7F78] mt-3">
               You can import this file anytime to restore or transfer your program.
             </p>
           </div>

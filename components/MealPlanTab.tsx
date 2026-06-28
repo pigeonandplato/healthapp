@@ -125,7 +125,7 @@ export default function MealPlanTab() {
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        className="w-full text-sm px-3 py-2 rounded-xl bg-[#F2F2F7] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white"
+        className="w-full text-sm px-3 py-2 rounded-xl bg-[#F6F3E9] dark:bg-[#2C2622] border-0 text-[#1B1714] dark:text-white"
       />
 
       {/* Breakfast — fixed every day */}
@@ -186,13 +186,13 @@ export default function MealPlanTab() {
 function MacroSummary({ totals }: { totals: MealMacros }) {
   const targets = { protein: 170, carbs: 180, fat: 68 };
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
-      <p className="text-xs text-[#8E8E93] mb-3">Daily macros · target 160–180g protein</p>
+    <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
+      <p className="text-xs text-[#8A7F78] mb-3">Daily macros · target 160–180g protein</p>
       <div className="grid grid-cols-4 gap-2 text-center">
-        <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#9DBFD0" />
-        <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#3F6B40" />
-        <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#4A8FA8" />
-        <MacroPill label="Cal" value={totals.calories} target={2200} unit="" color="#9DBFD0" />
+        <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#9DC1A5" />
+        <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#3E7E57" />
+        <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#79A98C" />
+        <MacroPill label="Cal" value={totals.calories} target={2200} unit="" color="#9DC1A5" />
       </div>
     </div>
   );
@@ -207,8 +207,8 @@ function MacroPill({
   return (
     <div>
       <p className="text-lg font-bold" style={{ color }}>{Math.round(value)}{unit}</p>
-      <p className="text-[10px] text-[#8E8E93]">{label}</p>
-      <div className="mt-1 h-1 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
+      <p className="text-[10px] text-[#8A7F78]">{label}</p>
+      <div className="mt-1 h-1 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-full overflow-hidden">
         <div className="h-full rounded-full" style={{ width: `${pct}%`, backgroundColor: color }} />
       </div>
     </div>
@@ -219,12 +219,12 @@ function MealBlock({ title, emoji, subtitle, children }: {
   title: string; emoji: string; subtitle?: string; children: React.ReactNode;
 }) {
   return (
-    <section className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
+    <section className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
       <div className="flex items-center justify-between mb-1">
-        <h3 className="text-base font-bold text-[#1C1C1E] dark:text-white flex items-center gap-2">
+        <h3 className="text-base font-bold text-[#1B1714] dark:text-white flex items-center gap-2">
           <span>{emoji}</span>{title}
         </h3>
-        {subtitle && <span className="text-xs font-semibold text-[#8E8E93]">{subtitle}</span>}
+        {subtitle && <span className="text-xs font-semibold text-[#8A7F78]">{subtitle}</span>}
       </div>
       <div className="space-y-3">{children}</div>
     </section>
@@ -246,16 +246,16 @@ function ComboMealBlock({
     <MealBlock title={title} emoji={emoji} subtitle={subtitle}>
       {/* Today's suggestion banner */}
       {meal?.protein && (
-        <div className="bg-[#4A8FA8]/8 border border-[#4A8FA8]/20 rounded-xl p-3 mb-1">
-          <p className="text-[10px] font-semibold text-[#4A8FA8] uppercase mb-1">Today&apos;s suggestion</p>
-          <p className="text-sm font-medium text-[#1C1C1E] dark:text-white">
+        <div className="bg-[#79A98C]/8 border border-[#79A98C]/20 rounded-xl p-3 mb-1">
+          <p className="text-[10px] font-semibold text-[#79A98C] uppercase mb-1">Today&apos;s suggestion</p>
+          <p className="text-sm font-medium text-[#1B1714] dark:text-white">
             {meal.protein.name}
           </p>
-          <p className="text-xs text-[#8E8E93]">
+          <p className="text-xs text-[#8A7F78]">
             + {meal.carb?.name} · {meal.vegetable?.name}
           </p>
           {meal.combinedMacros && (
-            <p className="text-[10px] text-[#8E8E93] mt-1">
+            <p className="text-[10px] text-[#8A7F78] mt-1">
               {Math.round(meal.combinedMacros.protein)}g P · {Math.round(meal.combinedMacros.carbs)}g C · {Math.round(meal.combinedMacros.fat)}g F
             </p>
           )}
@@ -277,7 +277,7 @@ function ComboMealBlock({
 
       {/* Swap pickers */}
       <details className="group">
-        <summary className="text-xs font-semibold text-[#8E8E93] cursor-pointer list-none flex items-center gap-1 pt-1">
+        <summary className="text-xs font-semibold text-[#8A7F78] cursor-pointer list-none flex items-center gap-1 pt-1">
           <svg className="w-3 h-3 transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
           </svg>
@@ -298,7 +298,7 @@ function PickerRow({ label, options, selected, onPick }: {
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold text-[#8E8E93] mb-2">{label}</p>
+      <p className="text-xs font-semibold text-[#8A7F78] mb-2">{label}</p>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <Chip key={o.id} label={o.name} active={selected === o.id} onClick={() => onPick(o)} />
@@ -314,7 +314,7 @@ function Chip({ label, active, onClick }: { label: string; active: boolean; onCl
       type="button"
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-        active ? "bg-[#3F6B40] text-white" : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-[#E5E5EA]"
+        active ? "bg-[#3E7E57] text-white" : "bg-[#F0E9CE] dark:bg-[#2C2622] text-[#1B1714] dark:text-[#F0E9CE]"
       }`}
     >
       {label}
@@ -326,35 +326,35 @@ function RecipeCard({ recipe, expanded, onToggle, alwaysOpen }: {
   recipe: MealRecipe; expanded: boolean; onToggle: () => void; alwaysOpen?: boolean;
 }) {
   return (
-    <div className="rounded-xl bg-[#F5F5F7] dark:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#38383A] overflow-hidden">
+    <div className="rounded-xl bg-[#F5F5F7] dark:bg-[#2C2622] border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden">
       {!alwaysOpen && (
         <button type="button" onClick={onToggle} className="w-full p-3 text-left">
-          <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">{recipe.name}</p>
-          <p className="text-xs text-[#8E8E93] mt-0.5">{recipe.description}</p>
-          <p className="text-[10px] text-[#8E8E93] mt-1">
+          <p className="text-sm font-semibold text-[#1B1714] dark:text-white">{recipe.name}</p>
+          <p className="text-xs text-[#8A7F78] mt-0.5">{recipe.description}</p>
+          <p className="text-[10px] text-[#8A7F78] mt-1">
             {recipe.macros.protein}g P · {recipe.macros.carbs}g C · {recipe.macros.fat}g F · {recipe.prep_time_minutes} min
           </p>
         </button>
       )}
       {(expanded || alwaysOpen) && (
-        <div className={`space-y-3 ${alwaysOpen ? "p-3" : "px-3 pb-3 border-t border-[#E5E5EA] dark:border-[#38383A] pt-3"}`}>
+        <div className={`space-y-3 ${alwaysOpen ? "p-3" : "px-3 pb-3 border-t border-[#F0E9CE] dark:border-[#3D3730] pt-3"}`}>
           {alwaysOpen && (
             <>
-              <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">{recipe.name}</p>
-              <p className="text-[10px] text-[#8E8E93]">
+              <p className="text-sm font-semibold text-[#1B1714] dark:text-white">{recipe.name}</p>
+              <p className="text-[10px] text-[#8A7F78]">
                 {recipe.macros.protein}g P · {recipe.macros.carbs}g C · {recipe.macros.fat}g F · {recipe.prep_time_minutes} min
               </p>
             </>
           )}
           <div>
-            <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-1">Ingredients</p>
-            <ul className="text-xs text-[#1C1C1E] dark:text-[#E5E5EA] space-y-1 list-disc list-inside">
+            <p className="text-xs font-semibold text-[#8A7F78] uppercase mb-1">Ingredients</p>
+            <ul className="text-xs text-[#1B1714] dark:text-[#F0E9CE] space-y-1 list-disc list-inside">
               {recipe.ingredients.map((i) => <li key={i}>{i}</li>)}
             </ul>
           </div>
           <div>
-            <p className="text-xs font-semibold text-[#8E8E93] uppercase mb-1">Steps</p>
-            <ol className="text-xs text-[#1C1C1E] dark:text-[#E5E5EA] space-y-1 list-decimal list-inside">
+            <p className="text-xs font-semibold text-[#8A7F78] uppercase mb-1">Steps</p>
+            <ol className="text-xs text-[#1B1714] dark:text-[#F0E9CE] space-y-1 list-decimal list-inside">
               {recipe.instructions.map((s) => <li key={s}>{s}</li>)}
             </ol>
           </div>

@@ -57,17 +57,17 @@ export default function ProgramStartDateControl({
   };
 
   if (loading) {
-    return <div className="h-24 animate-pulse bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-xl" />;
+    return <div className="h-24 animate-pulse bg-[#F0E9CE] dark:bg-[#2C2622] rounded-xl" />;
   }
 
   return (
-    <div className="rounded-xl border border-[#E5E5EA] dark:border-[#38383A] bg-[#F2F2F7] dark:bg-[#2C2C2E] p-4 mt-4">
-      <h3 className="font-semibold text-[#1C1C1E] dark:text-white mb-1">{title}</h3>
-      <p className="text-sm text-[#8E8E93] mb-3">{description}</p>
+    <div className="rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] bg-[#F6F3E9] dark:bg-[#2C2622] p-4 mt-4">
+      <h3 className="font-semibold text-[#1B1714] dark:text-white mb-1">{title}</h3>
+      <p className="text-sm text-[#8A7F78] mb-3">{description}</p>
 
       {savedDate && (
-        <p className="text-xs text-[#8E8E93] mb-3">
-          Currently: Week 1 began <strong className="text-[#1C1C1E] dark:text-white">{formatLongDate(savedDate)}</strong>
+        <p className="text-xs text-[#8A7F78] mb-3">
+          Currently: Week 1 began <strong className="text-[#1B1714] dark:text-white">{formatLongDate(savedDate)}</strong>
         </p>
       )}
 
@@ -76,13 +76,13 @@ export default function ProgramStartDateControl({
           type="date"
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          className="w-full !py-3 rounded-xl border border-[#E5E5EA] dark:border-[#38383A] bg-white dark:bg-[#1C1C1E] text-[#1C1C1E] dark:text-white"
+          className="w-full !py-3 rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] bg-white dark:bg-[#1B1714] text-[#1B1714] dark:text-white"
         />
         <div className="flex flex-wrap gap-2">
           <button
             type="button"
             onClick={() => setDraft(toLocalDateString(new Date()))}
-            className="px-4 py-2 text-sm font-medium rounded-xl bg-white dark:bg-[#1C1C1E] border border-[#E5E5EA] dark:border-[#38383A] text-[#1C1C1E] dark:text-white"
+            className="px-4 py-2 text-sm font-medium rounded-xl bg-white dark:bg-[#1B1714] border border-[#F0E9CE] dark:border-[#3D3730] text-[#1B1714] dark:text-white"
           >
             Use today
           </button>
@@ -98,7 +98,7 @@ export default function ProgramStartDateControl({
       </div>
 
       {message && (
-        <p className={`text-sm mt-2 ${message.includes("✓") ? "text-[#34C759]" : "text-[#FF9500]"}`}>{message}</p>
+        <p className={`text-sm mt-2 ${message.includes("✓") ? "text-[#3E7E57]" : "text-[#FF9500]"}`}>{message}</p>
       )}
     </div>
   );

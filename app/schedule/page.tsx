@@ -129,8 +129,8 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FDFAF6] dark:bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#4A8FA8]" />
+      <div className="min-h-screen bg-[#F6F3E9] dark:bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#79A98C]" />
       </div>
     );
   }
@@ -154,8 +154,8 @@ export default function SchedulePage() {
   const browseDayName = parseLocalDate(browseDate).toLocaleDateString("en-US", { weekday: "long" });
 
   return (
-    <div className="bg-[#FDFAF6] dark:bg-black">
-      <section className="bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] text-white">
+    <div className="bg-[#F6F3E9] dark:bg-black">
+      <section className="bg-gradient-to-br from-[#9DC1A5] to-[#79A98C] text-white">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <h2 className="text-2xl font-bold mb-1">📅 Your Schedule</h2>
           <p className="text-white/90 text-sm">
@@ -178,24 +178,24 @@ export default function SchedulePage() {
 
         <section id="schedule-workout-preview" className="mb-8 scroll-mt-4">
           <div className="flex items-center justify-between gap-3 mb-3">
-            <h3 className="text-lg font-bold text-[#1C1C1E] dark:text-white">
+            <h3 className="text-lg font-bold text-[#1B1714] dark:text-white">
               {browseDayName}&apos;s workout
             </h3>
             <Link
               href={`/today?date=${browseDate}&view=coach`}
-              className="text-sm font-semibold text-[#4A8FA8] whitespace-nowrap"
+              className="text-sm font-semibold text-[#79A98C] whitespace-nowrap"
             >
               Open in Today →
             </Link>
           </div>
 
           {browseLoading ? (
-            <div className="h-40 rounded-2xl bg-[#EDE8DC] dark:bg-[#2C2C2E] animate-pulse" />
+            <div className="h-40 rounded-2xl bg-[#F0E9CE] dark:bg-[#2C2622] animate-pulse" />
           ) : !browseWorkout ? (
-            <div className="rounded-2xl border-2 border-dashed border-[#EDE8DC] dark:border-[#38383A] p-8 text-center">
+            <div className="rounded-2xl border-2 border-dashed border-[#F0E9CE] dark:border-[#3D3730] p-8 text-center">
               <div className="text-4xl mb-2">😴</div>
-              <p className="font-semibold text-[#1C1C1E] dark:text-white">Rest day</p>
-              <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93] mt-1">No exercises scheduled for this date.</p>
+              <p className="font-semibold text-[#1B1714] dark:text-white">Rest day</p>
+              <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78] mt-1">No exercises scheduled for this date.</p>
             </div>
           ) : (
             <CoachView key={browseDate} workout={browseWorkout} />
@@ -209,8 +209,8 @@ export default function SchedulePage() {
               onClick={() => setViewWeeks(weeks)}
               className={`px-4 py-2 rounded-lg font-bold transition ${
                 viewWeeks === weeks
-                  ? "bg-[#4A8FA8] text-white"
-                  : "bg-white dark:bg-[#2C2C2E] text-[#3A3A3C] dark:text-[#D1D1D6] hover:bg-[#EDE8DC]"
+                  ? "bg-[#79A98C] text-white"
+                  : "bg-white dark:bg-[#2C2622] text-[#3D3730] dark:text-[#D4CFC9] hover:bg-[#F0E9CE]"
               }`}
             >
               {weeks} Weeks
@@ -224,8 +224,8 @@ export default function SchedulePage() {
             const weekNumber = firstDay.workout?.program?.week;
 
             return (
-              <div key={weekIdx} className="bg-white dark:bg-[#2C2C2E] rounded-2xl  overflow-hidden">
-                <div className="bg-gradient-to-r from-[#38788F] to-[#4A8FA8] text-white p-4">
+              <div key={weekIdx} className="bg-white dark:bg-[#2C2622] rounded-2xl  overflow-hidden">
+                <div className="bg-gradient-to-r from-[#5E8C6E] to-[#79A98C] text-white p-4">
                   <h3 className="text-xl font-bold">
                     Week {weekNumber ?? weekIdx + 1}
                     {firstDay.workout?.program?.phase && ` · ${firstDay.workout.program.phase}`}
@@ -250,12 +250,12 @@ export default function SchedulePage() {
                         key={item.date}
                         className={`rounded-xl border-2 overflow-hidden transition ${
                           isSelected
-                            ? "border-[#4A8FA8] shadow-md"
+                            ? "border-[#79A98C] shadow-md"
                             : item.isToday
-                              ? "bg-[#4A8FA8]/5 border-[#4A8FA8]"
+                              ? "bg-[#79A98C]/5 border-[#79A98C]"
                               : item.isPast
-                                ? "bg-[#FDFAF6] dark:bg-[#2C2C2E]/50 border-[#EDE8DC] dark:border-[#38383A] opacity-60"
-                                : "bg-white dark:bg-[#2C2C2E]/80 border-[#EDE8DC] dark:border-[#38383A] hover:border-[#4A8FA8]"
+                                ? "bg-[#F6F3E9] dark:bg-[#2C2622]/50 border-[#F0E9CE] dark:border-[#3D3730] opacity-60"
+                                : "bg-white dark:bg-[#2C2622]/80 border-[#F0E9CE] dark:border-[#3D3730] hover:border-[#79A98C]"
                         }`}
                       >
                         <button
@@ -283,15 +283,15 @@ export default function SchedulePage() {
                                         : "🧠"}
                               </div>
                               <div>
-                                <div className="font-bold text-[#1C1C1E] dark:text-white flex items-center gap-2">
+                                <div className="font-bold text-[#1B1714] dark:text-white flex items-center gap-2">
                                   {item.dayName}
                                   {item.isToday && (
-                                    <span className="bg-[#4A8FA8] text-white text-xs font-bold px-2 py-1 rounded-full">
+                                    <span className="bg-[#79A98C] text-white text-xs font-bold px-2 py-1 rounded-full">
                                       Today
                                     </span>
                                   )}
                                 </div>
-                                <div className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">
+                                <div className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">
                                   {isRestDay
                                     ? "Rest day"
                                     : `${blockCount} blocks · ~${totalMinutes} min`}
@@ -300,7 +300,7 @@ export default function SchedulePage() {
                             </div>
                             {!isRestDay && (
                               <svg
-                                className={`w-5 h-5 text-[#8E8E93] transition-transform ${
+                                className={`w-5 h-5 text-[#8A7F78] transition-transform ${
                                   isExpanded ? "rotate-180" : ""
                                 }`}
                                 fill="none"
@@ -314,14 +314,14 @@ export default function SchedulePage() {
                         </button>
 
                         {isExpanded && item.workout && (
-                          <div className="px-4 pb-4 space-y-3 border-t border-[#EDE8DC] dark:border-[#38383A] pt-3">
+                          <div className="px-4 pb-4 space-y-3 border-t border-[#F0E9CE] dark:border-[#3D3730] pt-3">
                             {item.workout.blocks.map((block) => (
-                              <div key={block.id} className="bg-[#FDFAF6] dark:bg-black/50 rounded-lg p-3">
-                                <div className="font-semibold text-sm text-[#1C1C1E] dark:text-white">
+                              <div key={block.id} className="bg-[#F6F3E9] dark:bg-black/50 rounded-lg p-3">
+                                <div className="font-semibold text-sm text-[#1B1714] dark:text-white">
                                   {block.name}
                                 </div>
                                 {block.description && (
-                                  <div className="text-xs text-[#8E8E93] dark:text-[#8E8E93] mt-1">
+                                  <div className="text-xs text-[#8A7F78] dark:text-[#8A7F78] mt-1">
                                     {block.description}
                                   </div>
                                 )}
@@ -331,10 +331,10 @@ export default function SchedulePage() {
                                     .map((ex) => (
                                       <li
                                         key={ex.id}
-                                        className="text-xs text-[#3A3A3C] dark:text-[#D1D1D6] flex justify-between gap-2"
+                                        className="text-xs text-[#3D3730] dark:text-[#D4CFC9] flex justify-between gap-2"
                                       >
                                         <span>{ex.name}</span>
-                                        <span className="text-[#8E8E93] flex-shrink-0">
+                                        <span className="text-[#8A7F78] flex-shrink-0">
                                           {formatPrescription(ex)}
                                         </span>
                                       </li>
@@ -372,7 +372,7 @@ export default function SchedulePage() {
           <div className="mt-8 text-center">
             <button
               onClick={() => setViewWeeks(Math.min(12, viewWeeks + 4))}
-              className="bg-gradient-to-r from-[#9DBFD0] to-[#4A8FA8] hover:from-[#9DBFD0] hover:to-[#38788F] text-white font-bold py-3 px-8 rounded-xl transition"
+              className="bg-gradient-to-r from-[#9DC1A5] to-[#79A98C] hover:from-[#9DC1A5] hover:to-[#5E8C6E] text-white font-bold py-3 px-8 rounded-xl transition"
             >
               Load More Weeks
             </button>

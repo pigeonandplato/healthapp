@@ -132,7 +132,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
           className={`p-3 rounded-xl font-medium transition-all ${
             selectedModel === "claude"
               ? "bg-[#FF2D55] text-white"
-              : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white hover:bg-[#E5E5EA] dark:hover:bg-[#38383A]"
+              : "bg-[#F6F3E9] dark:bg-[#2C2622] text-[#1B1714] dark:text-white hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730]"
           }`}
         >
           🧠 Claude
@@ -142,7 +142,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
           className={`p-3 rounded-xl font-medium transition-all ${
             selectedModel === "chatgpt"
               ? "bg-[#FF2D55] text-white"
-              : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white hover:bg-[#E5E5EA] dark:hover:bg-[#38383A]"
+              : "bg-[#F6F3E9] dark:bg-[#2C2622] text-[#1B1714] dark:text-white hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730]"
           }`}
         >
           🤖 ChatGPT
@@ -151,14 +151,14 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
 
       {/* Prompt Display */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-[#1C1C1E] dark:text-white">
+        <label className="block text-sm font-medium text-[#1B1714] dark:text-white">
           {selectedModel === "claude" ? "Claude Prompt" : "ChatGPT Prompt"}
         </label>
         <div className="relative">
           <textarea
             readOnly
             value={selectedModel === "claude" ? CLAUDE_PROMPT : CHATGPT_PROMPT}
-            className="w-full h-64 bg-[#F2F2F7] dark:bg-[#2C2C2E] border border-[#E5E5EA] dark:border-[#38383A] rounded-xl p-4 text-xs text-[#1C1C1E] dark:text-white font-mono resize-none"
+            className="w-full h-64 bg-[#F6F3E9] dark:bg-[#2C2622] border border-[#F0E9CE] dark:border-[#3D3730] rounded-xl p-4 text-xs text-[#1B1714] dark:text-white font-mono resize-none"
           />
         </div>
       </div>
@@ -179,7 +179,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
       {/* Instructions */}
       <div className="bg-[#007AFF]/5 dark:bg-[#007AFF]/10 border border-[#007AFF]/20 rounded-lg p-4">
         <p className="text-sm text-[#007AFF] font-medium mb-3">💡 How to use:</p>
-        <ol className="text-sm text-[#8E8E93] space-y-2 list-decimal list-inside">
+        <ol className="text-sm text-[#8A7F78] space-y-2 list-decimal list-inside">
           <li>Copy the prompt above</li>
           <li>Open {selectedModel === "claude" ? "Claude.ai" : "ChatGPT"}</li>
           <li>Paste the prompt</li>
@@ -190,9 +190,9 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
       </div>
 
       {/* Tips */}
-      <div className="bg-[#EDE8DC] dark:bg-[#38383A] border border-[#EDE8DC] dark:border-[#48484A] rounded-lg p-4">
-        <p className="text-sm text-[#1C1C1E] dark:text-[#D1D1D6] font-medium mb-2">⚡ Pro Tips:</p>
-        <ul className="text-xs text-[#3A3A3C] dark:text-[#8E8E93] space-y-1">
+      <div className="bg-[#F0E9CE] dark:bg-[#3D3730] border border-[#F0E9CE] dark:border-[#4A433E] rounded-lg p-4">
+        <p className="text-sm text-[#1B1714] dark:text-[#D4CFC9] font-medium mb-2">⚡ Pro Tips:</p>
+        <ul className="text-xs text-[#3D3730] dark:text-[#8A7F78] space-y-1">
           <li>• Be specific: "Push-ups, 3 sets of 10 reps" works better than vague descriptions</li>
           <li>• Include all weeks upfront: "This is a 4-week program with..."</li>
           <li>• Mention equipment: "Dumbbells", "barbell", "bodyweight only"</li>

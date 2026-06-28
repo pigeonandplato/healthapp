@@ -54,7 +54,7 @@ export default function ReminderSettings() {
           This browser doesn&apos;t support in-app notifications. Use the calendar export below for reliable reminders.
         </div>
       ) : permission === "granted" ? (
-        <div className="bg-[#34C759]/10 text-[#34C759] text-sm rounded-xl p-3 font-medium">
+        <div className="bg-[#3E7E57]/10 text-[#3E7E57] text-sm rounded-xl p-3 font-medium">
           ✓ In-app notifications on. We&apos;ll nudge you while the app is open.
         </div>
       ) : (
@@ -71,12 +71,12 @@ export default function ReminderSettings() {
         {reminders.map((r) => (
           <div
             key={r.id}
-            className="flex items-center gap-3 bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-2xl p-3"
+            className="flex items-center gap-3 bg-[#F6F3E9] dark:bg-[#2C2622] rounded-2xl p-3"
           >
             <button
               onClick={() => updateReminder(r.id, { enabled: !r.enabled })}
               className={`relative w-12 h-7 rounded-full transition-colors flex-shrink-0 ${
-                r.enabled ? "bg-[#34C759]" : "bg-[#C7C7CC] dark:bg-[#48484A]"
+                r.enabled ? "bg-[#3E7E57]" : "bg-[#C5BDB6] dark:bg-[#4A433E]"
               }`}
               aria-pressed={r.enabled}
               aria-label={`Toggle ${r.label}`}
@@ -88,7 +88,7 @@ export default function ReminderSettings() {
               />
             </button>
             <div className="flex-1 min-w-0">
-              <p className={`text-sm font-medium truncate ${r.enabled ? "text-[#1C1C1E] dark:text-white" : "text-[#8E8E93]"}`}>
+              <p className={`text-sm font-medium truncate ${r.enabled ? "text-[#1B1714] dark:text-white" : "text-[#8A7F78]"}`}>
                 {r.label}
               </p>
             </div>
@@ -96,22 +96,22 @@ export default function ReminderSettings() {
               type="time"
               value={r.time}
               onChange={(e) => updateReminder(r.id, { time: e.target.value })}
-              className="!py-1.5 !px-2 text-sm rounded-lg bg-white dark:bg-[#1C1C1E] border border-[#E5E5EA] dark:border-[#38383A] text-[#1C1C1E] dark:text-white flex-shrink-0"
+              className="!py-1.5 !px-2 text-sm rounded-lg bg-white dark:bg-[#1B1714] border border-[#F0E9CE] dark:border-[#3D3730] text-[#1B1714] dark:text-white flex-shrink-0"
             />
           </div>
         ))}
       </div>
 
-      {saved && <p className="text-xs text-[#34C759] font-medium">Saved ✓</p>}
+      {saved && <p className="text-xs text-[#3E7E57] font-medium">Saved ✓</p>}
 
       {/* Calendar export */}
-      <div className="border-t border-[#E5E5EA] dark:border-[#38383A] pt-4">
-        <p className="text-sm text-[#8E8E93] mb-3">
+      <div className="border-t border-[#F0E9CE] dark:border-[#3D3730] pt-4">
+        <p className="text-sm text-[#8A7F78] mb-3">
           Want reminders even when the app is closed? Add them to your phone&apos;s calendar — they&apos;ll repeat daily.
         </p>
         <button
           onClick={() => downloadReminderIcs(reminders)}
-          className="w-full bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl transition-all"
+          className="w-full bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] text-[#1B1714] dark:text-white font-medium py-3 rounded-xl transition-all"
         >
           📅 Add to calendar (recurring)
         </button>

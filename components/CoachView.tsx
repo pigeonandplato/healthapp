@@ -93,9 +93,9 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
   return (
     <div className="space-y-4 pb-8">
       {/* Workout Header */}
-      <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] px-5 py-4">
-        <h2 className="text-xl font-bold text-[#1C1C1E] dark:text-white mb-0.5">{headerTitle}</h2>
-        <p className="text-sm text-[#8E8E93]">
+      <div className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] px-5 py-4">
+        <h2 className="text-xl font-bold text-[#1B1714] dark:text-white mb-0.5">{headerTitle}</h2>
+        <p className="text-sm text-[#8A7F78]">
           {workout.blocks.filter((b) => b.exercises.some((e) => e.category !== "Guidance")).length} blocks · ~
           {workout.blocks.reduce((sum, b) => sum + b.estimatedMinutes, 0)} min
           {!hasBreak2 && workout.blocks.some((b) => b.name.includes("Break")) && (
@@ -114,21 +114,21 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
         return [
           <div
             key={block.id}
-            className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] p-5 space-y-4 w-full"
+            className="bg-white dark:bg-[#1B1714] rounded-2xl border border-[#F0E9CE] dark:border-[#3D3730] p-5 space-y-4 w-full"
           >
             {/* Block Header */}
-            <div className="border-b border-[#EDE8DC] dark:border-[#38383A] pb-4">
+            <div className="border-b border-[#F0E9CE] dark:border-[#3D3730] pb-4">
               <div className="flex items-start justify-between gap-4 mb-3">
                 <div>
-                  <h3 className="text-2xl font-bold text-[#1C1C1E] dark:text-white">
+                  <h3 className="text-2xl font-bold text-[#1B1714] dark:text-white">
                     {block.name}
                   </h3>
                   {block.description && (
-                    <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93] mt-1">
+                    <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78] mt-1">
                       {block.description}
                     </p>
                   )}
-                  <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93] mt-1">
+                  <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78] mt-1">
                     Estimated time: ~{block.estimatedMinutes} minutes
                   </p>
                 </div>
@@ -138,22 +138,22 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
                   <div
                     className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
                       progress.percentage === 100
-                        ? "bg-[#3F6B40]/10 text-[#3F6B40] dark:bg-[#3F6B40]/20 dark:text-[#87A87C]"
-                        : "bg-[#4A8FA8]/15 text-[#4A8FA8] dark:bg-[#4A8FA8]/20 dark:text-[#9DBFD0]"
+                        ? "bg-[#3E7E57]/10 text-[#3E7E57] dark:bg-[#3E7E57]/20 dark:text-[#9DC1A5]"
+                        : "bg-[#79A98C]/15 text-[#79A98C] dark:bg-[#79A98C]/20 dark:text-[#9DC1A5]"
                     }`}
                   >
                     {progress.completed}/{progress.total} done
                   </div>
-                  <div className="text-xs text-[#8E8E93] dark:text-[#8E8E93] mt-1">
+                  <div className="text-xs text-[#8A7F78] dark:text-[#8A7F78] mt-1">
                     {progress.percentage}%
                   </div>
                 </div>
               </div>
 
               {/* Progress Bar */}
-              <div className="w-full bg-[#EDE8DC] dark:bg-[#38383A] rounded-full h-2 overflow-hidden">
+              <div className="w-full bg-[#F0E9CE] dark:bg-[#3D3730] rounded-full h-2 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-[#9DBFD0] to-[#4A8FA8] h-full transition-all duration-500 ease-out"
+                  className="bg-gradient-to-r from-[#9DC1A5] to-[#79A98C] h-full transition-all duration-500 ease-out"
                   style={{ width: `${progress.percentage}%` }}
                 />
               </div>
@@ -184,22 +184,22 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
       })}
 
       {/* Completion Summary */}
-      <div className="bg-white dark:bg-[#2C2C2E] rounded-lg p-6 shadow-md border border-[#EDE8DC] dark:border-[#38383A]">
-        <h3 className="text-lg font-bold text-[#1C1C1E] dark:text-white mb-3">
+      <div className="bg-white dark:bg-[#2C2622] rounded-lg p-6 shadow-md border border-[#F0E9CE] dark:border-[#3D3730]">
+        <h3 className="text-lg font-bold text-[#1B1714] dark:text-white mb-3">
           Workout Summary
         </h3>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Total Exercises</p>
-            <p className="text-2xl font-bold text-[#1C1C1E] dark:text-white">
+            <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">Total Exercises</p>
+            <p className="text-2xl font-bold text-[#1B1714] dark:text-white">
               {workout.blocks
                 .flatMap((b) => b.exercises)
                 .filter((e) => e.category !== "Guidance").length}
             </p>
           </div>
           <div>
-            <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Completed</p>
-            <p className="text-2xl font-bold text-[#3F6B40] dark:text-[#87A87C]">
+            <p className="text-sm text-[#8A7F78] dark:text-[#8A7F78]">Completed</p>
+            <p className="text-2xl font-bold text-[#3E7E57] dark:text-[#9DC1A5]">
               {Object.values(completions).filter((c) => c.completed).length}
             </p>
           </div>

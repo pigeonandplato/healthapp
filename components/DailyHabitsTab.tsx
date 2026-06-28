@@ -65,22 +65,22 @@ export default function DailyHabitsTab() {
 
   return (
     <div className="space-y-5">
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <p className="text-sm text-[#8E8E93]">Today&apos;s habits</p>
-            <p className="text-3xl font-bold text-[#1C1C1E] dark:text-white">{pct}%</p>
+            <p className="text-sm text-[#8A7F78]">Today&apos;s habits</p>
+            <p className="text-3xl font-bold text-[#1B1714] dark:text-white">{pct}%</p>
           </div>
           <div className="text-right">
-            <p className="text-sm font-semibold text-[#3F6B40]">
+            <p className="text-sm font-semibold text-[#3E7E57]">
               {done}/{habits.length}
             </p>
-            <p className="text-xs text-[#8E8E93]">completed</p>
+            <p className="text-xs text-[#8A7F78]">completed</p>
           </div>
         </div>
-        <div className="h-2 bg-[#EDE8DC] dark:bg-[#38383A] rounded-full overflow-hidden">
+        <div className="h-2 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#3F6B40] rounded-full transition-all duration-300"
+            className="h-full bg-[#3E7E57] rounded-full transition-all duration-300"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -88,7 +88,7 @@ export default function DailyHabitsTab() {
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="mt-4 w-full text-sm px-3 py-2 rounded-xl bg-[#EDE8DC] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white"
+          className="mt-4 w-full text-sm px-3 py-2 rounded-xl bg-[#F0E9CE] dark:bg-[#2C2622] border-0 text-[#1B1714] dark:text-white"
         />
       </div>
 
@@ -114,13 +114,13 @@ export default function DailyHabitsTab() {
               onClick={() => toggle(habit.id)}
               className={`w-full flex items-start gap-3 p-4 rounded-2xl border text-left transition-all active:scale-[0.99] ${
                 checked
-                  ? "bg-[#3F6B40]/8 border-[#3F6B40]/25"
-                  : "bg-white dark:bg-[#1C1C1E] border-[#EDE8DC] dark:border-[#38383A]"
+                  ? "bg-[#3E7E57]/8 border-[#3E7E57]/25"
+                  : "bg-white dark:bg-[#1B1714] border-[#F0E9CE] dark:border-[#3D3730]"
               }`}
             >
               <span
                 className={`mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                  checked ? "bg-[#3F6B40] border-[#3F6B40] text-white" : "border-[#C7C7CC]"
+                  checked ? "bg-[#3E7E57] border-[#3E7E57] text-white" : "border-[#C5BDB6]"
                 }`}
               >
                 {checked && (
@@ -132,7 +132,7 @@ export default function DailyHabitsTab() {
               <div className="flex-1 min-w-0">
                 <p
                   className={`text-sm font-medium ${
-                    checked ? "text-[#8E8E93] line-through" : "text-[#1C1C1E] dark:text-white"
+                    checked ? "text-[#8A7F78] line-through" : "text-[#1B1714] dark:text-white"
                   }`}
                 >
                   {habit.habit_name}
@@ -142,8 +142,8 @@ export default function DailyHabitsTab() {
                 <span
                   className={`flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                     checked
-                      ? "bg-[#3F6B40]/15 text-[#3F6B40]"
-                      : "bg-[#4A8FA8]/10 text-[#4A8FA8]"
+                      ? "bg-[#3E7E57]/15 text-[#3E7E57]"
+                      : "bg-[#79A98C]/10 text-[#79A98C]"
                   }`}
                 >
                   {habit.target_time}
@@ -154,7 +154,7 @@ export default function DailyHabitsTab() {
         })}
       </div>
 
-      <p className="text-xs text-[#8E8E93] text-center px-4">
+      <p className="text-xs text-[#8A7F78] text-center px-4">
         Stack habits weekly — don&apos;t try everything at once. Week 1: sleep only. Build from there.
       </p>
     </div>
@@ -176,8 +176,8 @@ function FilterChip({
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
         active
-          ? "bg-[#3F6B40] text-white"
-          : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#8E8E93]"
+          ? "bg-[#3E7E57] text-white"
+          : "bg-[#F0E9CE] dark:bg-[#2C2622] text-[#8A7F78]"
       }`}
     >
       {label}

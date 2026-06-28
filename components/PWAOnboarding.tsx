@@ -48,11 +48,11 @@ export default function PWAOnboarding() {
           isVisible ? "scale-100 opacity-100" : "scale-95 opacity-0 pointer-events-none"
         }`}
       >
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-3xl p-6  border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1B1714] rounded-3xl p-6  border border-[#F0E9CE] dark:border-[#3D3730]">
           {/* Close Button */}
           <button
             onClick={handleDismiss}
-            className="absolute top-4 right-4 text-[#8E8E93] hover:text-[#1C1C1E] dark:hover:text-white transition-colors"
+            className="absolute top-4 right-4 text-[#8A7F78] hover:text-[#1B1714] dark:hover:text-white transition-colors"
             aria-label="Close"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,28 +69,28 @@ export default function PWAOnboarding() {
           <div className="text-6xl text-center mb-4">📱</div>
 
           {/* Title */}
-          <h2 className="text-2xl font-bold text-[#1C1C1E] dark:text-white text-center mb-2">
+          <h2 className="text-2xl font-bold text-[#1B1714] dark:text-white text-center mb-2">
             Install as App
           </h2>
 
           {/* Subtitle */}
-          <p className="text-sm text-[#8E8E93] text-center mb-5">
+          <p className="text-sm text-[#8A7F78] text-center mb-5">
             Get Health Tracker on your home screen—just like a native app
           </p>
 
           {/* Benefits */}
           <div className="space-y-3 mb-6">
             <div className="flex items-start gap-3">
-              <span className="text-[#34C759] font-bold text-lg flex-shrink-0">✓</span>
-              <span className="text-sm text-[#1C1C1E] dark:text-white">One tap to launch</span>
+              <span className="text-[#3E7E57] font-bold text-lg flex-shrink-0">✓</span>
+              <span className="text-sm text-[#1B1714] dark:text-white">One tap to launch</span>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-[#34C759] font-bold text-lg flex-shrink-0">✓</span>
-              <span className="text-sm text-[#1C1C1E] dark:text-white">Works offline</span>
+              <span className="text-[#3E7E57] font-bold text-lg flex-shrink-0">✓</span>
+              <span className="text-sm text-[#1B1714] dark:text-white">Works offline</span>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-[#34C759] font-bold text-lg flex-shrink-0">✓</span>
-              <span className="text-sm text-[#1C1C1E] dark:text-white">Full-screen, no browser bars</span>
+              <span className="text-[#3E7E57] font-bold text-lg flex-shrink-0">✓</span>
+              <span className="text-sm text-[#1B1714] dark:text-white">Full-screen, no browser bars</span>
             </div>
           </div>
 
@@ -105,14 +105,14 @@ export default function PWAOnboarding() {
             </Link>
             <button
               onClick={handleDismiss}
-              className="w-full bg-[#F2F2F7] dark:bg-[#2C2C2E] hover:bg-[#E5E5EA] dark:hover:bg-[#38383A] text-[#1C1C1E] dark:text-white font-medium py-3 rounded-xl transition-all"
+              className="w-full bg-[#F6F3E9] dark:bg-[#2C2622] hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730] text-[#1B1714] dark:text-white font-medium py-3 rounded-xl transition-all"
             >
               Maybe Later
             </button>
           </div>
 
           {/* Hint */}
-          <p className="text-xs text-[#8E8E93] text-center mt-4">
+          <p className="text-xs text-[#8A7F78] text-center mt-4">
             You can find this anytime in Help → Setup
           </p>
         </div>
