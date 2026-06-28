@@ -20,7 +20,7 @@ export default function AchievementsGrid({ achievements }: AchievementsGridProps
             key={a.id}
             className={`rounded-2xl p-3 text-center border transition-all ${
               a.earned
-                ? "bg-[#FF2D55]/5 border-[#FF2D55]/30"
+                ? "bg-[#E5B122]/8 border-[#E5B122]/30"
                 : "bg-[#F6F3E9] dark:bg-[#2C2622] border-transparent opacity-50 grayscale"
             }`}
             title={a.description}

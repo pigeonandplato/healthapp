@@ -69,7 +69,7 @@ export default function ArchivedProgramsPage() {
             <p className="text-[#8A7F78] dark:text-[#8A7F78] mb-6">No archived programs yet.</p>
             <Link
               href="/program"
-              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[#FF2D55] text-white font-semibold hover:opacity-90 transition-opacity"
+              className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-[#79A98C] text-white font-semibold hover:opacity-90 transition-opacity"
             >
               Go to Programs
             </Link>

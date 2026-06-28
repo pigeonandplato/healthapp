@@ -46,7 +46,7 @@ export default function DayNavigator({
           onClick={() => shiftDay(-1)}
           disabled={!canGoPrev}
           aria-label="Previous day"
-          className="flex-shrink-0 px-3 py-3 rounded-xl bg-[#F0E9CE] dark:bg-[#2C2622] text-[#1B1714] dark:text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#E0D9C8] dark:hover:bg-[#3D3730] transition-colors touch-target"
+          className="flex-shrink-0 px-3 py-3 rounded-xl bg-[#F0E9CE] dark:bg-[#2C2622] text-[#1B1714] dark:text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#D4CFC9] dark:hover:bg-[#3D3730] transition-colors touch-target"
         >
           ←
         </button>
@@ -64,7 +64,7 @@ export default function DayNavigator({
           onClick={() => shiftDay(1)}
           disabled={!canGoNext}
           aria-label="Next day"
-          className="flex-shrink-0 px-3 py-3 rounded-xl bg-[#F0E9CE] dark:bg-[#2C2622] text-[#1B1714] dark:text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#E0D9C8] dark:hover:bg-[#3D3730] transition-colors touch-target"
+          className="flex-shrink-0 px-3 py-3 rounded-xl bg-[#F0E9CE] dark:bg-[#2C2622] text-[#1B1714] dark:text-white font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#D4CFC9] dark:hover:bg-[#3D3730] transition-colors touch-target"
         >
           →
         </button>

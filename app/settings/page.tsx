@@ -166,8 +166,8 @@ export default function SettingsPage() {
             }}
             className={`rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
               chachaVideoResetConfirm
-                ? "bg-[#FF9500] text-white"
-                : "bg-[#FF2D55]/10 text-[#FF2D55] hover:bg-[#FF2D55]/20"
+                ? "bg-[#E5B122] text-white"
+                : "bg-[#79A98C]/10 text-[#79A98C] hover:bg-[#79A98C]/20"
             }`}
           >
             {chachaVideoResetConfirm
@@ -230,7 +230,7 @@ export default function SettingsPage() {
             <button
               onClick={handleExportProgram}
               disabled={exporting}
-              className="w-full bg-[#3E7E57] hover:bg-[#30B050] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#3E7E57] hover:bg-[#5E8C6E] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {exporting ? "Exporting..." : "⬇️ Download as JSON"}
             </button>

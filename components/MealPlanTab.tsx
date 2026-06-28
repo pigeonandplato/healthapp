@@ -326,7 +326,7 @@ function RecipeCard({ recipe, expanded, onToggle, alwaysOpen }: {
   recipe: MealRecipe; expanded: boolean; onToggle: () => void; alwaysOpen?: boolean;
 }) {
   return (
-    <div className="rounded-xl bg-[#F5F5F7] dark:bg-[#2C2622] border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden">
+    <div className="rounded-xl bg-[#F6F3E9] dark:bg-[#2C2622] border border-[#F0E9CE] dark:border-[#3D3730] overflow-hidden">
       {!alwaysOpen && (
         <button type="button" onClick={onToggle} className="w-full p-3 text-left">
           <p className="text-sm font-semibold text-[#1B1714] dark:text-white">{recipe.name}</p>

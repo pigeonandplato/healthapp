@@ -346,13 +346,13 @@ export default function SchedulePage() {
                               <button
                                 type="button"
                                 onClick={() => selectDay(item.date)}
-                                className="flex-1 min-w-[140px] bg-[#007AFF] hover:bg-[#0066DD] text-white text-center font-bold py-2 px-4 rounded-lg transition text-sm"
+                                className="flex-1 min-w-[140px] bg-[#79A98C] hover:bg-[#5E8C6E] text-white text-center font-bold py-2 px-4 rounded-lg transition text-sm"
                               >
                                 View full details ↑
                               </button>
                               <Link
                                 href={`/today?date=${item.date}&view=coach`}
-                                className="flex-1 min-w-[140px] border-2 border-[#007AFF] text-[#007AFF] text-center font-bold py-2 px-4 rounded-lg transition text-sm"
+                                className="flex-1 min-w-[140px] border-2 border-[#79A98C] text-[#79A98C] text-center font-bold py-2 px-4 rounded-lg transition text-sm"
                               >
                                 Track in Today →
                               </Link>

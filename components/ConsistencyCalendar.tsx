@@ -93,7 +93,7 @@ export default function ConsistencyCalendar({ completedDates }: ConsistencyCalen
                   : cell.isFuture
                     ? "bg-[#F6F3E9] dark:bg-[#1B1714] text-[#C5BDB6] dark:text-[#4A433E]"
                     : "bg-[#F6F3E9] dark:bg-[#2C2622] text-[#8A7F78]"
-              } ${cell.isToday ? "ring-2 ring-[#FF2D55]" : ""}`}
+              } ${cell.isToday ? "ring-2 ring-[#E5B122]" : ""}`}
               title={cell.completed ? `${cell.date} — active` : cell.date}
             >
               {cell.completed ? "✓" : dayNum}

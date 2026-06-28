@@ -186,7 +186,7 @@ export default function HabitsPage() {
               if (e.key === "Enter") handleHelpNow();
             }}
             placeholder={kind === "break" ? "e.g. about to order pizza" : "e.g. cook dinner tonight"}
-            className="w-full rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] bg-[#FAF7F2] dark:bg-[#2C2622] px-4 py-3.5 text-base text-[#1B1714] dark:text-white placeholder-[#8A7F78] focus:outline-none focus:ring-2 focus:ring-[#79A98C] mb-3"
+            className="w-full rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] bg-[#F6F3E9] dark:bg-[#2C2622] px-4 py-3.5 text-base text-[#1B1714] dark:text-white placeholder-[#8A7F78] focus:outline-none focus:ring-2 focus:ring-[#79A98C] mb-3"
           />
 
           {/* Quick-add chips */}
@@ -267,10 +267,10 @@ function getTileColor(label: string, kind: "break" | "build"): { border: string;
   const isRehab = /rehab|stretch|mobility|knee|back|pain|physio|break/.test(lower);
 
   if (isSleep) {
-    return { border: '#AFD4DD', bg: '#AFD4DD15', badgeBg: '#AFD4DD30', badgeText: '#2E7A8F' };
+    return { border: '#AFD4DD', bg: '#AFD4DD15', badgeBg: '#AFD4DD30', badgeText: '#2E5641' };
   }
   if (isRehab || kind === "break") {
-    return { border: '#FAC7B3', bg: '#FAC7B315', badgeBg: '#FAC7B330', badgeText: '#A05C3E' };
+    return { border: '#FAC7B3', bg: '#FAC7B315', badgeBg: '#FAC7B330', badgeText: '#2E5641' };
   }
   return { border: '#9DC1A5', bg: '#9DC1A515', badgeBg: '#9DC1A530', badgeText: '#3E7E57' };
 }
@@ -401,7 +401,7 @@ function CoachPanel({
             <img src={thumb} alt={intervention.videoTitle || "Watch on YouTube"} className="w-full aspect-video object-cover" />
             <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
               <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center">
-                <svg className="w-7 h-7 text-[#FF2D55] ml-1" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-7 h-7 text-[#E5B122] ml-1" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </div>

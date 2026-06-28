@@ -131,7 +131,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
           onClick={() => setSelectedModel("claude")}
           className={`p-3 rounded-xl font-medium transition-all ${
             selectedModel === "claude"
-              ? "bg-[#FF2D55] text-white"
+              ? "bg-[#79A98C] text-white"
               : "bg-[#F6F3E9] dark:bg-[#2C2622] text-[#1B1714] dark:text-white hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730]"
           }`}
         >
@@ -141,7 +141,7 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
           onClick={() => setSelectedModel("chatgpt")}
           className={`p-3 rounded-xl font-medium transition-all ${
             selectedModel === "chatgpt"
-              ? "bg-[#FF2D55] text-white"
+              ? "bg-[#79A98C] text-white"
               : "bg-[#F6F3E9] dark:bg-[#2C2622] text-[#1B1714] dark:text-white hover:bg-[#F0E9CE] dark:hover:bg-[#3D3730]"
           }`}
         >
@@ -171,14 +171,14 @@ export default function AIPromptTemplate({ onPromptCopied }: AIPromptTemplatePro
             selectedModel
           )
         }
-        className="w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98]"
+        className="w-full bg-[#79A98C] hover:bg-[#5E8C6E] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98]"
       >
         {copied === selectedModel ? "✓ Copied to Clipboard!" : "📋 Copy Prompt"}
       </button>
 
       {/* Instructions */}
-      <div className="bg-[#007AFF]/5 dark:bg-[#007AFF]/10 border border-[#007AFF]/20 rounded-lg p-4">
-        <p className="text-sm text-[#007AFF] font-medium mb-3">💡 How to use:</p>
+      <div className="bg-[#79A98C]/5 dark:bg-[#79A98C]/10 border border-[#79A98C]/20 rounded-lg p-4">
+        <p className="text-sm text-[#79A98C] font-medium mb-3">💡 How to use:</p>
         <ol className="text-sm text-[#8A7F78] space-y-2 list-decimal list-inside">
           <li>Copy the prompt above</li>
           <li>Open {selectedModel === "claude" ? "Claude.ai" : "ChatGPT"}</li>

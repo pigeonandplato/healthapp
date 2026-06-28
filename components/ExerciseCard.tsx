@@ -346,7 +346,7 @@ export default function ExerciseCard({
                   href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#8A7F78] hover:bg-[#6E6E73] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
+                  className="bg-[#79A98C] hover:bg-[#5E8C6E] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                 >
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
@@ -389,7 +389,7 @@ export default function ExerciseCard({
                     href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[#8A7F78] hover:bg-[#6E6E73] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
+                    className="bg-[#79A98C] hover:bg-[#5E8C6E] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
@@ -498,7 +498,7 @@ export default function ExerciseCard({
         <div className="mb-3">
           <button
             onClick={() => setShowMistakes(!showMistakes)}
-            className="w-full flex items-center justify-between p-3 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-xl hover:bg-[#E0D9C8] dark:hover:bg-[#4A433E] transition-colors"
+            className="w-full flex items-center justify-between p-3 bg-[#F0E9CE] dark:bg-[#3D3730] rounded-xl hover:bg-[#D4CFC9] dark:hover:bg-[#4A433E] transition-colors"
             aria-expanded={showMistakes}
           >
             <span className="font-semibold text-[#1B1714] dark:text-white text-sm">
@@ -700,7 +700,7 @@ export default function ExerciseCard({
                   <button
                     onClick={handleDeleteCustomVideo}
                     disabled={savingVideo}
-                    className="px-4 bg-[#8A7F78] hover:bg-[#6E6E73] text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
+                    className="px-4 bg-[#79A98C] hover:bg-[#5E8C6E] text-white font-medium py-3 rounded-xl transition-all disabled:opacity-50"
                   >
                     Reset
                   </button>

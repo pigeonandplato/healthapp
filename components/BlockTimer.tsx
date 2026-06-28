@@ -100,7 +100,7 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
         
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-[#F0E9CE] hover:bg-[#D8D3C7] dark:bg-[#3D3730] dark:hover:bg-[#4A433E] text-[#1B1714] dark:text-white rounded-md font-medium transition-colors"
+          className="px-4 py-2 bg-[#F0E9CE] hover:bg-[#D4CFC9] dark:bg-[#3D3730] dark:hover:bg-[#4A433E] text-[#1B1714] dark:text-white rounded-md font-medium transition-colors"
           aria-label="Reset timer"
         >
           Reset

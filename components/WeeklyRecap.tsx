@@ -80,7 +80,7 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
       <div className="flex items-center justify-between">
         <p className="text-xs text-[#8A7F78]">{message}</p>
         {typeof streak === "number" && streak > 0 && (
-          <span className="text-xs font-semibold text-[#FF9500] flex-shrink-0 ml-2">🔥 {streak}-day streak</span>
+          <span className="text-xs font-semibold text-[#E5B122] flex-shrink-0 ml-2">🔥 {streak}-day streak</span>
         )}
       </div>
     </div>

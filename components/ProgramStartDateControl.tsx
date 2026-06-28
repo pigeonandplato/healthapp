@@ -90,7 +90,7 @@ export default function ProgramStartDateControl({
             type="button"
             onClick={handleSave}
             disabled={saving || draft === savedDate}
-            className="flex-1 min-w-[140px] py-2 text-sm font-semibold rounded-xl bg-[#FF2D55] hover:bg-[#FF6482] text-white disabled:opacity-50"
+            className="flex-1 min-w-[140px] py-2 text-sm font-semibold rounded-xl bg-[#79A98C] hover:bg-[#5E8C6E] text-white disabled:opacity-50"
           >
             {saving ? "Saving…" : "Save start date"}
           </button>
@@ -98,7 +98,7 @@ export default function ProgramStartDateControl({
       </div>
 
       {message && (
-        <p className={`text-sm mt-2 ${message.includes("✓") ? "text-[#3E7E57]" : "text-[#FF9500]"}`}>{message}</p>
+        <p className={`text-sm mt-2 ${message.includes("✓") ? "text-[#3E7E57]" : "text-[#E5B122]"}`}>{message}</p>
       )}
     </div>
   );

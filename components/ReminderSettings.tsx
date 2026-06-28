@@ -50,7 +50,7 @@ export default function ReminderSettings() {
     <div className="space-y-5">
       {/* Notification permission */}
       {permission === "unsupported" ? (
-        <div className="bg-[#FF9500]/10 text-[#FF9500] text-sm rounded-xl p-3">
+        <div className="bg-[#E5B122]/10 text-[#E5B122] text-sm rounded-xl p-3">
           This browser doesn&apos;t support in-app notifications. Use the calendar export below for reliable reminders.
         </div>
       ) : permission === "granted" ? (
@@ -60,7 +60,7 @@ export default function ReminderSettings() {
       ) : (
         <button
           onClick={handleEnableNotifications}
-          className="w-full bg-[#007AFF] hover:brightness-95 text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98]"
+          className="w-full bg-[#79A98C] hover:brightness-95 text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98]"
         >
           🔔 Enable in-app notifications
         </button>

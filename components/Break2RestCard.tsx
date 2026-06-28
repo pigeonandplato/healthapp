@@ -10,7 +10,7 @@ export default function Break2RestCard() {
             Rest day for knee block. This break runs{" "}
             <strong className="text-[#1B1714] dark:text-white">Monday, Wednesday & Friday</strong> only — not on this day.
           </p>
-          <p className="text-xs text-[#C5BDB6] dark:text-[#636366] mt-2">
+          <p className="text-xs text-[#C5BDB6] dark:text-[#8A7F78] mt-2">
             Use the date picker → tap <strong>Mon</strong> to see Break 2.
           </p>
         </div>

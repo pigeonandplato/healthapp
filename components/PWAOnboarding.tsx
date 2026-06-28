@@ -99,7 +99,7 @@ export default function PWAOnboarding() {
             <Link
               href="/help"
               onClick={handleDismiss}
-              className="block w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl text-center transition-all active:scale-95"
+              className="block w-full bg-[#79A98C] hover:bg-[#5E8C6E] text-white font-semibold py-3 rounded-xl text-center transition-all active:scale-95"
             >
               How to Install
             </Link>

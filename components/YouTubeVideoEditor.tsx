@@ -96,7 +96,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
             setError("");
           }}
           placeholder="https://www.youtube.com/watch?v=..."
-          className="w-full px-4 py-3 rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] focus:border-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55]/20 outline-none transition text-[#1B1714] dark:text-white bg-white dark:bg-[#1B1714]"
+          className="w-full px-4 py-3 rounded-xl border border-[#F0E9CE] dark:border-[#3D3730] focus:border-[#79A98C] focus:ring-2 focus:ring-[#79A98C]/20 outline-none transition text-[#1B1714] dark:text-white bg-white dark:bg-[#1B1714]"
         />
         <p className="text-xs text-[#8A7F78] mt-2">
           Enter a YouTube URL or video ID. Examples: youtube.com/watch?v=..., youtu.be/..., or just the video ID
@@ -113,7 +113,7 @@ export default function YouTubeVideoEditor({ initialUrl, onSave }: YouTubeVideoE
         <button
           onClick={handleSave}
           disabled={saving}
-          className="flex-1 bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-[#79A98C] hover:bg-[#5E8C6E] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {saving ? "Saving..." : "Save Video"}
         </button>

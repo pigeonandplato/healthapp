@@ -140,7 +140,7 @@ export default function DatePicker({
             className="fixed md:absolute bottom-0 md:bottom-auto left-0 md:left-auto right-0 md:right-0 top-auto md:top-full md:mt-2 z-50 bg-white dark:bg-[#1B1714] rounded-t-3xl md:rounded-2xl  border-t md:border border-[#F0E9CE] dark:border-[#3D3730] p-6 md:p-4 w-full md:w-auto md:min-w-[320px] max-h-[85vh] overflow-y-auto animate-slide-up md:animate-none"
           >
             <div className="md:hidden flex justify-center mb-4">
-              <div className="w-12 h-1.5 bg-[#D2D2D7] dark:bg-[#3D3730] rounded-full" />
+              <div className="w-12 h-1.5 bg-[#D4CFC9] dark:bg-[#3D3730] rounded-full" />
             </div>
 
             <div className="grid grid-cols-3 gap-2 mb-4">

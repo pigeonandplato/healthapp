@@ -180,7 +180,7 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
                 const prescription = formatPrescription(exercise);
 
                 return (
-                  <div key={exercise.id} className={`transition-colors ${isCompleted ? "bg-[#F6F3E9] dark:bg-[#1A1A1A]" : ""}`}>
+                  <div key={exercise.id} className={`transition-colors ${isCompleted ? "bg-[#F6F3E9] dark:bg-[#1B1714]" : ""}`}>
                     <div className="flex items-center gap-4 px-5 py-3.5">
                       {/* Tap-to-complete circle */}
                       <button
@@ -241,7 +241,7 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
 
                     {/* Expandable detail */}
                     {isExpanded && hasDetails && (
-                      <div className="px-5 pb-4 border-t border-[#F0E9CE] dark:border-[#3D3730] bg-[#F6F3E9] dark:bg-[#161616]">
+                      <div className="px-5 pb-4 border-t border-[#F0E9CE] dark:border-[#3D3730] bg-[#F6F3E9] dark:bg-[#1B1714]">
                         <ExerciseDetailPreview
                           exercise={exercise}
                           onOpenDetailView={exercise.media.type === "video" ? onOpenDetailView : undefined}
