@@ -1,11 +1,9 @@
-/* DM Sans for headings — loaded via Google Fonts (display=swap, low perf cost) */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,600;9..40,700;9..40,800&display=swap');
-
 @import "tailwindcss";
 
-/* Inter body via next/font (self-hosted, no FOUT) */
+/* Both Inter + DM Sans are self-hosted via next/font in layout.tsx — no external requests */
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans:    var(--font-inter),   ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
@@ -72,9 +70,9 @@ body {
   line-height: 1.5;
 }
 
-/* DM Sans applied to all headings */
+/* DM Sans applied to all headings (self-hosted via next/font) */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'DM Sans', var(--font-sans);
+  font-family: var(--font-display, var(--font-sans));
   letter-spacing: -0.3px;
 }
 
@@ -279,8 +277,8 @@ input:focus, textarea:focus {
 }
 
 /* ── Typography scale ── */
-.text-title       { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; font-family: 'DM Sans', var(--font-sans); }
-.text-headline    { font-size: 28px; font-weight: 700; line-height: 1.25; letter-spacing: -0.3px; font-family: 'DM Sans', var(--font-sans); }
+.text-title       { font-size: 34px; font-weight: 800; line-height: 1.15; letter-spacing: -0.5px; font-family: var(--font-display, var(--font-sans)); }
+.text-headline    { font-size: 28px; font-weight: 700; line-height: 1.25; letter-spacing: -0.3px; font-family: var(--font-display, var(--font-sans)); }
 .text-body-large  { font-size: 20px; font-weight: 600; line-height: 1.4; }
 .text-body        { font-size: 16px; font-weight: 400; line-height: 1.5; }
 .text-caption     { font-size: 14px; font-weight: 400; line-height: 1.4; color: var(--text-secondary); }

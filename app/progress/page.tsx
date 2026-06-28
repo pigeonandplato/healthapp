@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { getAllCompletions, getSeenAchievements, setSeenAchievements } from "@/lib/db";
 import { calculateProgressStats, ProgressStats } from "@/lib/progress";
 import { getAllExercises } from "@/lib/db";
@@ -12,10 +13,11 @@ import {
   CommitmentStats,
   Achievement,
 } from "@/lib/gamification";
-import LevelBar from "@/components/LevelBar";
-import WeeklyRecap from "@/components/WeeklyRecap";
-import ConsistencyCalendar from "@/components/ConsistencyCalendar";
-import AchievementsGrid from "@/components/AchievementsGrid";
+
+const LevelBar           = dynamic(() => import("@/components/LevelBar"),           { ssr: false });
+const WeeklyRecap        = dynamic(() => import("@/components/WeeklyRecap"),        { ssr: false });
+const ConsistencyCalendar = dynamic(() => import("@/components/ConsistencyCalendar"), { ssr: false });
+const AchievementsGrid   = dynamic(() => import("@/components/AchievementsGrid"),   { ssr: false });
 
 export default function ProgressPage() {
   const [stats, setStats] = useState<ProgressStats | null>(null);
@@ -219,7 +221,7 @@ function StatCell({ label, value, gold }: { label: string; value: string | numbe
   return (
     <div className="py-4 text-center">
       <p className={`text-2xl font-bold leading-none mb-1 ${gold ? 'text-[#E5B122]' : 'text-[#1B1714] dark:text-white'}`}
-         style={gold ? { fontFamily: "'DM Sans', sans-serif" } : {}}>
+         style={gold ? { fontFamily: "var(--font-dm-sans, sans-serif)" } : {}}>
         {value}
       </p>
       <p className="text-[10px] font-medium text-[#8A7F78] uppercase tracking-wider">{label}</p>
