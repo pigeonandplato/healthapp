@@ -49,12 +49,12 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
         {isOpen && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-            <div className="absolute top-full left-0 mt-2 w-64 bg-gray-800 rounded-xl  border border-gray-700 overflow-hidden z-50">
+            <div className="absolute top-full left-0 mt-2 w-64 bg-[#1C1C1E] rounded-xl border border-[#38383A] overflow-hidden z-50">
               {programs.map((program) => (
                 <button
                   key={program.id}
                   onClick={() => handleSelect(program.type)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-700 transition-colors ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-[#2C2C2E] transition-colors ${
                     program.type === activeProgram ? "bg-[#4A8FA8]/30" : ""
                   }`}
                 >
@@ -64,7 +64,7 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
                     <div className="text-xs text-[#8E8E93]">{program.description}</div>
                   </div>
                   {program.type === activeProgram && (
-                    <svg className="w-5 h-5 text-blue-400 ml-auto" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-[#4A8FA8] ml-auto" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
                   )}
@@ -86,7 +86,7 @@ export default function ProgramSelector({ onProgramChange, compact = false }: Pr
           className={`p-4 rounded-xl border-2 transition-all ${
             program.type === activeProgram
               ? "border-[#4A8FA8] bg-[#4A8FA8]/20"
-              : "border-gray-700 bg-gray-800/50 hover:border-gray-600"
+              : "border-[#38383A] bg-[#1C1C1E]/50 hover:border-[#48484A]"
           }`}
         >
           <div className="text-3xl mb-2">{program.icon}</div>

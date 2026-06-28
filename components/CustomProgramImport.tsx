@@ -207,7 +207,7 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
       )}
 
       {success && (
-        <div className="bg-green-50 dark:bg-[#3F6B40]/20/20 text-green-600 dark:text-green-400 px-4 py-3 rounded-xl text-sm">
+        <div className="bg-[#3F6B40]/10 dark:bg-[#3F6B40]/20 text-[#3F6B40] dark:text-[#87A87C] px-4 py-3 rounded-xl text-sm border border-[#3F6B40]/20 dark:border-[#3F6B40]/30">
           Imported and set as your active program! Runs Mon / Wed / Fri (A / B / C). Head to Today to start.
         </div>
       )}

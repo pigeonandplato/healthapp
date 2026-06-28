@@ -1,0 +1,75 @@
+---
+description: Enforces the brand color palette for all UI work. Never use off-brand Tailwind color classes.
+globs: **/*.tsx, **/*.ts, **/*.css
+alwaysApply: true
+---
+
+# Brand Color Palette — Health Tracker PWA
+
+All UI must use these exact hex values. Never use Tailwind semantic color classes like `blue-500`, `gray-200`, `purple-*`, `red-*`, `green-*`, `yellow-*`, `indigo-*`, or `emerald-*`.
+
+## Palette
+
+| Role | Hex | Usage |
+|------|-----|-------|
+| Primary blue | `#4A8FA8` | CTAs, active states, progress bars, links |
+| Light blue | `#9DBFD0` | Gradient starts, tints, soft backgrounds |
+| Dark blue | `#38788F` | Hover states, gradient ends |
+| Sage green | `#3F6B40` | Completion only (checked boxes, done states) |
+| Light sage | `#87A87C` | Sage gradients/accents |
+| Cream border | `#EDE8DC` | All card borders, dividers, input borders |
+| Page bg | `#FDFAF6` | Page backgrounds |
+| Text primary | `#1C1C1E` | Headings, body |
+| Text secondary | `#8E8E93` | Subtitles, labels, metadata |
+| Text muted | `#C7C7CC` | Placeholders, disabled |
+| Dark surface | `#2C2C2E` | Dark mode inputs |
+| Dark border | `#38383A` | Dark mode borders |
+
+## Rules
+
+```tsx
+// ❌ NEVER use Tailwind semantic colors
+className="bg-blue-500 text-gray-700 border-red-200"
+className="from-purple-50 to-indigo-100"
+
+// ✅ ALWAYS use brand hex values
+className="bg-[#4A8FA8] text-[#8E8E93] border-[#EDE8DC]"
+className="from-[#9DBFD0] to-[#4A8FA8]"
+```
+
+## Common Patterns
+
+```tsx
+// CTA button
+className="bg-[#4A8FA8] hover:bg-[#38788F] text-white"
+
+// Ghost/tint button
+className="bg-[#4A8FA8]/10 text-[#4A8FA8] hover:bg-[#4A8FA8]/15"
+
+// Card
+className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A]"
+
+// Progress bar track
+className="bg-[#EDE8DC] dark:bg-[#38383A]"
+
+// Progress bar fill (primary)
+className="bg-[#4A8FA8]"
+
+// Completion (done/checked)
+className="bg-[#3F6B40] border-[#3F6B40] text-white"
+
+// Active bottom nav
+className="text-[#4A8FA8]"
+
+// Input focus ring
+className="focus:ring-[#4A8FA8] focus:border-[#4A8FA8]"
+
+// Muted info panel (e.g. stop conditions)
+className="bg-[#9DBFD0]/10 border-[#9DBFD0]/20"
+```
+
+## Never Use
+- `shadow-xl`, `shadow-2xl`, `shadow-3xl` (use no shadow or `shadow-sm` only)
+- Any `bg-gray-*`, `text-gray-*`, `border-gray-*`
+- Any `blue-*`, `purple-*`, `indigo-*`, `red-*`, `green-*`, `yellow-*`, `emerald-*`
+- Hardcoded gradients unless from→to uses only brand hex values above

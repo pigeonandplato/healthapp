@@ -189,7 +189,7 @@ export default function TopHeader() {
           {/* Sign Out Button */}
           <button
             onClick={handleSignOut}
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-[#9DBFD0]/10 dark:hover:bg-red-900/20 transition-all duration-200 mt-4"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#EF4444] hover:bg-[#EDE8DC] dark:hover:bg-[#38383A]/60 transition-all duration-200 mt-4"
           >
             <span className="text-xl">🚪</span>
             <span className="font-medium">Sign Out</span>

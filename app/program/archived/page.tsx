@@ -38,7 +38,7 @@ export default function ArchivedProgramsPage() {
 
   return (
     <div className="bg-white dark:bg-black min-h-screen">
-      <section className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white">
+      <section className="bg-gradient-to-br from-[#2C2C2E] via-[#1C1C1E] to-black text-white">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <Link
             href="/program"
@@ -58,7 +58,7 @@ export default function ArchivedProgramsPage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {message && (
-          <div className="mb-6 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 px-4 py-3 text-sm text-emerald-800 dark:text-emerald-200">
+          <div className="mb-6 rounded-xl bg-[#3F6B40]/10 dark:bg-[#3F6B40]/20 border border-[#3F6B40]/20 dark:border-[#3F6B40]/40 px-4 py-3 text-sm text-[#3F6B40] dark:text-[#87A87C]">
             {message}
           </div>
         )}

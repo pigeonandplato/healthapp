@@ -159,7 +159,7 @@ export default function ProgramPage() {
                 <li><strong>Break 3</strong> — Walk + mobility/control · daily</li>
                 <li>Pain 0–3/10 okay · 4–5 reduce · 6+ or worse next day = stop/regress</li>
               </ul>
-              <div className="bg-purple-50 dark:bg-[#4A8FA8]/15 rounded-xl p-4 mb-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
+              <div className="bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/15 rounded-xl p-4 mb-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
                 <h3 className="font-semibold text-[#1C1C1E] dark:text-white mb-2">Diet & supplements (summary)</h3>
                 <p className="text-sm text-[#4A8FA8] dark:text-[#8E8E93]">
                   Protein ~105–140 g/day at ~195 lb · protein-first meals · consider whey, creatine 3–5 g/day,
@@ -185,7 +185,7 @@ export default function ProgramPage() {
               </p>
 
               <div className="space-y-4">
-                <div className="bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl p-4 border-2 border-[#EDE8DC] dark:border-[#38383A]">
+                <div className="bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-xl p-4 border-2 border-[#EDE8DC] dark:border-[#38383A]">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">💪</span>
                     <div>
@@ -200,7 +200,7 @@ export default function ProgramPage() {
                   </ul>
                 </div>
 
-                <div className="bg-gradient-to-r bg-[#EDE8DC] dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-4 border-2 border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
+                <div className="bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-xl p-4 border-2 border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">🔙</span>
                     <div>
@@ -215,7 +215,7 @@ export default function ProgramPage() {
                   </ul>
                 </div>
 
-                <div className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-xl p-4 border-2 border-green-200 dark:border-green-800">
+                <div className="bg-[#FDFAF6] dark:bg-[#2C2C2E] rounded-xl p-4 border-2 border-[#EDE8DC] dark:border-[#38383A]">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="text-2xl">🦵</span>
                     <div>
@@ -232,9 +232,9 @@ export default function ProgramPage() {
               </div>
             </div>
 
-            <div className="bg-[#EDE8DC] dark:bg-[#38383A] rounded-2xl p-6 border-2 border-yellow-200 dark:border-yellow-800">
-              <h3 className="font-bold text-yellow-900 dark:text-yellow-200 mb-3">💡 Training Tips</h3>
-              <ul className="text-sm text-yellow-800 dark:text-yellow-300 space-y-2">
+            <div className="bg-[#EDE8DC] dark:bg-[#38383A] rounded-2xl p-6 border-2 border-[#EDE8DC] dark:border-[#48484A]">
+              <h3 className="font-bold text-[#1C1C1E] dark:text-white mb-3">💡 Training Tips</h3>
+              <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] space-y-2">
                 <li>• <strong>Rest Days:</strong> Tue, Thu, Sat, Sun - use for recovery or light cardio</li>
                 <li>• <strong>Progression:</strong> Increase weight when 3×10/12 feels comfortable</li>
                 <li>• <strong>Rest Between Sets:</strong> 60-90 seconds</li>
@@ -267,7 +267,7 @@ export default function ProgramPage() {
                 ].map((d) => (
                   <div
                     key={d.day}
-                    className="bg-gradient-to-r from-[#4A8FA8]/5 to-[#9DBFD0]/5 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-xl p-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30"
+                    className="bg-gradient-to-r from-[#4A8FA8]/5 to-[#9DBFD0]/5 dark:from-[#4A8FA8]/10 dark:to-[#9DBFD0]/10 rounded-xl p-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30"
                   >
                     <div className="flex items-center gap-3">
                       <span className="text-2xl">{d.emoji}</span>
@@ -281,9 +281,9 @@ export default function ProgramPage() {
               </div>
             </div>
 
-            <div className="bg-[#EDE8DC] dark:bg-[#38383A] rounded-2xl p-6 border-2 border-yellow-200 dark:border-yellow-800">
-              <h3 className="font-bold text-yellow-900 dark:text-yellow-200 mb-3">💡 Training Tips</h3>
-              <ul className="text-sm text-yellow-800 dark:text-yellow-300 space-y-2">
+            <div className="bg-[#EDE8DC] dark:bg-[#38383A] rounded-2xl p-6 border-2 border-[#EDE8DC] dark:border-[#48484A]">
+              <h3 className="font-bold text-[#1C1C1E] dark:text-white mb-3">💡 Training Tips</h3>
+              <ul className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] space-y-2">
                 <li>• <strong>Rest Days:</strong> Saturday & Sunday — recovery or light walking</li>
                 <li>• <strong>Safety rule:</strong> 0–3/10 discomfort = okay · 4–5/10 = reduce load/range · 6+/10 or worse next day = stop</li>
                 <li>• <strong>Every exercise</strong> has step-by-step form cues, common mistakes, and stop conditions on its card</li>
@@ -308,7 +308,7 @@ export default function ProgramPage() {
                 Your imported program. Workouts run on <strong>Monday (A)</strong>, <strong>Wednesday (B)</strong> and{" "}
                 <strong>Friday (C)</strong>, advancing one week at a time. Weeks loop at the final week so you always have something to do.
               </p>
-              <div className="bg-[#4A8FA8]/8 dark:bg-[#4A8FA8]/15 rounded-xl p-4 mb-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30 text-sm text-[#4A8FA8] dark:text-blue-300">
+              <div className="bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/15 rounded-xl p-4 mb-4 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30 text-sm text-[#4A8FA8] dark:text-[#9DBFD0]">
                 Want to edit it? Re-import updated JSON from <strong>Settings → Import Custom Program</strong>. The new file replaces this one.
               </div>
               <ProgramStartDateControl

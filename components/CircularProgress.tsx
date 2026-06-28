@@ -32,7 +32,7 @@ export default function CircularProgress({
           stroke="currentColor"
           strokeWidth={strokeWidth}
           fill="none"
-          className="text-gray-200 dark:text-[#3A3A3C]"
+          className="text-[#EDE8DC] dark:text-[#3A3A3C]"
         />
         {/* Progress circle */}
         <circle
@@ -50,15 +50,15 @@ export default function CircularProgress({
         {/* Gradient */}
         <defs>
           <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" />
-            <stop offset="50%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#8b5cf6" />
+            <stop offset="0%" stopColor="#9DBFD0" />
+            <stop offset="50%" stopColor="#4A8FA8" />
+            <stop offset="100%" stopColor="#38788F" />
           </linearGradient>
         </defs>
       </svg>
       {/* Center content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <span className="text-3xl font-bold bg-gradient-to-r from-[#4A8FA8] to-[#9DBFD0] bg-clip-text text-transparent">
           {Math.round(percentage)}%
         </span>
         {label && (

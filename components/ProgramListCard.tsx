@@ -21,8 +21,8 @@ export default function ProgramListCard({
 }: ProgramListCardProps) {
   const actionClass =
     action?.variant === "restore"
-      ? "text-emerald-600 hover:bg-emerald-50 dark:text-emerald-400 dark:hover:bg-emerald-900/30"
-      : "text-[#8E8E93] hover:bg-[#EDE8DC] dark:text-[#8E8E93] dark:hover:bg-gray-700/50";
+      ? "text-[#3F6B40] hover:bg-[#3F6B40]/10 dark:text-[#87A87C] dark:hover:bg-[#3F6B40]/20"
+      : "text-[#8E8E93] hover:bg-[#EDE8DC] dark:text-[#8E8E93] dark:hover:bg-[#38383A]/50";
 
   return (
     <div
@@ -37,7 +37,7 @@ export default function ProgramListCard({
         onClick={onSelect}
         disabled={!onSelect}
         className={`w-full p-5 text-left rounded-2xl ${
-          onSelect ? "hover:border-[#EDE8DC] dark:hover:border-gray-600" : "cursor-default"
+          onSelect ? "hover:border-[#EDE8DC] dark:hover:border-[#48484A]" : "cursor-default"
         }`}
       >
         <div className="text-3xl mb-2">{program.icon}</div>

@@ -199,7 +199,7 @@ export default function CoachView({ workout, onProgressChange }: CoachViewProps)
           </div>
           <div>
             <p className="text-sm text-[#8E8E93] dark:text-[#8E8E93]">Completed</p>
-            <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+            <p className="text-2xl font-bold text-[#3F6B40] dark:text-[#87A87C]">
               {Object.values(completions).filter((c) => c.completed).length}
             </p>
           </div>

@@ -15,7 +15,7 @@ export default function ViewToggle({ currentView, onViewChange }: ViewToggleProp
         className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
           currentView === "checklist"
             ? "bg-[#4A8FA8] text-white shadow-sm"
-            : "text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#1C1C1E] dark:hover:text-gray-100"
+            : "text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#1C1C1E] dark:hover:text-white"
         }`}
         aria-pressed={currentView === "checklist"}
       >
@@ -42,7 +42,7 @@ export default function ViewToggle({ currentView, onViewChange }: ViewToggleProp
         className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
           currentView === "coach"
             ? "bg-[#4A8FA8] text-white shadow-sm"
-            : "text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#1C1C1E] dark:hover:text-gray-100"
+            : "text-[#3A3A3C] dark:text-[#D1D1D6] hover:text-[#1C1C1E] dark:hover:text-white"
         }`}
         aria-pressed={currentView === "coach"}
       >

@@ -90,8 +90,8 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
           onClick={handleStartPause}
           className={`px-4 py-2 rounded-md font-medium transition-colors ${
             isRunning
-              ? "bg-[#EDE8DC]0 hover:bg-yellow-600 text-white"
-              : "bg-[#4A8FA8] hover:bg-[#4A8FA8] text-white"
+              ? "bg-[#4A8FA8] hover:bg-[#38788F] text-white"
+              : "bg-[#4A8FA8] hover:bg-[#38788F] text-white"
           }`}
           aria-label={isRunning ? "Pause timer" : "Start timer"}
         >
@@ -100,7 +100,7 @@ export default function BlockTimer({ blockId, date }: BlockTimerProps) {
         
         <button
           onClick={handleReset}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-[#38383A] dark:hover:bg-[#48484A] text-[#1C1C1E] dark:text-white rounded-md font-medium transition-colors"
+          className="px-4 py-2 bg-[#EDE8DC] hover:bg-[#D8D3C7] dark:bg-[#38383A] dark:hover:bg-[#48484A] text-[#1C1C1E] dark:text-white rounded-md font-medium transition-colors"
           aria-label="Reset timer"
         >
           Reset

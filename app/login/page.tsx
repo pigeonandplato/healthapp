@@ -137,7 +137,7 @@ export default function LoginPage() {
             )}
 
             {message && (
-              <div className="bg-green-50 text-green-600 px-4 py-3 rounded-xl text-sm">
+              <div className="bg-[#3F6B40]/10 text-[#3F6B40] px-4 py-3 rounded-xl text-sm border border-[#3F6B40]/20">
                 {message}
               </div>
             )}
