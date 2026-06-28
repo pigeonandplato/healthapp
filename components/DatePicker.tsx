@@ -154,7 +154,7 @@ export default function DatePicker({
               <button
                 type="button"
                 onClick={() => handleQuickSelect(0)}
-                className="px-3 py-2.5 text-xs font-semibold bg-[#CF9030] text-white rounded-lg touch-target"
+                className="px-3 py-2.5 text-xs font-semibold bg-[#4A8FA8] text-white rounded-lg touch-target"
               >
                 Today
               </button>
@@ -180,7 +180,7 @@ export default function DatePicker({
                       key={b.dow}
                       type="button"
                       onClick={() => jumpToWeekday(b.dow)}
-                      className="py-2.5 rounded-lg bg-[#CF9030]/10 text-[#CF9030] text-xs font-bold touch-target"
+                      className="py-2.5 rounded-lg bg-[#4A8FA8]/10 text-[#4A8FA8] text-xs font-bold touch-target"
                     >
                       {b.emoji} {b.label}
                     </button>
@@ -202,7 +202,7 @@ export default function DatePicker({
                 }}
                 min={defaultMinDate}
                 max={defaultMaxDate}
-                className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:border-[#CF9030] outline-none text-base touch-target"
+                className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white focus:border-[#4A8FA8] outline-none text-base touch-target"
               />
 
               {isValidIsoDate(tempDate) && (
@@ -210,7 +210,7 @@ export default function DatePicker({
                   className={`mt-3 rounded-xl p-3 text-sm ${
                     previewKnee?.isGymDay
                       ? "bg-[#3F6B40]/10 text-[#3F6B40]"
-                      : "bg-[#CF9030]/10 text-[#CF9030]"
+                      : "bg-[#4A8FA8]/10 text-[#4A8FA8]"
                   }`}
                 >
                   <strong>{formatLongDate(tempDate)}</strong>
@@ -229,7 +229,7 @@ export default function DatePicker({
               <button
                 type="button"
                 onClick={() => handleDateSelect(tempDate)}
-                className="flex-1 bg-[#CF9030] text-white font-semibold py-3 rounded-xl touch-target text-sm"
+                className="flex-1 bg-[#4A8FA8] text-white font-semibold py-3 rounded-xl touch-target text-sm"
               >
                 View this day
               </button>

@@ -15,7 +15,7 @@ export default function HelpPage() {
       {/* Header */}
       <div className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A] sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link href="/today" className="inline-flex items-center gap-2 text-[#CF9030] hover:opacity-70 mb-3">
+          <Link href="/today" className="inline-flex items-center gap-2 text-[#4A8FA8] hover:opacity-70 mb-3">
             <span>←</span>
             <span className="text-sm font-medium">Back</span>
           </Link>
@@ -28,7 +28,7 @@ export default function HelpPage() {
       <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Why Install Section */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-[#CF9030]/10 to-[#EF9D8C]/10 dark:from-[#CF9030]/20 dark:to-[#EF9D8C]/20 rounded-2xl p-6 border border-[#CF9030]/20 dark:border-[#CF9030]/30">
+          <div className="bg-gradient-to-r from-[#4A8FA8]/10 to-[#9DBFD0]/10 dark:from-[#4A8FA8]/20 dark:to-[#9DBFD0]/20 rounded-2xl p-6 border border-[#4A8FA8]/20 dark:border-[#4A8FA8]/30">
             <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-3 flex items-center gap-2">
               <span className="text-2xl">📱</span>
               Install as an App
@@ -63,7 +63,7 @@ export default function HelpPage() {
             onClick={() => toggleSection("ios")}
             className={`w-full bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 border transition-all ${
               expandedSection === "ios"
-                ? "border-[#CF9030]/50 dark:border-[#CF9030]/50"
+                ? "border-[#4A8FA8]/50 dark:border-[#4A8FA8]/50"
                 : "border-[#EDE8DC] dark:border-[#38383A] hover:border-[#EDE8DC] dark:hover:border-[#38383A]"
             }`}
           >
@@ -85,7 +85,7 @@ export default function HelpPage() {
             <div className="bg-white dark:bg-[#1C1C1E] border border-t-0 border-[#E5E5EA] dark:border-[#38383A] rounded-b-2xl p-6 space-y-6">
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">1</div>
+                  <div className="text-2xl font-bold text-[#4A8FA8] flex-shrink-0 w-8 text-center">1</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-1">Open Health Tracker in Safari</p>
                     <p className="text-sm text-[#8E8E93]">Make sure you're viewing this page in Safari (not Chrome or another browser)</p>
@@ -93,7 +93,7 @@ export default function HelpPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">2</div>
+                  <div className="text-2xl font-bold text-[#4A8FA8] flex-shrink-0 w-8 text-center">2</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Tap the Share button</p>
                     <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
@@ -103,7 +103,7 @@ export default function HelpPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">3</div>
+                  <div className="text-2xl font-bold text-[#4A8FA8] flex-shrink-0 w-8 text-center">3</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Scroll and tap "Add to Home Screen"</p>
                     <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
@@ -113,7 +113,7 @@ export default function HelpPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">4</div>
+                  <div className="text-2xl font-bold text-[#4A8FA8] flex-shrink-0 w-8 text-center">4</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Choose name (optional) and tap "Add"</p>
                     <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
@@ -123,7 +123,7 @@ export default function HelpPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">5</div>
+                  <div className="text-2xl font-bold text-[#4A8FA8] flex-shrink-0 w-8 text-center">5</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white">Done! 🎉</p>
                     <p className="text-sm text-[#8E8E93] mt-1">Look for Health Tracker on your home screen. Tap it to launch the app anytime.</p>
@@ -132,8 +132,8 @@ export default function HelpPage() {
               </div>
 
               {/* iOS Tip */}
-              <div className="bg-[#CF9030]/5 dark:bg-[#CF9030]/10 border border-[#CF9030]/20 rounded-lg p-4">
-                <p className="text-sm text-[#CF9030] font-medium mb-1">💡 Tip</p>
+              <div className="bg-[#4A8FA8]/5 dark:bg-[#4A8FA8]/10 border border-[#4A8FA8]/20 rounded-lg p-4">
+                <p className="text-sm text-[#4A8FA8] font-medium mb-1">💡 Tip</p>
                 <p className="text-sm text-[#8E8E93]">
                   Not seeing "Add to Home Screen"? Make sure you're using Safari. Chrome and other browsers work differently on iOS.
                 </p>
@@ -286,11 +286,11 @@ export default function HelpPage() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-8 bg-gradient-to-r from-[#B07828] to-[#CF9030] rounded-2xl p-6 text-center">
+        <div className="mt-8 bg-gradient-to-r from-[#38788F] to-[#4A8FA8] rounded-2xl p-6 text-center">
           <p className="text-white font-medium mb-3">Ready to get started?</p>
           <Link
             href="/today"
-            className="inline-block bg-white text-[#CF9030] font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all"
+            className="inline-block bg-white text-[#4A8FA8] font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all"
           >
             Go to Workouts
           </Link>

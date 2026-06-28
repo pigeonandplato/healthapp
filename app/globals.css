@@ -15,12 +15,12 @@
   --health-purple: #AF52DE;
 
   /* Company Brand Palette */
-  --brand-salmon: #EF9D8C;   /* P. blob — warm salmon */
-  --brand-amber: #CF9030;    /* E. blob — golden amber */
-  --brand-amber-dark: #B07828; /* darker amber for gradients */
-  --brand-sky: #9DBFD0;      /* A. blob — powder blue */
-  --brand-cream: #EDE8C4;    /* G. blob — warm cream */
-  --brand-sage: #87A87C;     /* sage green */
+  --brand-sky-light: #9DBFD0;  /* A. blob — soft sky blue (tints, gradient starts) */
+  --brand-sky: #4A8FA8;        /* primary blue (CTAs, active states, progress bars) */
+  --brand-sky-dark: #38788F;   /* dark blue (hovers, gradient ends) */
+  --brand-cream: #EDE8DC;      /* G. blob — warm cream (borders, secondary bg) */
+  --brand-sage: #3F6B40;       /* deep sage green (completion states, done indicators) */
+  --brand-sage-light: #87A87C; /* light sage (accents) */
 
   /* Neutrals - Clean & Minimal */
   --background: #FDFAF6;

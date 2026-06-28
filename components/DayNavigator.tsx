@@ -56,7 +56,7 @@ export default function DayNavigator({
             {formatShortDate(selectedDate)}
           </p>
           <p className="text-xs text-[#8E8E93] truncate">{formatLongDate(selectedDate)}</p>
-          {subtitle && <p className="text-xs text-[#CF9030] font-medium mt-0.5 truncate">{subtitle}</p>}
+          {subtitle && <p className="text-xs text-[#4A8FA8] font-medium mt-0.5 truncate">{subtitle}</p>}
         </div>
 
         <button
@@ -75,7 +75,7 @@ export default function DayNavigator({
           <button
             type="button"
             onClick={() => onDateChange(today)}
-            className="px-3 py-2 rounded-lg text-xs font-bold bg-[#CF9030] text-white touch-target"
+            className="px-3 py-2 rounded-lg text-xs font-bold bg-[#4A8FA8] text-white touch-target"
           >
             Jump to today
           </button>
@@ -85,14 +85,14 @@ export default function DayNavigator({
             <button
               type="button"
               onClick={() => onDateChange(prevTrainingDate(selectedDate, program))}
-              className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#CF9030]/10 text-[#CF9030] touch-target"
+              className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#4A8FA8]/10 text-[#4A8FA8] touch-target"
             >
               ← Prev workout day
             </button>
             <button
               type="button"
               onClick={() => onDateChange(nextTrainingDate(selectedDate, program))}
-              className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#CF9030]/10 text-[#CF9030] touch-target"
+              className="px-3 py-2 rounded-lg text-xs font-semibold bg-[#4A8FA8]/10 text-[#4A8FA8] touch-target"
             >
               Next workout day →
             </button>

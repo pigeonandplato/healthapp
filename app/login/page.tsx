@@ -81,7 +81,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -107,7 +107,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] focus:border-[#CF9030] focus:ring-2 focus:ring-[#CF9030]/20 outline-none transition text-[#1C1C1E]"
+                className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] focus:border-[#4A8FA8] focus:ring-2 focus:ring-[#4A8FA8]/20 outline-none transition text-[#1C1C1E]"
                 placeholder="you@example.com"
                 required
               />
@@ -122,7 +122,7 @@ export default function LoginPage() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] focus:border-[#CF9030] focus:ring-2 focus:ring-[#CF9030]/20 outline-none transition text-[#1C1C1E]"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] focus:border-[#4A8FA8] focus:ring-2 focus:ring-[#4A8FA8]/20 outline-none transition text-[#1C1C1E]"
                   placeholder="••••••••"
                   required
                   minLength={6}
@@ -145,7 +145,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -174,7 +174,7 @@ export default function LoginPage() {
                   setError("");
                   setMessage("");
                 }}
-                className="block w-full text-[#CF9030] hover:text-[#B07828] font-medium transition text-sm"
+                className="block w-full text-[#4A8FA8] hover:text-[#38788F] font-medium transition text-sm"
               >
                 Forgot password?
               </button>
@@ -187,7 +187,7 @@ export default function LoginPage() {
                 setError("");
                 setMessage("");
               }}
-              className="text-[#CF9030] hover:text-[#B07828] font-medium transition text-sm"
+              className="text-[#4A8FA8] hover:text-[#38788F] font-medium transition text-sm"
             >
               {isSignUp
                 ? "Already have an account? Sign in"

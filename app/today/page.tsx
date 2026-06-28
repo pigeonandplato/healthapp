@@ -379,7 +379,7 @@ function TodayPageContent() {
               <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">NEXT WORKOUT</h3>
               <button
                 onClick={() => setSelectedDate(nextDateStr)}
-                className="w-full bg-gradient-to-r from-[#B07828] to-[#CF9030] rounded-xl p-4 text-left text-white hover:opacity-90 transition-opacity"
+                className="w-full bg-gradient-to-r from-[#38788F] to-[#4A8FA8] rounded-xl p-4 text-left text-white hover:opacity-90 transition-opacity"
               >
                 <div className="flex items-center justify-between">
                   <div className="font-bold text-lg">{nextDay.day}</div>
@@ -408,7 +408,7 @@ function TodayPageContent() {
                   <button
                     key={b.d}
                     onClick={() => jumpToWeekday(b.d)}
-                    className="bg-[#EDE8DC] dark:bg-[#2C2C2E] border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl p-3 text-center hover:border-[#CF9030] transition-colors"
+                    className="bg-[#EDE8DC] dark:bg-[#2C2C2E] border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl p-3 text-center hover:border-[#4A8FA8] transition-colors"
                   >
                     <div className="text-xl mb-1">{b.emoji}</div>
                     <div className="text-xs font-bold text-gray-700 dark:text-gray-300">{b.label}</div>
@@ -434,7 +434,7 @@ function TodayPageContent() {
             <div className="space-y-3">
               <Link
                 href="/program"
-                className="block w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-3 rounded-xl transition-all active:scale-95"
+                className="block w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold py-3 rounded-xl transition-all active:scale-95"
               >
                 Choose a Program
               </Link>
@@ -448,7 +448,7 @@ function TodayPageContent() {
 
             <div className="mt-6 pt-4 border-t border-[#E5E5EA] dark:border-[#38383A]">
               <p className="text-xs text-[#8E8E93]">
-                First time? Check out the <Link href="/help" className="text-[#CF9030] hover:underline font-medium">Help guide</Link>
+                First time? Check out the <Link href="/help" className="text-[#4A8FA8] hover:underline font-medium">Help guide</Link>
               </p>
             </div>
           </div>
@@ -513,7 +513,7 @@ function TodayPageContent() {
                   </>
                 )}
                 {!isToday && (
-                  <span className="ml-2 text-xs bg-[#CF9030]/20 text-[#CF9030] px-2 py-0.5 rounded-full font-medium">
+                  <span className="ml-2 text-xs bg-[#4A8FA8]/20 text-[#4A8FA8] px-2 py-0.5 rounded-full font-medium">
                     {isPastDay ? "Past" : isFutureDay ? "Future" : ""}
                   </span>
                 )}
@@ -530,9 +530,9 @@ function TodayPageContent() {
           <div className="mb-3">
             <Link
               href="/program"
-              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#3F6B40]/10 dark:bg-[#3F6B40]/20 rounded-full text-sm font-medium text-[#3F6B40] hover:bg-[#3F6B40]/20 transition-colors max-w-full"
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#4A8FA8]/10 dark:bg-[#4A8FA8]/20 rounded-full text-sm font-medium text-[#4A8FA8] hover:bg-[#4A8FA8]/20 transition-colors max-w-full"
             >
-              <span className="w-2 h-2 rounded-full bg-[#3F6B40] flex-shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-[#4A8FA8] flex-shrink-0" />
               <span className="truncate">{programBadge}</span>
               <svg className="w-3 h-3 opacity-60 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
@@ -555,7 +555,7 @@ function TodayPageContent() {
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="w-7 h-7 rounded-xl bg-[#CF9030]/10 flex items-center justify-center text-sm font-black text-[#CF9030]">
+                  <span className="w-7 h-7 rounded-xl bg-[#4A8FA8]/10 flex items-center justify-center text-sm font-black text-[#4A8FA8]">
                     {commitment.level.level}
                   </span>
                   <div className="leading-tight">
@@ -567,7 +567,7 @@ function TodayPageContent() {
               </div>
               <div className="w-full h-2 rounded-full bg-[#EDE8DC] dark:bg-[#38383A] overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-[#CF9030] transition-all duration-700"
+                  className="h-full rounded-full bg-[#4A8FA8] transition-all duration-700"
                   style={{ width: `${commitment.level.progressPct}%` }}
                 />
               </div>
@@ -577,7 +577,7 @@ function TodayPageContent() {
           <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A]">
             <div className="grid grid-cols-3 divide-x divide-[#EDE8DC] dark:divide-[#38383A]">
               <div className="py-3 text-center">
-                <p className="text-xl font-bold text-[#CF9030]">{streak}</p>
+                <p className="text-xl font-bold text-[#4A8FA8]">{streak}</p>
                 <p className="text-[10px] font-medium text-[#8E8E93] uppercase tracking-wide mt-0.5">Streak</p>
               </div>
               <div className="py-3 text-center">
@@ -635,7 +635,7 @@ function TodayPageContent() {
         {activeProgram === "adhd" && (
           <Link
             href="/habits"
-            className="mt-6 flex items-center gap-3 bg-[#CF9030]/8 hover:bg-[#CF9030]/12 rounded-2xl p-4 transition-colors"
+            className="mt-6 flex items-center gap-3 bg-[#4A8FA8]/8 hover:bg-[#4A8FA8]/12 rounded-2xl p-4 transition-colors"
           >
             <span className="text-2xl">💡</span>
             <div className="flex-1">
@@ -644,21 +644,21 @@ function TodayPageContent() {
                 Eating out, scrolling, skipping rehab? Get an instant intervention in Habit Coach.
               </p>
             </div>
-            <span className="text-[#CF9030]">→</span>
+            <span className="text-[#4A8FA8]">→</span>
           </Link>
         )}
 
         {activeProgram === "adhd" && (
           <Link
             href="/settings"
-            className="mt-3 flex items-center gap-3 bg-[#CF9030]/10 hover:bg-[#CF9030]/15 rounded-2xl p-4 transition-colors"
+            className="mt-3 flex items-center gap-3 bg-[#4A8FA8]/10 hover:bg-[#4A8FA8]/15 rounded-2xl p-4 transition-colors"
           >
             <span className="text-2xl">⏰</span>
             <div className="flex-1">
               <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">Set break reminders</p>
               <p className="text-xs text-[#8E8E93]">Get nudged for each break so you never forget · in Settings</p>
             </div>
-            <span className="text-[#CF9030]">→</span>
+            <span className="text-[#4A8FA8]">→</span>
           </Link>
         )}
 
@@ -666,7 +666,7 @@ function TodayPageContent() {
           {!showVideoCard && !youtubeVideo && !isEditingVideo ? (
             <button
               onClick={() => setShowVideoCard(true)}
-              className="text-sm text-[#8E8E93] hover:text-[#CF9030] transition-colors"
+              className="text-sm text-[#8E8E93] hover:text-[#4A8FA8] transition-colors"
             >
               + Add a motivation video
             </button>
@@ -677,7 +677,7 @@ function TodayPageContent() {
                 {youtubeVideo && !isEditingVideo && (
                   <button
                     onClick={() => setIsEditingVideo(true)}
-                    className="text-xs text-[#CF9030] font-medium px-3 py-1 rounded-lg hover:bg-[#CF9030]/10 transition-all"
+                    className="text-xs text-[#4A8FA8] font-medium px-3 py-1 rounded-lg hover:bg-[#4A8FA8]/10 transition-all"
                   >
                     Edit
                   </button>

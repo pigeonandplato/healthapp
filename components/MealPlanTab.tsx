@@ -189,9 +189,9 @@ function MacroSummary({ totals }: { totals: MealMacros }) {
     <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
       <p className="text-xs text-[#8E8E93] mb-3">Daily macros · target 160–180g protein</p>
       <div className="grid grid-cols-4 gap-2 text-center">
-        <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#EF9D8C" />
+        <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#9DBFD0" />
         <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#3F6B40" />
-        <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#CF9030" />
+        <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#4A8FA8" />
         <MacroPill label="Cal" value={totals.calories} target={2200} unit="" color="#9DBFD0" />
       </div>
     </div>
@@ -246,8 +246,8 @@ function ComboMealBlock({
     <MealBlock title={title} emoji={emoji} subtitle={subtitle}>
       {/* Today's suggestion banner */}
       {meal?.protein && (
-        <div className="bg-[#CF9030]/8 border border-[#CF9030]/20 rounded-xl p-3 mb-1">
-          <p className="text-[10px] font-semibold text-[#CF9030] uppercase mb-1">Today&apos;s suggestion</p>
+        <div className="bg-[#4A8FA8]/8 border border-[#4A8FA8]/20 rounded-xl p-3 mb-1">
+          <p className="text-[10px] font-semibold text-[#4A8FA8] uppercase mb-1">Today&apos;s suggestion</p>
           <p className="text-sm font-medium text-[#1C1C1E] dark:text-white">
             {meal.protein.name}
           </p>

@@ -178,11 +178,11 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
           onChange={(e) => handleTextChange(e.target.value)}
           placeholder={'{\n  "name": "My Program",\n  "weeks": [ ... ]\n}'}
           rows={10}
-          className="w-full rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] p-4 text-sm font-mono text-[#1C1C1E] dark:text-white placeholder:text-[#8E8E93] focus:border-[#CF9030] outline-none"
+          className="w-full rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-white dark:bg-[#2C2C2E] p-4 text-sm font-mono text-[#1C1C1E] dark:text-white placeholder:text-[#8E8E93] focus:border-[#4A8FA8] outline-none"
         />
       </div>
 
-      <label className="block w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] cursor-pointer text-center text-sm">
+      <label className="block w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] cursor-pointer text-center text-sm">
         Or upload .json file
         <input
           ref={fileInputRef}
@@ -195,7 +195,7 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
 
       {parsing && (
         <div className="text-center py-2">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#CF9030] mx-auto mb-2" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#4A8FA8] mx-auto mb-2" />
           <p className="text-sm text-[#8E8E93]">Checking JSON…</p>
         </div>
       )}
@@ -266,7 +266,7 @@ export default function CustomProgramImport({ onImported }: CustomProgramImportP
             type="button"
             onClick={handleImport}
             disabled={parsing}
-            className="w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {parsing ? "Importing…" : "Import program"}
           </button>

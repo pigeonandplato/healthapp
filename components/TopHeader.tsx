@@ -137,7 +137,7 @@ export default function TopHeader() {
           {/* Menu Header */}
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#B07828] to-[#EF9D8C] flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#38788F] to-[#9DBFD0] flex items-center justify-center shadow-lg">
                 <span className="text-2xl">💪</span>
               </div>
               <div>
@@ -173,7 +173,7 @@ export default function TopHeader() {
                   href={item.href}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? "bg-[#CF9030]/10 text-[#CF9030]"
+                      ? "bg-[#4A8FA8]/10 text-[#4A8FA8]"
                       : "text-[#1C1C1E] dark:text-white hover:bg-[#F2F2F7] dark:hover:bg-[#2C2C2E]"
                   }`}
                 >

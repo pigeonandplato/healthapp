@@ -137,7 +137,7 @@ export default function BottomNav() {
               href={item.href}
               className={`flex flex-col items-center justify-center py-1 px-1 sm:px-2 rounded-xl transition-all duration-200 flex-1 min-w-0 max-w-[16.66%] ${
                 isActive
-                  ? "text-[#3F6B40]"
+                  ? "text-[#4A8FA8]"
                   : "text-[#8E8E93] hover:text-[#1C1C1E] dark:hover:text-white"
               }`}
             >

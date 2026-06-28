@@ -140,7 +140,7 @@ export default function HabitsPage() {
   return (
     <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-28">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] text-white">
+      <section className="bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] text-white">
         <div className="max-w-2xl mx-auto px-4 py-6">
           <p className="text-sm font-medium text-white/90 uppercase tracking-wide mb-1">Habit Coach</p>
           <h1 className="text-2xl font-bold leading-tight mb-2">Beat the urge in the moment</h1>
@@ -186,7 +186,7 @@ export default function HabitsPage() {
               if (e.key === "Enter") handleHelpNow();
             }}
             placeholder={kind === "break" ? "e.g. about to order pizza" : "e.g. cook dinner tonight"}
-            className="w-full rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-[#FAF7F2] dark:bg-[#2C2C2E] px-4 py-3.5 text-base text-[#1C1C1E] dark:text-white placeholder-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#CF9030] mb-3"
+            className="w-full rounded-xl border border-[#EDE8DC] dark:border-[#38383A] bg-[#FAF7F2] dark:bg-[#2C2C2E] px-4 py-3.5 text-base text-[#1C1C1E] dark:text-white placeholder-[#8E8E93] focus:outline-none focus:ring-2 focus:ring-[#4A8FA8] mb-3"
           />
 
           {/* Quick-add chips */}
@@ -195,7 +195,7 @@ export default function HabitsPage() {
               <button
                 key={chip.label}
                 onClick={() => setLabel(chip.label)}
-                className="px-3 py-2 rounded-full bg-[#EDE8DC] dark:bg-[#2C2C2E] text-sm font-medium text-[#1C1C1E] dark:text-white border border-transparent hover:border-[#CF9030] transition-colors active:scale-95"
+                className="px-3 py-2 rounded-full bg-[#EDE8DC] dark:bg-[#2C2C2E] text-sm font-medium text-[#1C1C1E] dark:text-white border border-transparent hover:border-[#4A8FA8] transition-colors active:scale-95"
               >
                 <span className="mr-1">{chip.emoji}</span>
                 {chip.label}
@@ -207,7 +207,7 @@ export default function HabitsPage() {
           <button
             onClick={handleHelpNow}
             disabled={!label.trim()}
-            className="w-full bg-[#CF9030] hover:bg-[#B07828] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-[0.98] shadow-lg mb-2"
+            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-4 rounded-2xl text-lg transition-all active:scale-[0.98] shadow-lg mb-2"
           >
             ⚡ Help me now
           </button>
@@ -239,7 +239,7 @@ export default function HabitsPage() {
               <div className="text-4xl mb-2">💡</div>
               <p className="text-sm text-[#8E8E93]">
                 No habits yet. Add one above — or when an urge hits, type it and tap{" "}
-                <span className="font-semibold text-[#CF9030]">Help me now</span>.
+                <span className="font-semibold text-[#4A8FA8]">Help me now</span>.
               </p>
             </div>
           ) : (
@@ -285,7 +285,7 @@ function HabitCard({
             <span
               className={`text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full ${
                 isBreak
-                  ? "bg-[#EF9D8C]/20 text-[#B07828]"
+                  ? "bg-[#9DBFD0]/20 text-[#38788F]"
                   : "bg-[#87A87C]/20 text-[#87A87C]"
               }`}
             >
@@ -301,7 +301,7 @@ function HabitCard({
         <button
           onClick={onDelete}
           aria-label="Delete habit"
-          className="flex-shrink-0 text-[#C7C7CC] hover:text-[#EF9D8C] transition-colors p-1"
+          className="flex-shrink-0 text-[#C7C7CC] hover:text-[#9DBFD0] transition-colors p-1"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
@@ -354,7 +354,7 @@ function CoachPanel({
 
   return (
     <div className="rounded-3xl border-2 border-[#5856D6]/30 bg-white dark:bg-[#1C1C1E] shadow-elevated overflow-hidden animate-fade-in">
-      <div className="bg-gradient-to-r from-[#B07828] to-[#CF9030] text-white px-5 py-4 flex items-start justify-between gap-3">
+      <div className="bg-gradient-to-r from-[#38788F] to-[#4A8FA8] text-white px-5 py-4 flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
           <p className="text-[11px] uppercase tracking-wide text-white/80 mb-1 truncate">Coaching · {label}</p>
           <h3 className="text-lg font-black leading-snug">{intervention.headline}</h3>

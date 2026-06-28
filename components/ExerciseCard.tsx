@@ -294,7 +294,7 @@ export default function ExerciseCard({
       {!isCompleted && (
         <button
           onClick={handleToggleComplete}
-          className="absolute bottom-4 right-4 w-14 h-14 bg-[#CF9030] rounded-full shadow-2xl flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
+          className="absolute bottom-4 right-4 w-14 h-14 bg-[#4A8FA8] rounded-full shadow-2xl flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
           aria-label="Complete exercise"
         >
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -675,7 +675,7 @@ export default function ExerciseCard({
                     setVideoEditError("");
                   }}
                   placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] dark:border-[#38383A] focus:border-[#CF9030] focus:ring-2 focus:ring-[#CF9030]/20 outline-none transition text-[#1C1C1E] dark:text-white bg-white dark:bg-[#1C1C1E]"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] dark:border-[#38383A] focus:border-[#4A8FA8] focus:ring-2 focus:ring-[#4A8FA8]/20 outline-none transition text-[#1C1C1E] dark:text-white bg-white dark:bg-[#1C1C1E]"
                 />
                 <p className="text-xs text-[#8E8E93] mt-2">
                   Enter a YouTube URL or video ID. Examples: youtube.com/watch?v=..., youtu.be/..., or just the video ID
@@ -692,7 +692,7 @@ export default function ExerciseCard({
                 <button
                   onClick={handleSaveVideo}
                   disabled={savingVideo}
-                  className="flex-1 bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {savingVideo ? "Saving..." : "Save Video"}
                 </button>

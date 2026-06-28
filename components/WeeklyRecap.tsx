@@ -55,7 +55,7 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
     <div className="rounded-2xl bg-white dark:bg-[#1C1C1E] border border-[#EDE8DC] dark:border-[#38383A] p-4 shadow-sm">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-bold text-[#1C1C1E] dark:text-white">This Week</h3>
-        <span className="text-sm font-bold text-[#CF9030]">{activeThisWeek}/7 days</span>
+        <span className="text-sm font-bold text-[#4A8FA8]">{activeThisWeek}/7 days</span>
       </div>
 
       <div className="flex items-center justify-between gap-1.5 mb-3">
@@ -69,7 +69,7 @@ export default function WeeklyRecap({ completedDates, streak }: WeeklyRecapProps
                   : d.isFuture
                     ? "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
                     : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#C7C7CC] dark:text-[#48484A]"
-              } ${d.isToday ? "ring-2 ring-[#CF9030]" : ""}`}
+              } ${d.isToday ? "ring-2 ring-[#4A8FA8]" : ""}`}
             >
               {d.completed ? "✓" : ""}
             </div>

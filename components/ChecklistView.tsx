@@ -46,11 +46,11 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
       )}
       {exercise.commonMistakes.length > 0 && (
         <div>
-          <p className="text-[10px] font-semibold text-[#CF9030] uppercase tracking-wide mb-2">Watch out for</p>
+          <p className="text-[10px] font-semibold text-[#4A8FA8] uppercase tracking-wide mb-2">Watch out for</p>
           <ul className="space-y-1">
             {exercise.commonMistakes.map((m, i) => (
               <li key={i} className="flex gap-2 text-[#3A3A3C] dark:text-[#D1D1D6]">
-                <span className="text-[#CF9030] flex-shrink-0 mt-0.5">·</span>
+                <span className="text-[#4A8FA8] flex-shrink-0 mt-0.5">·</span>
                 <span>{m}</span>
               </li>
             ))}
@@ -58,12 +58,12 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
         </div>
       )}
       {exercise.stopConditions.length > 0 && (
-        <div className="bg-[#EF9D8C]/10 border border-[#EF9D8C]/30 rounded-xl p-3">
-          <p className="text-[10px] font-semibold text-[#EF9D8C] uppercase tracking-wide mb-1.5">Stop if</p>
+        <div className="bg-[#9DBFD0]/10 border border-[#9DBFD0]/30 rounded-xl p-3">
+          <p className="text-[10px] font-semibold text-[#9DBFD0] uppercase tracking-wide mb-1.5">Stop if</p>
           <ul className="space-y-1">
             {exercise.stopConditions.map((s, i) => (
               <li key={i} className="text-sm text-[#3A3A3C] dark:text-[#D1D1D6] flex gap-2">
-                <span className="text-[#EF9D8C] flex-shrink-0">·</span>
+                <span className="text-[#9DBFD0] flex-shrink-0">·</span>
                 <span>{s}</span>
               </li>
             ))}
@@ -74,7 +74,7 @@ function ExerciseDetailPreview({ exercise, onOpenDetailView }: { exercise: Exerc
         <button
           type="button"
           onClick={onOpenDetailView}
-          className="text-xs font-semibold text-[#CF9030] flex items-center gap-1"
+          className="text-xs font-semibold text-[#4A8FA8] flex items-center gap-1"
         >
           Watch video guide
           <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
@@ -190,7 +190,7 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
                         className={`flex-shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition-all active:scale-90 ${
                           isCompleted
                             ? "bg-[#3F6B40] border-[#3F6B40]"
-                            : "border-[#C7C7CC] dark:border-[#48484A] hover:border-[#CF9030]"
+                            : "border-[#C7C7CC] dark:border-[#48484A] hover:border-[#4A8FA8]"
                         }`}
                       >
                         {isCompleted && (

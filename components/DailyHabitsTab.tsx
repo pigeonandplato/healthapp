@@ -143,7 +143,7 @@ export default function DailyHabitsTab() {
                   className={`flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                     checked
                       ? "bg-[#3F6B40]/15 text-[#3F6B40]"
-                      : "bg-[#CF9030]/10 text-[#CF9030]"
+                      : "bg-[#4A8FA8]/10 text-[#4A8FA8]"
                   }`}
                 >
                   {habit.target_time}

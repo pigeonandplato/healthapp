@@ -185,7 +185,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
   return (
     <div className="space-y-5 pb-8">
       {/* Daily Wins hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] text-white p-6 shadow-elevated">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] text-white p-6 shadow-elevated">
         <div className="flex items-center gap-5">
           <DailyRing completed={completedMissions} total={missions.length} />
           <div className="flex-1">
@@ -253,7 +253,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
 
               <div className="w-full bg-[#EDE8DC] dark:bg-[#38383A] rounded-full h-2 overflow-hidden mb-4">
                 <div
-                  className={`h-full rounded-full transition-all duration-500 ${complete ? "bg-[#3F6B40]" : "bg-[#CF9030]"}`}
+                  className={`h-full rounded-full transition-all duration-500 ${complete ? "bg-[#3F6B40]" : "bg-[#4A8FA8]"}`}
                   style={{ width: `${total > 0 ? (done / total) * 100 : 0}%` }}
                 />
               </div>
@@ -264,7 +264,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
                   className={`flex-1 font-semibold py-3 rounded-xl transition-all active:scale-[0.98] ${
                     complete
                       ? "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-white"
-                      : "bg-[#CF9030] hover:bg-[#B07828] text-white"
+                      : "bg-[#4A8FA8] hover:bg-[#38788F] text-white"
                   }`}
                 >
                   {complete ? "Review" : started ? "Continue →" : "Start →"}
@@ -322,7 +322,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
               <ul className="space-y-2 mb-5 bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-2xl p-4">
                 {minimumChecklist.map((line, i) => (
                   <li key={i} className="text-sm text-[#1C1C1E] dark:text-white flex gap-2">
-                    <span className="text-[#CF9030]">•</span>
+                    <span className="text-[#4A8FA8]">•</span>
                     <span>{line}</span>
                   </li>
                 ))}
@@ -462,7 +462,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
               completions[e.id]
                 ? "bg-[#3F6B40]"
                 : i === idx
-                  ? "bg-[#CF9030]"
+                  ? "bg-[#4A8FA8]"
                   : "bg-[#EDE8DC] dark:bg-[#38383A]"
             }`}
             aria-label={`Go to exercise ${i + 1}`}
@@ -485,7 +485,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
         )}
 
         <h2 className="text-3xl font-black text-[#1C1C1E] dark:text-white mb-2">{exercise.name}</h2>
-        <div className="inline-block text-sm font-bold text-[#CF9030] bg-[#CF9030]/10 px-3 py-1.5 rounded-full mb-4">
+        <div className="inline-block text-sm font-bold text-[#4A8FA8] bg-[#4A8FA8]/10 px-3 py-1.5 rounded-full mb-4">
           {formatPrescription(exercise)}
         </div>
 
@@ -501,7 +501,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
           <div className="mb-4">
             <button
               onClick={() => setShowHow((s) => !s)}
-              className="flex items-center gap-2 text-[#CF9030] font-semibold text-sm mb-2"
+              className="flex items-center gap-2 text-[#4A8FA8] font-semibold text-sm mb-2"
             >
               {showHow ? "Hide how-to" : "How to do it"}
               <svg className={`w-4 h-4 transition-transform ${showHow ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -537,7 +537,7 @@ function FocusSession({ mission, completions, onToggle, onClose, onMissionComple
         ) : (
           <button
             onClick={handleDone}
-            className="w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-bold py-4 rounded-2xl text-lg active:scale-[0.98] transition-all shadow-lg"
+            className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-bold py-4 rounded-2xl text-lg active:scale-[0.98] transition-all shadow-lg"
           >
             Mark done ✓
           </button>
@@ -613,7 +613,7 @@ function HoldTimer({ seconds, label }: { seconds: number; label: string }) {
       </div>
       <div className="w-full bg-white/60 dark:bg-[#38383A] rounded-full h-2 overflow-hidden mb-3">
         <div
-          className={`h-full rounded-full transition-all duration-1000 ease-linear ${finished ? "bg-[#3F6B40]" : "bg-[#CF9030]"}`}
+          className={`h-full rounded-full transition-all duration-1000 ease-linear ${finished ? "bg-[#3F6B40]" : "bg-[#4A8FA8]"}`}
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -621,7 +621,7 @@ function HoldTimer({ seconds, label }: { seconds: number; label: string }) {
         {!finished ? (
           <button
             onClick={() => setRunning((r) => !r)}
-            className="flex-1 bg-[#CF9030] hover:brightness-95 text-white font-semibold py-2.5 rounded-xl transition-all active:scale-[0.98] text-sm"
+            className="flex-1 bg-[#4A8FA8] hover:brightness-95 text-white font-semibold py-2.5 rounded-xl transition-all active:scale-[0.98] text-sm"
           >
             {running ? "⏸ Pause" : remaining === seconds ? "▶ Start timer" : "▶ Resume"}
           </button>
@@ -660,7 +660,7 @@ function Celebration({
             style={{
               left: `${Math.random() * 100}%`,
               top: `-10px`,
-              backgroundColor: ["#EF9D8C", "#CF9030", "#3F6B40", "#9DBFD0", "#B07828"][i % 5],
+              backgroundColor: ["#9DBFD0", "#4A8FA8", "#3F6B40", "#9DBFD0", "#38788F"][i % 5],
               animationDelay: `${Math.random() * 0.4}s`,
               animationDuration: `${1 + Math.random()}s`,
             }}
@@ -673,7 +673,7 @@ function Celebration({
         <p className="text-[#8E8E93] mb-6">{subtitle}</p>
         <button
           onClick={onClose}
-          className="w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98]"
+          className="w-full bg-[#4A8FA8] hover:bg-[#38788F] text-white font-bold py-3.5 rounded-xl transition-all active:scale-[0.98]"
         >
           Let&apos;s go 💪
         </button>

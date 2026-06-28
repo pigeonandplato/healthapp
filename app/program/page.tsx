@@ -83,7 +83,7 @@ export default function ProgramPage() {
 
   return (
     <div className="bg-[#FDFAF6] dark:bg-black">
-      <section className="bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] text-white">
+      <section className="bg-gradient-to-br from-[#9DBFD0] to-[#4A8FA8] text-white">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <h2 className="text-2xl font-bold mb-2">Your Programs 🎯</h2>
           <p className="text-white/90 text-sm">Select which program to track today</p>
@@ -125,7 +125,7 @@ export default function ProgramPage() {
         </div>
 
         {/* Create Custom Program */}
-        <div className="mb-8 bg-gradient-to-br from-[#CF9030]/10 to-[#EF9D8C]/10 dark:from-[#CF9030]/20 dark:to-[#EF9D8C]/20 rounded-2xl p-6 border-2 border-dashed border-[#CF9030]/40 dark:border-[#CF9030]/60">
+        <div className="mb-8 bg-gradient-to-br from-[#4A8FA8]/10 to-[#9DBFD0]/10 dark:from-[#4A8FA8]/20 dark:to-[#9DBFD0]/20 rounded-2xl p-6 border-2 border-dashed border-[#4A8FA8]/40 dark:border-[#4A8FA8]/60">
           <div className="flex items-start gap-4">
             <div className="text-3xl flex-shrink-0">🛠️</div>
             <div className="flex-1 min-w-0">
@@ -137,7 +137,7 @@ export default function ProgramPage() {
               </p>
               <Link
                 href="/settings#generate-with-ai"
-                className="inline-block bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold px-4 py-2 rounded-lg transition-all active:scale-95"
+                className="inline-block bg-[#4A8FA8] hover:bg-[#38788F] text-white font-semibold px-4 py-2 rounded-lg transition-all active:scale-95"
               >
                 Go to Generate with AI →
               </Link>

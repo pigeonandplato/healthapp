@@ -15,17 +15,17 @@ export default function StatsCard({
 }: StatsCardProps) {
   // Map to company brand palette
   const colorClasses = {
-    pink: "text-[#EF9D8C]",    // company salmon
+    pink: "text-[#9DBFD0]",    // company salmon
     green: "text-[#87A87C]",   // company sage
     purple: "text-[#9DBFD0]",  // company sky blue
-    orange: "text-[#CF9030]",  // company amber
+    orange: "text-[#4A8FA8]",  // company amber
   };
 
   const bgClasses = {
-    pink: "bg-[#EF9D8C]/10",
+    pink: "bg-[#9DBFD0]/10",
     green: "bg-[#87A87C]/10",
     purple: "bg-[#9DBFD0]/15",
-    orange: "bg-[#CF9030]/10",
+    orange: "bg-[#4A8FA8]/10",
   };
 
   return (

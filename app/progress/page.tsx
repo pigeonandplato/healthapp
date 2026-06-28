@@ -71,7 +71,7 @@ export default function ProgressPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#CF9030] mx-auto mb-3" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#4A8FA8] mx-auto mb-3" />
           <p className="text-[#8E8E93] text-sm">Loading progress...</p>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default function ProgressPage() {
           </div>
           <div className="w-full h-2.5 rounded-full bg-[#EDE8DC] dark:bg-[#38383A] overflow-hidden">
             <div
-              className="h-full rounded-full bg-[#CF9030] transition-all duration-700"
+              className="h-full rounded-full bg-[#4A8FA8] transition-all duration-700"
               style={{ width: `${commitment.level.progressPct}%` }}
             />
           </div>
@@ -329,7 +329,7 @@ function MonthlyChart({ data }: { data: ProgressStats["monthlyStats"] }) {
             </span>
             <div className="flex-1 h-2.5 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#EF9D8C] to-[#CF9030] rounded-full"
+                className="h-full bg-gradient-to-r from-[#9DBFD0] to-[#4A8FA8] rounded-full"
                 style={{ width: `${(month.workoutsCompleted / max) * 100}%` }}
               />
             </div>
