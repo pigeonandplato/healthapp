@@ -493,57 +493,52 @@ function TodayPageContent() {
       <StickyProgressBar progress={todayProgress} />
 
       <section className="bg-[#FDFAF6] dark:bg-black border-b border-[#EDE8DC] dark:border-[#38383A]">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="mb-3">
-            <Link
-              href="/program"
-              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#CF9030]/10 dark:bg-[#CF9030]/20 rounded-full text-sm font-medium text-[#CF9030] hover:bg-[#CF9030]/20 transition-colors max-w-full"
-            >
-              <span className="truncate">{programBadge}</span>
-              <span className="text-xs opacity-70 flex-shrink-0">Change →</span>
-            </Link>
-          </div>
+        <div className="max-w-4xl mx-auto px-4 pt-4 pb-3">
 
-          <div className="mb-4 flex items-center justify-between gap-4">
+          {/* Big page heading */}
+          <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-1">
-                <p className="text-base text-[#8E8E93] font-medium">{todayDate}</p>
+              <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white leading-none">
+                {isToday ? "Today" : parseLocalDate(selectedDate).toLocaleDateString("en-US", { weekday: "long" })}
+              </h1>
+              <p className="text-sm text-[#8E8E93] mt-1">
+                {todayDate}
+                {programMeta && (
+                  <>
+                    {(activeProgram === "adhd" || activeProgram === "custom" || activeProgram === "chacha") &&
+                      ` · Week ${programMeta.week}`}
+                    {activeProgram === "gym" &&
+                      ` · Day ${programMeta.day}`}
+                    {activeProgram === "chacha" && programMeta.day in CHACHA_DAY_LABELS &&
+                      ` · Day ${programMeta.day} of 5`}
+                  </>
+                )}
                 {!isToday && (
-                  <span className="text-xs bg-[#FF9500] text-white px-2 py-0.5 rounded-full font-medium">
+                  <span className="ml-2 text-xs bg-[#CF9030]/20 text-[#CF9030] px-2 py-0.5 rounded-full font-medium">
                     {isPastDay ? "Past" : isFutureDay ? "Future" : ""}
                   </span>
                 )}
-              </div>
-              {programMeta && (
-                <p className="text-sm text-[#8E8E93]">
-                  {(activeProgram === "adhd" || activeProgram === "custom" || activeProgram === "chacha") &&
-                    `Week ${programMeta.week} · `}
-                  {activeProgram === "gym" && (
-                    <span>
-                      Day {programMeta.day}{" "}
-                      {programMeta.day === "A" ? "💪 Chest" : programMeta.day === "B" ? "🔙 Back + Biceps" : "🦵 Shoulders + Legs"}
-                    </span>
-                  )}
-                  {activeProgram === "chacha" && programMeta.day in CHACHA_DAY_LABELS && (
-                    <span>{CHACHA_DAY_LABELS[programMeta.day as keyof typeof CHACHA_DAY_LABELS]}</span>
-                  )}
-                  {activeProgram === "adhd" && (
-                    <span>
-                      🧠{" "}
-                      {getGymDayForDate(selectedDate).isGymDay
-                        ? "3 breaks today (incl. knee)"
-                        : "Break 1 + 3 today · knee block Mon/Wed/Fri"}
-                    </span>
-                  )}
-                  {activeProgram === "custom" && <span>Day {programMeta.day}</span>}
-                </p>
-              )}
+              </p>
             </div>
             <DatePicker
               selectedDate={selectedDate}
               onDateChange={setSelectedDate}
               showKneeDayHints={activeProgram === "adhd"}
             />
+          </div>
+
+          {/* Program pill */}
+          <div className="mb-3">
+            <Link
+              href="/program"
+              className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#3F6B40]/10 dark:bg-[#3F6B40]/20 rounded-full text-sm font-medium text-[#3F6B40] hover:bg-[#3F6B40]/20 transition-colors max-w-full"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#3F6B40] flex-shrink-0" />
+              <span className="truncate">{programBadge}</span>
+              <svg className="w-3 h-3 opacity-60 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </Link>
           </div>
 
           <DayNavigator
@@ -563,10 +558,21 @@ function TodayPageContent() {
             </Link>
           )}
 
-          <div className="grid grid-cols-3 gap-3">
-            <StatsCard value={streak} label="Streak" icon="🔥" color="orange" />
-            <StatsCard value={`${todayProgress}%`} label="Progress" icon="✓" color="green" />
-            <StatsCard value={totalMinutes} label="Minutes" icon="⏱" color="pink" />
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A]">
+            <div className="grid grid-cols-3 divide-x divide-[#EDE8DC] dark:divide-[#38383A]">
+              <div className="py-3 text-center">
+                <p className="text-xl font-bold text-[#CF9030]">{streak}</p>
+                <p className="text-[10px] font-medium text-[#8E8E93] uppercase tracking-wide mt-0.5">Streak</p>
+              </div>
+              <div className="py-3 text-center">
+                <p className="text-xl font-bold text-[#3F6B40]">{todayProgress}%</p>
+                <p className="text-[10px] font-medium text-[#8E8E93] uppercase tracking-wide mt-0.5">Today</p>
+              </div>
+              <div className="py-3 text-center">
+                <p className="text-xl font-bold text-[#9DBFD0]">{totalMinutes}</p>
+                <p className="text-[10px] font-medium text-[#8E8E93] uppercase tracking-wide mt-0.5">Mins</p>
+              </div>
+            </div>
           </div>
 
           {commitment && (

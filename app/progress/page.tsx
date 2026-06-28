@@ -71,7 +71,7 @@ export default function ProgressPage() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#FF2D55] mx-auto mb-3" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#CF9030] mx-auto mb-3" />
           <p className="text-[#8E8E93] text-sm">Loading progress...</p>
         </div>
       </div>
@@ -91,10 +91,18 @@ export default function ProgressPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F2F2F7] dark:bg-black pb-24">
-      <div className="max-w-2xl mx-auto px-4 py-5 space-y-4">
+    <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-24">
+      <div className="max-w-2xl mx-auto px-4 pt-5 pb-4">
+        {/* Page heading */}
+        <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white">Progress</h1>
+        <p className="text-sm text-[#8E8E93] mt-0.5">
+          {stats.totalWorkouts} workout{stats.totalWorkouts !== 1 ? "s" : ""} logged
+        </p>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 pb-4 space-y-3">
         {newWins.length > 0 && (
-          <div className="bg-[#FF2D55]/10 border border-[#FF2D55]/20 rounded-2xl p-4 flex items-start gap-3">
+          <div className="bg-[#3F6B40]/10 border border-[#3F6B40]/20 rounded-2xl p-4 flex items-start gap-3">
             <span className="text-2xl">{newWins[0].emoji}</span>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">
@@ -115,19 +123,39 @@ export default function ProgressPage() {
           </div>
         )}
 
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="text-center flex-shrink-0">
-              <p className="text-4xl font-bold text-[#FF2D55]">{commitment.currentStreak}</p>
-              <p className="text-[10px] text-[#8E8E93] uppercase tracking-wide">day streak</p>
-            </div>
-            <div className="flex-1 grid grid-cols-3 gap-2 text-center">
-              <MiniStat label="Workouts" value={stats.totalWorkouts} />
-              <MiniStat label="30-day" value={`${commitment.rollingConsistency}%`} />
-              <MiniStat label="Best" value={`${stats.longestStreak}d`} />
-            </div>
+        {/* 4-stat row */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A]">
+          <div className="grid grid-cols-4 divide-x divide-[#EDE8DC] dark:divide-[#38383A]">
+            <StatCell label="STREAK" value={commitment.currentStreak} />
+            <StatCell label="WORKOUTS" value={stats.totalWorkouts} />
+            <StatCell label="30-DAY" value={`${commitment.rollingConsistency}%`} />
+            <StatCell label="BEST" value={`${stats.longestStreak}d`} />
           </div>
-          <LevelBar level={commitment.level} />
+        </div>
+
+        {/* Standalone XP / Level bar */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold text-[#1C1C1E] dark:text-white">
+              Level {commitment.level.level} · <span className="text-[#8E8E93] font-normal">{commitment.level.title}</span>
+            </span>
+            <span className="text-xs text-[#8E8E93]">{commitment.level.xpToNextLevel} XP to {commitment.level.level + 1}</span>
+          </div>
+          <div className="w-full h-2.5 rounded-full bg-[#EDE8DC] dark:bg-[#38383A] overflow-hidden">
+            <div
+              className="h-full rounded-full bg-[#CF9030] transition-all duration-700"
+              style={{ width: `${commitment.level.progressPct}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Weekly bar chart — prominent */}
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] px-4 pt-4 pb-5">
+          <div className="flex items-center justify-between mb-4">
+            <p className="font-semibold text-[#1C1C1E] dark:text-white">Minutes per week</p>
+            <p className="text-xs text-[#8E8E93]">last 8 weeks</p>
+          </div>
+          <WeeklyBarChart data={stats.weeklyStats} />
         </div>
 
         <WeeklyRecap completedDates={commitment.completedDates} streak={commitment.currentStreak} />
@@ -184,6 +212,47 @@ function MiniStat({ label, value }: { label: string; value: string | number }) {
   );
 }
 
+function StatCell({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div className="py-4 text-center">
+      <p className="text-2xl font-bold text-[#1C1C1E] dark:text-white leading-none mb-1">{value}</p>
+      <p className="text-[10px] font-medium text-[#8E8E93] uppercase tracking-wider">{label}</p>
+    </div>
+  );
+}
+
+function WeeklyBarChart({ data }: { data: ProgressStats["weeklyStats"] }) {
+  if (data.length === 0) return <p className="text-[#8E8E93] text-sm text-center py-4">No data yet</p>;
+  const recent = data.slice().reverse().slice(0, 8);
+  const max = Math.max(...recent.map((d) => d.workoutsCompleted * 30), 1);
+  const lastIdx = recent.length - 1;
+  return (
+    <div className="flex items-end gap-1.5 h-28">
+      {recent.map((week, i) => {
+        const isCurrent = i === lastIdx;
+        const val = week.workoutsCompleted * 30;
+        const pct = Math.max(val / max, val > 0 ? 0.06 : 0);
+        const label = i === lastIdx ? "Now" : `W${i + 1}`;
+        return (
+          <div key={week.week} className="flex-1 flex flex-col items-center gap-1">
+            <div className="w-full flex items-end" style={{ height: "88px" }}>
+              <div
+                className={`w-full rounded-t-lg transition-all ${
+                  isCurrent ? "bg-[#3F6B40]" : "bg-[#EDE8DC] dark:bg-[#2C2C2E]"
+                }`}
+                style={{ height: `${pct * 100}%`, minHeight: val > 0 ? "8px" : "0" }}
+              />
+            </div>
+            <span className={`text-[9px] font-medium ${isCurrent ? "text-[#3F6B40]" : "text-[#8E8E93]"}`}>
+              {label}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function Collapsible({
   title,
   subtitle,
@@ -202,7 +271,7 @@ function Collapsible({
   const toggle = onToggle ?? (() => setInternalOpen(!internalOpen));
 
   return (
-    <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#E5E5EA] dark:border-[#38383A] overflow-hidden">
+    <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl border border-[#EDE8DC] dark:border-[#38383A] overflow-hidden">
       <button
         type="button"
         onClick={toggle}
@@ -214,7 +283,7 @@ function Collapsible({
         </div>
         <span className="text-[#8E8E93] text-sm">{isOpen ? "Hide" : "Show"}</span>
       </button>
-      {isOpen && <div className="px-4 pb-4 border-t border-[#E5E5EA] dark:border-[#38383A]">{children}</div>}
+      {isOpen && <div className="px-4 pb-4 border-t border-[#EDE8DC] dark:border-[#38383A]">{children}</div>}
     </div>
   );
 }
@@ -233,7 +302,7 @@ function WeeklyChart({ data }: { data: ProgressStats["weeklyStats"] }) {
             <span className="text-[10px] text-[#8E8E93] w-14 flex-shrink-0 truncate">{week.dateRange}</span>
             <div className="flex-1 h-2 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#FF2D55] rounded-full"
+                className="h-full bg-[#3F6B40] rounded-full"
                 style={{ width: `${(week.workoutsCompleted / max) * 100}%` }}
               />
             </div>
@@ -288,7 +357,7 @@ function ExerciseList({ exercises }: { exercises: ProgressStats["exerciseStats"]
             </p>
             <div className="mt-1 h-1.5 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#FF2D55] rounded-full"
+                className="h-full bg-[#3F6B40] rounded-full"
                 style={{ width: `${(exercise.timesCompleted / max) * 100}%` }}
               />
             </div>
