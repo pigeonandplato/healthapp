@@ -189,10 +189,10 @@ function MacroSummary({ totals }: { totals: MealMacros }) {
     <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
       <p className="text-xs text-[#8E8E93] mb-3">Daily macros · target 160–180g protein</p>
       <div className="grid grid-cols-4 gap-2 text-center">
-        <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#FF2D55" />
-        <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#34C759" />
-        <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#FF9500" />
-        <MacroPill label="Cal" value={totals.calories} target={2200} unit="" color="#5856D6" />
+        <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#EF9D8C" />
+        <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#3F6B40" />
+        <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#CF9030" />
+        <MacroPill label="Cal" value={totals.calories} target={2200} unit="" color="#9DBFD0" />
       </div>
     </div>
   );
@@ -224,7 +224,7 @@ function MealBlock({ title, emoji, subtitle, children }: {
         <h3 className="text-base font-bold text-[#1C1C1E] dark:text-white flex items-center gap-2">
           <span>{emoji}</span>{title}
         </h3>
-        {subtitle && <span className="text-xs font-semibold text-[#FF2D55]">{subtitle}</span>}
+        {subtitle && <span className="text-xs font-semibold text-[#8E8E93]">{subtitle}</span>}
       </div>
       <div className="space-y-3">{children}</div>
     </section>
@@ -246,8 +246,8 @@ function ComboMealBlock({
     <MealBlock title={title} emoji={emoji} subtitle={subtitle}>
       {/* Today's suggestion banner */}
       {meal?.protein && (
-        <div className="bg-[#FF2D55]/8 border border-[#FF2D55]/20 rounded-xl p-3 mb-1">
-          <p className="text-[10px] font-semibold text-[#FF2D55] uppercase mb-1">Today&apos;s suggestion</p>
+        <div className="bg-[#CF9030]/8 border border-[#CF9030]/20 rounded-xl p-3 mb-1">
+          <p className="text-[10px] font-semibold text-[#CF9030] uppercase mb-1">Today&apos;s suggestion</p>
           <p className="text-sm font-medium text-[#1C1C1E] dark:text-white">
             {meal.protein.name}
           </p>
@@ -298,7 +298,7 @@ function PickerRow({ label, options, selected, onPick }: {
 }) {
   return (
     <div>
-      <p className="text-xs font-semibold text-[#FF2D55] mb-2">{label}</p>
+      <p className="text-xs font-semibold text-[#8E8E93] mb-2">{label}</p>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <Chip key={o.id} label={o.name} active={selected === o.id} onClick={() => onPick(o)} />
@@ -314,7 +314,7 @@ function Chip({ label, active, onClick }: { label: string; active: boolean; onCl
       type="button"
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-        active ? "bg-[#FF2D55] text-white" : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-[#E5E5EA]"
+        active ? "bg-[#3F6B40] text-white" : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#1C1C1E] dark:text-[#E5E5EA]"
       }`}
     >
       {label}

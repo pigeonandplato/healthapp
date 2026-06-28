@@ -15,7 +15,7 @@ export default function HelpPage() {
       {/* Header */}
       <div className="bg-white dark:bg-black border-b border-[#E5E5EA] dark:border-[#38383A] sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link href="/today" className="inline-flex items-center gap-2 text-[#FF2D55] hover:opacity-70 mb-3">
+          <Link href="/today" className="inline-flex items-center gap-2 text-[#CF9030] hover:opacity-70 mb-3">
             <span>←</span>
             <span className="text-sm font-medium">Back</span>
           </Link>
@@ -38,19 +38,19 @@ export default function HelpPage() {
             </p>
             <ul className="space-y-2 text-sm text-[#8E8E93]">
               <li className="flex items-start gap-2">
-                <span className="text-[#34C759] font-bold mt-0.5">✓</span>
+                <span className="text-[#3F6B40] font-bold mt-0.5">✓</span>
                 <span>Opens full-screen on home screen</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#34C759] font-bold mt-0.5">✓</span>
+                <span className="text-[#3F6B40] font-bold mt-0.5">✓</span>
                 <span>Works completely offline after first visit</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#34C759] font-bold mt-0.5">✓</span>
+                <span className="text-[#3F6B40] font-bold mt-0.5">✓</span>
                 <span>No browser address bar or buttons—feels native</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-[#34C759] font-bold mt-0.5">✓</span>
+                <span className="text-[#3F6B40] font-bold mt-0.5">✓</span>
                 <span>One tap to launch your workouts</span>
               </li>
             </ul>
@@ -63,8 +63,8 @@ export default function HelpPage() {
             onClick={() => toggleSection("ios")}
             className={`w-full bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 border transition-all ${
               expandedSection === "ios"
-                ? "border-[#007AFF]/50 dark:border-[#007AFF]/50"
-                : "border-[#E5E5EA] dark:border-[#38383A] hover:border-[#E5E5EA] dark:hover:border-[#38383A]"
+                ? "border-[#CF9030]/50 dark:border-[#CF9030]/50"
+                : "border-[#EDE8DC] dark:border-[#38383A] hover:border-[#EDE8DC] dark:hover:border-[#38383A]"
             }`}
           >
             <div className="flex items-center justify-between gap-4">
@@ -85,7 +85,7 @@ export default function HelpPage() {
             <div className="bg-white dark:bg-[#1C1C1E] border border-t-0 border-[#E5E5EA] dark:border-[#38383A] rounded-b-2xl p-6 space-y-6">
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#FF2D55] flex-shrink-0 w-8 text-center">1</div>
+                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">1</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-1">Open Health Tracker in Safari</p>
                     <p className="text-sm text-[#8E8E93]">Make sure you're viewing this page in Safari (not Chrome or another browser)</p>
@@ -93,37 +93,37 @@ export default function HelpPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#FF2D55] flex-shrink-0 w-8 text-center">2</div>
+                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">2</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Tap the Share button</p>
-                    <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
+                    <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
                       Look for the box with an arrow pointing up at the bottom center (or top right, depending on your iOS version)
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#FF2D55] flex-shrink-0 w-8 text-center">3</div>
+                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">3</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Scroll and tap "Add to Home Screen"</p>
-                    <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
+                    <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
                       Scroll through the options until you see this—it might not be visible at first glance
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#FF2D55] flex-shrink-0 w-8 text-center">4</div>
+                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">4</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Choose name (optional) and tap "Add"</p>
-                    <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
+                    <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
                       You can rename it to something shorter like "Workouts" if you want
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#FF2D55] flex-shrink-0 w-8 text-center">5</div>
+                  <div className="text-2xl font-bold text-[#CF9030] flex-shrink-0 w-8 text-center">5</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white">Done! 🎉</p>
                     <p className="text-sm text-[#8E8E93] mt-1">Look for Health Tracker on your home screen. Tap it to launch the app anytime.</p>
@@ -132,8 +132,8 @@ export default function HelpPage() {
               </div>
 
               {/* iOS Tip */}
-              <div className="bg-[#007AFF]/5 dark:bg-[#007AFF]/10 border border-[#007AFF]/20 rounded-lg p-4">
-                <p className="text-sm text-[#007AFF] font-medium mb-1">💡 Tip</p>
+              <div className="bg-[#CF9030]/5 dark:bg-[#CF9030]/10 border border-[#CF9030]/20 rounded-lg p-4">
+                <p className="text-sm text-[#CF9030] font-medium mb-1">💡 Tip</p>
                 <p className="text-sm text-[#8E8E93]">
                   Not seeing "Add to Home Screen"? Make sure you're using Safari. Chrome and other browsers work differently on iOS.
                 </p>
@@ -148,8 +148,8 @@ export default function HelpPage() {
             onClick={() => toggleSection("android")}
             className={`w-full bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 border transition-all ${
               expandedSection === "android"
-                ? "border-[#34C759]/50 dark:border-[#34C759]/50"
-                : "border-[#E5E5EA] dark:border-[#38383A] hover:border-[#E5E5EA] dark:hover:border-[#38383A]"
+                ? "border-[#3F6B40]/50 dark:border-[#3F6B40]/50"
+                : "border-[#EDE8DC] dark:border-[#38383A] hover:border-[#EDE8DC] dark:hover:border-[#38383A]"
             }`}
           >
             <div className="flex items-center justify-between gap-4">
@@ -170,7 +170,7 @@ export default function HelpPage() {
             <div className="bg-white dark:bg-[#1C1C1E] border border-t-0 border-[#E5E5EA] dark:border-[#38383A] rounded-b-2xl p-6 space-y-6">
               <div className="space-y-4">
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#34C759] flex-shrink-0 w-8 text-center">1</div>
+                  <div className="text-2xl font-bold text-[#3F6B40] flex-shrink-0 w-8 text-center">1</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-1">Open Health Tracker in Chrome</p>
                     <p className="text-sm text-[#8E8E93]">Chrome gives the best app-like experience on Android</p>
@@ -178,37 +178,37 @@ export default function HelpPage() {
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#34C759] flex-shrink-0 w-8 text-center">2</div>
+                  <div className="text-2xl font-bold text-[#3F6B40] flex-shrink-0 w-8 text-center">2</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Tap the three dots (menu)</p>
-                    <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
+                    <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
                       Found in the top right corner of Chrome
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#34C759] flex-shrink-0 w-8 text-center">3</div>
+                  <div className="text-2xl font-bold text-[#3F6B40] flex-shrink-0 w-8 text-center">3</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Tap "Install app"</p>
-                    <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
+                    <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
                       This option appears when a site is installable as a PWA
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#34C759] flex-shrink-0 w-8 text-center">4</div>
+                  <div className="text-2xl font-bold text-[#3F6B40] flex-shrink-0 w-8 text-center">4</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white mb-2">Confirm the installation</p>
-                    <div className="bg-[#F2F2F7] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
+                    <div className="bg-[#EDE8DC] dark:bg-[#2C2C2E] rounded-lg p-3 text-sm text-[#8E8E93] mb-2">
                       A dialog will ask if you want to add Health Tracker to your home screen. Tap "Install".
                     </div>
                   </div>
                 </div>
 
                 <div className="flex gap-4">
-                  <div className="text-2xl font-bold text-[#34C759] flex-shrink-0 w-8 text-center">5</div>
+                  <div className="text-2xl font-bold text-[#3F6B40] flex-shrink-0 w-8 text-center">5</div>
                   <div>
                     <p className="font-medium text-[#1C1C1E] dark:text-white">Done! 🎉</p>
                     <p className="text-sm text-[#8E8E93] mt-1">The app is now on your home screen. Tap it anytime to launch full-screen.</p>
@@ -217,8 +217,8 @@ export default function HelpPage() {
               </div>
 
               {/* Android Tip */}
-              <div className="bg-[#34C759]/5 dark:bg-[#34C759]/10 border border-[#34C759]/20 rounded-lg p-4">
-                <p className="text-sm text-[#34C759] font-medium mb-1">💡 Tip</p>
+              <div className="bg-[#3F6B40]/5 dark:bg-[#3F6B40]/10 border border-[#3F6B40]/20 rounded-lg p-4">
+                <p className="text-sm text-[#3F6B40] font-medium mb-1">💡 Tip</p>
                 <p className="text-sm text-[#8E8E93]">
                   Don't see "Install app"? Make sure you're using a recent version of Chrome. Other browsers like Firefox and Edge also support PWA installation.
                 </p>
@@ -229,7 +229,7 @@ export default function HelpPage() {
 
         {/* Desktop Instructions */}
         <div className="mb-8">
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 border border-[#E5E5EA] dark:border-[#38383A]">
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 border border-[#EDE8DC] dark:border-[#38383A]">
             <h3 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-2 flex items-center gap-2">
               <span className="text-2xl">💻</span>
               Desktop

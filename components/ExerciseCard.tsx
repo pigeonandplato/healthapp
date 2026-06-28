@@ -282,7 +282,7 @@ export default function ExerciseCard({
       {/* Swipe indicator */}
       {swipeOffset > 20 && !isCompleted && (
         <div className="absolute left-4 top-1/2 -translate-y-1/2 z-30">
-          <div className="w-12 h-12 rounded-full bg-[#34C759] flex items-center justify-center text-white shadow-lg">
+          <div className="w-12 h-12 rounded-full bg-[#3F6B40] flex items-center justify-center text-white shadow-lg">
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
             </svg>
@@ -294,7 +294,7 @@ export default function ExerciseCard({
       {!isCompleted && (
         <button
           onClick={handleToggleComplete}
-          className="absolute bottom-4 right-4 w-14 h-14 bg-[#FF2D55] rounded-full shadow-2xl flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
+          className="absolute bottom-4 right-4 w-14 h-14 bg-[#CF9030] rounded-full shadow-2xl flex items-center justify-center text-white z-20 transform transition-all hover:scale-110 active:scale-95 touch-manipulation"
           aria-label="Complete exercise"
         >
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -675,7 +675,7 @@ export default function ExerciseCard({
                     setVideoEditError("");
                   }}
                   placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full px-4 py-3 rounded-xl border border-[#E5E5EA] dark:border-[#38383A] focus:border-[#FF2D55] focus:ring-2 focus:ring-[#FF2D55]/20 outline-none transition text-[#1C1C1E] dark:text-white bg-white dark:bg-[#1C1C1E]"
+                  className="w-full px-4 py-3 rounded-xl border border-[#EDE8DC] dark:border-[#38383A] focus:border-[#CF9030] focus:ring-2 focus:ring-[#CF9030]/20 outline-none transition text-[#1C1C1E] dark:text-white bg-white dark:bg-[#1C1C1E]"
                 />
                 <p className="text-xs text-[#8E8E93] mt-2">
                   Enter a YouTube URL or video ID. Examples: youtube.com/watch?v=..., youtu.be/..., or just the video ID
@@ -692,7 +692,7 @@ export default function ExerciseCard({
                 <button
                   onClick={handleSaveVideo}
                   disabled={savingVideo}
-                  className="flex-1 bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-3 rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {savingVideo ? "Saving..." : "Save Video"}
                 </button>

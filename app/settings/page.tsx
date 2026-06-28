@@ -90,21 +90,24 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#FF2D55]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#CF9030]"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black p-4 pb-24">
-      <div className="max-w-2xl mx-auto space-y-6">
-        <h1 className="text-2xl font-bold text-[#1C1C1E] dark:text-white mb-6">Settings</h1>
+    <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-24">
+      <div className="max-w-2xl mx-auto px-4 pt-5 pb-4">
+        <h1 className="text-3xl font-bold text-[#1C1C1E] dark:text-white">Settings</h1>
+        <p className="text-sm text-[#8E8E93] mt-0.5">App preferences &amp; configuration</p>
+      </div>
+      <div className="max-w-2xl mx-auto px-4 space-y-3">
 
         {/* Completion Sound Section */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
-              <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">🔊 Completion Sound</h2>
+              <h2 className="text-base font-semibold text-[#1C1C1E] dark:text-white mb-1">🔊 Completion Sound</h2>
               <p className="text-sm text-[#8E8E93]">
                 Play a little chime each time you check off an exercise. An instant audio reward — on by choice, off if it&apos;s too much.
               </p>
@@ -115,7 +118,7 @@ export default function SettingsPage() {
               aria-checked={soundOn}
               onClick={toggleSound}
               className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors ${
-                soundOn ? "bg-[#34C759]" : "bg-[#E5E5EA] dark:bg-[#38383A]"
+                soundOn ? "bg-[#3F6B40]" : "bg-[#EDE8DC] dark:bg-[#38383A]"
               }`}
             >
               <span
@@ -128,7 +131,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Break Reminders Section */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">⏰ Break Reminders</h2>
           <p className="text-sm text-[#8E8E93] mb-4">
             Get nudged for each of your daily breaks. Out of sight is out of mind — these keep you on track.
@@ -137,7 +140,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Chacha video reset */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-1">💪 Chacha exercise videos</h2>
           <p className="text-sm text-[#8E8E93] mb-4">
             Clears any saved video overrides so the latest built-in guides play for all 38 Chacha moves.
@@ -177,7 +180,7 @@ export default function SettingsPage() {
         </div>
 
         {/* YouTube Video Section */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
             Motivation Video
           </h2>
@@ -194,7 +197,7 @@ export default function SettingsPage() {
         </div>
 
         {/* AI Prompt Template */}
-        <div id="generate-with-ai" className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div id="generate-with-ai" className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-2">
             🧠 Generate with AI
           </h2>
@@ -205,7 +208,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Custom program import */}
-        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
           <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
             📥 Import Custom Program
           </h2>
@@ -217,7 +220,7 @@ export default function SettingsPage() {
 
         {/* Export Custom Program */}
         {hasCustomProgram && (
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-6 shadow-sm border border-[#E5E5EA] dark:border-[#38383A]">
+          <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
             <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-4">
               📤 Export Custom Program
             </h2>

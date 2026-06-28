@@ -409,7 +409,7 @@ function TodayPageContent() {
                   <button
                     key={b.d}
                     onClick={() => jumpToWeekday(b.d)}
-                    className="bg-gray-50 dark:bg-gray-700/40 border-2 border-gray-200 dark:border-gray-700 rounded-xl p-3 text-center hover:border-[#FF2D55] transition-colors"
+                    className="bg-[#EDE8DC] dark:bg-[#2C2C2E] border-2 border-[#EDE8DC] dark:border-[#38383A] rounded-xl p-3 text-center hover:border-[#CF9030] transition-colors"
                   >
                     <div className="text-xl mb-1">{b.emoji}</div>
                     <div className="text-xs font-bold text-gray-700 dark:text-gray-300">{b.label}</div>
@@ -435,7 +435,7 @@ function TodayPageContent() {
             <div className="space-y-3">
               <Link
                 href="/program"
-                className="block w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-3 rounded-xl transition-all active:scale-95"
+                className="block w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-3 rounded-xl transition-all active:scale-95"
               >
                 Choose a Program
               </Link>
@@ -449,7 +449,7 @@ function TodayPageContent() {
 
             <div className="mt-6 pt-4 border-t border-[#E5E5EA] dark:border-[#38383A]">
               <p className="text-xs text-[#8E8E93]">
-                First time? Check out the <Link href="/help" className="text-[#FF2D55] hover:underline font-medium">Help guide</Link>
+                First time? Check out the <Link href="/help" className="text-[#CF9030] hover:underline font-medium">Help guide</Link>
               </p>
             </div>
           </div>
@@ -635,14 +635,14 @@ function TodayPageContent() {
         {activeProgram === "adhd" && (
           <Link
             href="/settings"
-            className="mt-3 flex items-center gap-3 bg-[#007AFF]/10 hover:bg-[#007AFF]/15 rounded-2xl p-4 transition-colors"
+            className="mt-3 flex items-center gap-3 bg-[#CF9030]/10 hover:bg-[#CF9030]/15 rounded-2xl p-4 transition-colors"
           >
             <span className="text-2xl">⏰</span>
             <div className="flex-1">
               <p className="text-sm font-semibold text-[#1C1C1E] dark:text-white">Set break reminders</p>
               <p className="text-xs text-[#8E8E93]">Get nudged for each break so you never forget · in Settings</p>
             </div>
-            <span className="text-[#007AFF]">→</span>
+            <span className="text-[#CF9030]">→</span>
           </Link>
         )}
 
@@ -650,7 +650,7 @@ function TodayPageContent() {
           {!showVideoCard && !youtubeVideo && !isEditingVideo ? (
             <button
               onClick={() => setShowVideoCard(true)}
-              className="text-sm text-[#8E8E93] hover:text-[#FF2D55] transition-colors"
+              className="text-sm text-[#8E8E93] hover:text-[#CF9030] transition-colors"
             >
               + Add a motivation video
             </button>
@@ -661,7 +661,7 @@ function TodayPageContent() {
                 {youtubeVideo && !isEditingVideo && (
                   <button
                     onClick={() => setIsEditingVideo(true)}
-                    className="text-xs text-[#FF2D55] font-medium px-3 py-1 rounded-lg hover:bg-[#FF2D55]/10 transition-all"
+                    className="text-xs text-[#CF9030] font-medium px-3 py-1 rounded-lg hover:bg-[#CF9030]/10 transition-all"
                   >
                     Edit
                   </button>

@@ -65,22 +65,22 @@ export default function DailyHabitsTab() {
 
   return (
     <div className="space-y-5">
-      <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#E5E5EA] dark:border-[#38383A]">
+        <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl p-5 border border-[#EDE8DC] dark:border-[#38383A]">
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-sm text-[#8E8E93]">Today&apos;s habits</p>
             <p className="text-3xl font-bold text-[#1C1C1E] dark:text-white">{pct}%</p>
           </div>
           <div className="text-right">
-            <p className="text-sm font-semibold text-[#FF2D55]">
+            <p className="text-sm font-semibold text-[#3F6B40]">
               {done}/{habits.length}
             </p>
             <p className="text-xs text-[#8E8E93]">completed</p>
           </div>
         </div>
-        <div className="h-2 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
+        <div className="h-2 bg-[#EDE8DC] dark:bg-[#38383A] rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#FF2D55] rounded-full transition-all duration-300"
+            className="h-full bg-[#3F6B40] rounded-full transition-all duration-300"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -88,7 +88,7 @@ export default function DailyHabitsTab() {
           type="date"
           value={selectedDate}
           onChange={(e) => setSelectedDate(e.target.value)}
-          className="mt-4 w-full text-sm px-3 py-2 rounded-xl bg-[#F2F2F7] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white"
+          className="mt-4 w-full text-sm px-3 py-2 rounded-xl bg-[#EDE8DC] dark:bg-[#2C2C2E] border-0 text-[#1C1C1E] dark:text-white"
         />
       </div>
 
@@ -114,13 +114,13 @@ export default function DailyHabitsTab() {
               onClick={() => toggle(habit.id)}
               className={`w-full flex items-start gap-3 p-4 rounded-2xl border text-left transition-all active:scale-[0.99] ${
                 checked
-                  ? "bg-[#34C759]/10 border-[#34C759]/30"
-                  : "bg-white dark:bg-[#1C1C1E] border-[#E5E5EA] dark:border-[#38383A]"
+                  ? "bg-[#3F6B40]/8 border-[#3F6B40]/25"
+                  : "bg-white dark:bg-[#1C1C1E] border-[#EDE8DC] dark:border-[#38383A]"
               }`}
             >
               <span
                 className={`mt-0.5 w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                  checked ? "bg-[#34C759] border-[#34C759] text-white" : "border-[#C7C7CC]"
+                  checked ? "bg-[#3F6B40] border-[#3F6B40] text-white" : "border-[#C7C7CC]"
                 }`}
               >
                 {checked && (
@@ -142,8 +142,8 @@ export default function DailyHabitsTab() {
                 <span
                   className={`flex-shrink-0 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
                     checked
-                      ? "bg-[#34C759]/20 text-[#34C759]"
-                      : "bg-[#FF2D55]/10 text-[#FF2D55]"
+                      ? "bg-[#3F6B40]/15 text-[#3F6B40]"
+                      : "bg-[#CF9030]/10 text-[#CF9030]"
                   }`}
                 >
                   {habit.target_time}
@@ -176,8 +176,8 @@ function FilterChip({
       onClick={onClick}
       className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
         active
-          ? "bg-[#FF2D55] text-white"
-          : "bg-[#F2F2F7] dark:bg-[#2C2C2E] text-[#8E8E93]"
+          ? "bg-[#3F6B40] text-white"
+          : "bg-[#EDE8DC] dark:bg-[#2C2C2E] text-[#8E8E93]"
       }`}
     >
       {label}

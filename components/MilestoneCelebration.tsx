@@ -51,7 +51,7 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
-                backgroundColor: ['#FF2D55', '#FF9500', '#34C759', '#5856D6', '#FF6482'][i % 5],
+                backgroundColor: ['#EF9D8C', '#CF9030', '#3F6B40', '#9DBFD0', '#B07828'][i % 5],
                 animationDelay: `${Math.random() * 0.5}s`,
                 animationDuration: `${1 + Math.random()}s`,
               }}
@@ -83,10 +83,10 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
                   key={index}
                   className={`h-2 rounded-full transition-all ${
                     index === currentMilestone
-                      ? "w-8 bg-[#FF2D55]"
+                      ? "w-8 bg-[#CF9030]"
                       : index < currentMilestone
-                      ? "w-2 bg-[#FF2D55]/50"
-                      : "w-2 bg-[#E5E5EA] dark:bg-[#38383A]"
+                      ? "w-2 bg-[#CF9030]/50"
+                      : "w-2 bg-[#EDE8DC] dark:bg-[#38383A]"
                   }`}
                 />
               ))}
@@ -96,7 +96,7 @@ export default function MilestoneCelebration({ milestones, onClose }: MilestoneC
           {/* Button */}
           <button
             onClick={handleNext}
-            className="w-full bg-[#FF2D55] hover:bg-[#FF6482] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98]"
+            className="w-full bg-[#CF9030] hover:bg-[#B07828] text-white font-semibold py-4 rounded-xl transition-all active:scale-[0.98]"
           >
             {isLast ? "Awesome! 🎉" : "Next Milestone →"}
           </button>
