@@ -17,8 +17,8 @@ export default function DietPage() {
   const [tab, setTab] = useState<BlueprintTab>("today");
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black pb-28">
-      <section className="bg-gradient-to-br from-[#FF2D55] via-[#FF6482] to-[#FF9500] text-white">
+    <div className="min-h-screen bg-[#FDFAF6] dark:bg-black pb-28">
+      <section className="bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] text-white">
         <div className="max-w-2xl mx-auto px-4 py-6">
           <p className="text-sm font-medium text-white/90 uppercase tracking-wide mb-1">Lifestyle blueprint</p>
           <h1 className="text-2xl font-bold leading-tight mb-2">Get shredded for your family</h1>
@@ -29,7 +29,7 @@ export default function DietPage() {
       </section>
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
-        <div className="inline-flex w-full rounded-2xl bg-[#F2F2F7] dark:bg-[#1C1C1E] p-1">
+        <div className="inline-flex w-full rounded-2xl bg-[#EDE8DC] dark:bg-[#1C1C1E] p-1">
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -37,7 +37,7 @@ export default function DietPage() {
               onClick={() => setTab(t.id)}
               className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                 tab === t.id
-                  ? "bg-white dark:bg-[#2C2C2E] text-[#FF2D55] shadow-sm"
+                  ? "bg-white dark:bg-[#2C2C2E] text-[#CF9030] shadow-sm"
                   : "text-[#8E8E93]"
               }`}
             >

@@ -260,7 +260,7 @@ function MonthlyChart({ data }: { data: ProgressStats["monthlyStats"] }) {
             </span>
             <div className="flex-1 h-2.5 bg-[#E5E5EA] dark:bg-[#38383A] rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-[#FF2D55] to-[#FF6482] rounded-full"
+                className="h-full bg-gradient-to-r from-[#EF9D8C] to-[#CF9030] rounded-full"
                 style={{ width: `${(month.workoutsCompleted / max) * 100}%` }}
               />
             </div>

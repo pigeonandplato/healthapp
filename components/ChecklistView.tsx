@@ -124,12 +124,12 @@ export default function ChecklistView({ workout, onProgressChange, onOpenDetailV
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-5 shadow-card border border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Progress</h2>
-          <span className="text-2xl font-bold text-[#FF2D55]">{percentage}%</span>
+          <span className="text-2xl font-bold text-[#CF9030]">{percentage}%</span>
         </div>
 
         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden mb-2">
           <div
-            className="bg-gradient-to-r from-[#FF2D55] to-[#FF6482] h-full transition-all duration-500"
+            className="bg-gradient-to-r from-[#EF9D8C] to-[#CF9030] h-full transition-all duration-500"
             style={{ width: `${percentage}%` }}
           />
         </div>

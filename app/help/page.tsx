@@ -28,7 +28,7 @@ export default function HelpPage() {
       <div className="max-w-4xl mx-auto px-4 py-6">
         {/* Why Install Section */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-[#FF2D55]/10 to-[#FF6482]/10 dark:from-[#FF2D55]/20 dark:to-[#FF6482]/20 rounded-2xl p-6 border border-[#FF2D55]/20 dark:border-[#FF2D55]/30">
+          <div className="bg-gradient-to-r from-[#CF9030]/10 to-[#EF9D8C]/10 dark:from-[#CF9030]/20 dark:to-[#EF9D8C]/20 rounded-2xl p-6 border border-[#CF9030]/20 dark:border-[#CF9030]/30">
             <h2 className="text-lg font-semibold text-[#1C1C1E] dark:text-white mb-3 flex items-center gap-2">
               <span className="text-2xl">📱</span>
               Install as an App
@@ -286,11 +286,11 @@ export default function HelpPage() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-8 bg-gradient-to-r from-[#FF2D55] to-[#FF6482] rounded-2xl p-6 text-center">
+        <div className="mt-8 bg-gradient-to-r from-[#B07828] to-[#CF9030] rounded-2xl p-6 text-center">
           <p className="text-white font-medium mb-3">Ready to get started?</p>
           <Link
             href="/today"
-            className="inline-block bg-white text-[#FF2D55] font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all"
+            className="inline-block bg-white text-[#CF9030] font-semibold px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all"
           >
             Go to Workouts
           </Link>

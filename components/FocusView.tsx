@@ -185,7 +185,7 @@ export default function FocusView({ workout, onProgressChange }: FocusViewProps)
   return (
     <div className="space-y-5 pb-8">
       {/* Daily Wins hero */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#FF2D55] via-[#FF6482] to-[#FF9500] text-white p-6 shadow-elevated">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] text-white p-6 shadow-elevated">
         <div className="flex items-center gap-5">
           <DailyRing completed={completedMissions} total={missions.length} />
           <div className="flex-1">

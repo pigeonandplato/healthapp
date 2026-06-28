@@ -380,7 +380,7 @@ function TodayPageContent() {
               <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3">NEXT WORKOUT</h3>
               <button
                 onClick={() => setSelectedDate(nextDateStr)}
-                className="w-full bg-gradient-to-r from-[#FF2D55] to-[#FF6482] rounded-xl p-4 text-left text-white hover:opacity-90 transition-opacity"
+                className="w-full bg-gradient-to-r from-[#B07828] to-[#CF9030] rounded-xl p-4 text-left text-white hover:opacity-90 transition-opacity"
               >
                 <div className="flex items-center justify-between">
                   <div className="font-bold text-lg">{nextDay.day}</div>

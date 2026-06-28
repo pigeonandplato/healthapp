@@ -28,8 +28,8 @@ export default function ProgramListCard({
     <div
       className={`relative rounded-2xl border-2 transition-all ${
         isActive
-          ? "border-[#FF2D55] bg-[#FF2D55]/10 dark:bg-[#FF2D55]/20"
-          : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+          ? "border-[#CF9030] bg-[#CF9030]/10 dark:bg-[#CF9030]/20"
+          : "border-[#EDE8DC] dark:border-gray-700 bg-white dark:bg-gray-800"
       }`}
     >
       <button
@@ -44,7 +44,7 @@ export default function ProgramListCard({
         <div className="font-bold text-gray-900 dark:text-white">{program.name}</div>
         <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">{program.description}</div>
         {isActive && (
-          <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#FF2D55]">
+          <div className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#CF9030]">
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fillRule="evenodd"

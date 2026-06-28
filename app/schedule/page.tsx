@@ -129,8 +129,8 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500" />
+      <div className="min-h-screen bg-[#FDFAF6] dark:bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#CF9030]" />
       </div>
     );
   }
@@ -154,8 +154,8 @@ export default function SchedulePage() {
   const browseDayName = parseLocalDate(browseDate).toLocaleDateString("en-US", { weekday: "long" });
 
   return (
-    <div className="bg-white dark:bg-black">
-      <section className="bg-gradient-to-br from-[#34C759] via-[#30D158] to-[#007AFF] text-white">
+    <div className="bg-[#FDFAF6] dark:bg-black">
+      <section className="bg-gradient-to-br from-[#EF9D8C] to-[#CF9030] text-white">
         <div className="max-w-4xl mx-auto px-4 py-6">
           <h2 className="text-2xl font-bold mb-1">📅 Your Schedule</h2>
           <p className="text-white/90 text-sm">
@@ -183,7 +183,7 @@ export default function SchedulePage() {
             </h3>
             <Link
               href={`/today?date=${browseDate}&view=coach`}
-              className="text-sm font-semibold text-[#007AFF] whitespace-nowrap"
+              className="text-sm font-semibold text-[#CF9030] whitespace-nowrap"
             >
               Open in Today →
             </Link>
@@ -209,8 +209,8 @@ export default function SchedulePage() {
               onClick={() => setViewWeeks(weeks)}
               className={`px-4 py-2 rounded-lg font-bold transition ${
                 viewWeeks === weeks
-                  ? "bg-blue-600 text-white shadow-lg"
-                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100"
+                  ? "bg-[#CF9030] text-white shadow-lg"
+                  : "bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-[#EDE8DC]"
               }`}
             >
               {weeks} Weeks
@@ -225,12 +225,12 @@ export default function SchedulePage() {
 
             return (
               <div key={weekIdx} className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-4">
+                <div className="bg-gradient-to-r from-[#B07828] to-[#CF9030] text-white p-4">
                   <h3 className="text-xl font-bold">
                     Week {weekNumber ?? weekIdx + 1}
                     {firstDay.workout?.program?.phase && ` · ${firstDay.workout.program.phase}`}
                   </h3>
-                  <p className="text-sm text-blue-100">
+                  <p className="text-sm text-white/80">
                     Tap a day to jump to its full workout above
                   </p>
                 </div>
@@ -250,12 +250,12 @@ export default function SchedulePage() {
                         key={item.date}
                         className={`rounded-xl border-2 overflow-hidden transition ${
                           isSelected
-                            ? "border-[#007AFF] shadow-md"
+                            ? "border-[#CF9030] shadow-md"
                             : item.isToday
-                              ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-500 shadow-lg"
+                              ? "bg-[#CF9030]/5 border-[#CF9030] shadow-lg"
                               : item.isPast
-                                ? "bg-gray-50 dark:bg-gray-800/50 border-gray-300 dark:border-gray-700 opacity-60"
-                                : "bg-white dark:bg-gray-800/80 border-gray-200 dark:border-gray-700 hover:border-blue-400"
+                                ? "bg-[#FDFAF6] dark:bg-gray-800/50 border-[#EDE8DC] dark:border-gray-700 opacity-60"
+                                : "bg-white dark:bg-gray-800/80 border-[#EDE8DC] dark:border-gray-700 hover:border-[#CF9030]"
                         }`}
                       >
                         <button
@@ -286,7 +286,7 @@ export default function SchedulePage() {
                                 <div className="font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                                   {item.dayName}
                                   {item.isToday && (
-                                    <span className="bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                    <span className="bg-[#CF9030] text-white text-xs font-bold px-2 py-1 rounded-full">
                                       Today
                                     </span>
                                   )}
