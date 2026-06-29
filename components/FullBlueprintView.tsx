@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { formatGroceryListText } from "@/lib/mealPlanData";
 
 const SECTIONS = [
   {
     id: "grocery",
     emoji: "🛒",
     title: "Weekly grocery list (3 people)",
-    body: `Shop once per week. Covers all meals for you + family.\n\n🥩 PROTEINS\n• Chicken breasts, boneless skinless — 3 lbs\n• Ground beef 93/7 lean — 2 lbs\n• Sirloin steak — 1.5 lbs\n• Eggs, large — 2 dozen\n• Greek yogurt, plain 0% — 32 oz\n• Cottage cheese — 16 oz\n• String cheese — 1 pack\n\n🌾 CARBS\n• White rice (bulk) — 3 lbs\n• Sweet potatoes — 5–6 medium\n• Whole wheat pasta — 1 box\n• Oats (rolled) — 1 large container\n• Wraps / tortillas — 1 pack\n\n🍎 FRUITS\n• Apples — 1 dozen\n• Bananas — 2–3 bunches\n• Blueberries — 1–2 containers\n• Strawberries — 1 lb\n• Mixed frozen berries — 2 bags\n• Oranges — 1 bag\n• Pineapple — 1 fresh or canned\n• Lemons — 4–5\n\n🥦 VEGETABLES\n• Broccoli — 2–3 crowns\n• Spinach, fresh — 1 bag\n• Onions (yellow) — 3 lbs\n• Asparagus — 1 bunch\n• Green beans — 1 lb\n• Frozen broccoli (backup) — 2 bags\n• Frozen mixed veg — 2 bags\n• Snap peas — 1 lb\n• Garlic — 1 bulb\n• Ginger, fresh — 1 small root\n• Tomatoes — 3–4\n• Lettuce / mixed greens — 1 bag\n\n🧀 DAIRY\n• Milk 2% — 1 gallon\n• Butter — 1 lb\n• Shredded cheese — 8 oz\n\n🫙 PANTRY\n• Honey · olive oil · sesame oil\n• Low-sodium soy sauce · rice vinegar\n• Marinara sauce — 2 jars\n• Worcestershire sauce\n• Italian seasoning, paprika, garlic powder\n\n🥐 BAKERY (fresh)\n• Chocolate croissants — 5–7\n• Whole grain bread — 1 loaf\n\n💰 Estimate: $150–200/week for 3 people`,
+    body: formatGroceryListText(),
   },
   {
     id: "sleep",
@@ -38,12 +39,6 @@ const SECTIONS = [
     emoji: "🚶",
     title: "Movement breaks",
     body: `Every hour while working — 60 seconds:\n15 squats · 10 pushups · 1-min walk · 15 glute bridges · stretching\n\nReminders: 9:30, 10:30, 12:30, 1:30, 3:30, 4:30 AM/PM`,
-  },
-  {
-    id: "grocery",
-    emoji: "🛒",
-    title: "Weekly grocery (3 people)",
-    body: `Proteins: 3 lb chicken · 2 lb ground beef 93/7 · 1.5 lb sirloin · 2 dozen eggs · Greek yogurt · cottage cheese\n\nCarbs: white rice · sweet potatoes · whole wheat pasta · oats · wraps\n\nFruits: apples, bananas, berries, oranges, pineapple\n\nVeggies: broccoli, spinach, asparagus, green beans, peppers, onions, garlic, ginger\n\nPantry: honey, olive oil, soy sauce, marinara, Worcestershire`,
   },
   {
     id: "eating-out",
@@ -121,7 +116,7 @@ export default function FullBlueprintView() {
       })}
 
       <p className="text-xs text-[#8A7F78] text-center pt-2">
-        Gilly&apos;s Complete Lifestyle Blueprint · Updated June 27, 2026
+        Gilly&apos;s Complete Lifestyle Blueprint · Shred Edition · June 2026
       </p>
     </div>
   );

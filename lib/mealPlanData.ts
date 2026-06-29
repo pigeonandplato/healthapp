@@ -812,11 +812,65 @@ export const GROCERY_LIST = {
     'Shredded cheese (8 oz)', 'String cheese (1 pack)',
     'Whey protein powder (2–3 lbs)', 'Casein protein powder (optional; 1 lb)',
   ],
-  pantry: [
-    'Honey', 'Olive oil', 'Sesame oil', 'Low-sodium soy sauce', 'Rice vinegar',
-    'Balsamic vinegar', 'Marinara sauce (2 jars)', 'Worcestershire sauce', 'Mirin',
-    'Salt, pepper, Italian seasoning', 'Paprika, garlic powder, onion powder',
+  condiments: [
+    { item: 'Olive oil', qty: '1 bottle — pan-sear, roasted veg, salads' },
+    { item: 'Sesame oil', qty: '1 small bottle — Asian chicken & beef' },
+    { item: 'Honey', qty: '1 jar — marinades, teriyaki, yogurt bowls' },
+    { item: 'Low-sodium soy sauce', qty: '1 bottle — stir-fries, teriyaki, Asian bowls' },
+    { item: 'Rice vinegar', qty: '1 bottle — soy-ginger chicken' },
+    { item: 'Balsamic vinegar', qty: '1 bottle — low-carb day salads' },
+    { item: 'Worcestershire sauce', qty: '1 bottle — burgers' },
+    { item: 'Marinara sauce', qty: '2 jars — beef marinara pasta' },
+    { item: 'Mirin (or sweet rice wine)', qty: '1 bottle — teriyaki glaze' },
+    { item: 'Yellow mustard', qty: '1 bottle — burgers, turkey sandwiches' },
+    { item: 'Cornstarch', qty: '1 small box — teriyaki sauce thickener' },
+    { item: 'Dried dill', qty: '1 jar — grilled salmon' },
+  ],
+  spices: [
+    'Salt & black pepper',
+    'Italian seasoning — garlic butter lemon chicken',
+    'Dried oregano — lemon herb & beef marinara',
+    'Dried basil — lemon herb chicken & marinara',
+    'Dried rosemary — garlic butter sirloin',
+    'Paprika, garlic powder, onion powder',
   ],
   bakery: ['Chocolate croissants (5–7)', 'Whole grain bread (1 loaf)'],
   estimatedCost: '$170–220/week for 3 people',
 };
+
+/** Plain-text grocery list for the Blueprint plan tab. */
+export function formatGroceryListText(): string {
+  const g = GROCERY_LIST;
+  const bullet = (item: string, qty?: string) =>
+    qty ? `• ${item} — ${qty}` : `• ${item}`;
+
+  return [
+    'Shop once per week. Covers all meals for you + family.',
+    '',
+    '🥩 PROTEINS',
+    ...g.proteins.map((p) => bullet(p.item, p.qty)),
+    '',
+    '🌾 CARBS',
+    ...g.carbs.map((c) => bullet(c.item, c.qty)),
+    '',
+    '🍎 FRUITS',
+    ...g.fruits.map((f) => `• ${f}`),
+    '',
+    '🥦 VEGETABLES',
+    ...g.vegetables.map((v) => `• ${v}`),
+    '',
+    '🧀 DAIRY & SUPPLEMENTS',
+    ...g.dairyAndSupplements.map((d) => `• ${d}`),
+    '',
+    '🫒 OILS, SAUCES & CONDIMENTS',
+    ...g.condiments.map((c) => bullet(c.item, c.qty)),
+    '',
+    '🧂 SPICES & SEASONINGS',
+    ...g.spices.map((s) => `• ${s}`),
+    '',
+    '🥐 BAKERY',
+    ...g.bakery.map((b) => `• ${b}`),
+    '',
+    `💰 Estimate: ${g.estimatedCost}`,
+  ].join('\n');
+}
