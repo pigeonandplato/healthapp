@@ -40,25 +40,22 @@ function combineMeal(
   return sumMacros(protein.macros, carb.macros, vegetable.macros);
 }
 
-/** Deterministic daily suggestion seeded by date string so it doesn't change mid-session. */
-function dailySuggestion(date: string): NonNullable<MealSelection["lunch"]> {
-  // Simple hash of the date string
-  const hash = date.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0);
-  const protein = PROTEIN_OPTIONS[hash % PROTEIN_OPTIONS.length];
-  const carb = CARB_OPTIONS[(hash + 1) % CARB_OPTIONS.length];
-  const vegetable = VEGGIE_OPTIONS[(hash + 2) % VEGGIE_OPTIONS.length];
-  const combinedMacros = sumMacros(protein.macros, carb.macros, vegetable.macros);
-  return { protein, carb, vegetable, combinedMacros };
-}
-
 function buildDefaultSelection(date: string): MealSelection {
-  const suggestion = dailySuggestion(date);
-  const snack = SNACK_OPTIONS[
-    date.split("").reduce((a, c) => a + c.charCodeAt(0), 0) % SNACK_OPTIONS.length
-  ];
+  const hash = date.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  const lunchProtein = PROTEIN_OPTIONS[hash % PROTEIN_OPTIONS.length];
+  const dinnerProtein = PROTEIN_OPTIONS[(hash + 3) % PROTEIN_OPTIONS.length]; // offset so lunch ≠ dinner
+  const carbL = CARB_OPTIONS[(hash + 1) % CARB_OPTIONS.length];
+  const carbD = CARB_OPTIONS[(hash + 4) % CARB_OPTIONS.length];
+  const vegL = VEGGIE_OPTIONS[(hash + 2) % VEGGIE_OPTIONS.length];
+  const vegD = VEGGIE_OPTIONS[(hash + 5) % VEGGIE_OPTIONS.length];
+  const snack = SNACK_OPTIONS[hash % SNACK_OPTIONS.length];
+
+  const lunchMacros = sumMacros(lunchProtein.macros, carbL.macros, vegL.macros);
+  const dinnerMacros = sumMacros(dinnerProtein.macros, carbD.macros, vegD.macros);
+
   return {
-    lunch: suggestion,
-    dinner: suggestion, // same suggestion, user can swap
+    lunch: { protein: lunchProtein, carb: carbL, vegetable: vegL, combinedMacros: lunchMacros },
+    dinner: { protein: dinnerProtein, carb: carbD, vegetable: vegD, combinedMacros: dinnerMacros },
     snack: { recipe: snack, macros: snack.macros },
   };
 }
@@ -184,15 +181,18 @@ export default function MealPlanTab() {
 }
 
 function MacroSummary({ totals }: { totals: MealMacros }) {
-  const targets = { protein: 170, carbs: 180, fat: 68 };
+  const targets = { protein: 175, carbs: 210, fat: 58, calories: 2150 };
   return (
     <div className="bg-white dark:bg-[#1B1714] rounded-2xl p-5 border border-[#F0E9CE] dark:border-[#3D3730]">
-      <p className="text-xs text-[#8A7F78] mb-3">Daily macros · target 160–180g protein</p>
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-xs text-[#8A7F78]">Daily macros — Shred Edition</p>
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-[#9DC1A5]/15 text-[#3E7E57]">175g protein · ~2,150 cal</span>
+      </div>
       <div className="grid grid-cols-4 gap-2 text-center">
         <MacroPill label="Protein" value={totals.protein} target={targets.protein} unit="g" color="#9DC1A5" />
         <MacroPill label="Carbs" value={totals.carbs} target={targets.carbs} unit="g" color="#3E7E57" />
         <MacroPill label="Fat" value={totals.fat} target={targets.fat} unit="g" color="#79A98C" />
-        <MacroPill label="Cal" value={totals.calories} target={2200} unit="" color="#9DC1A5" />
+        <MacroPill label="Cal" value={totals.calories} target={targets.calories} unit="" color="#9DC1A5" />
       </div>
     </div>
   );

@@ -210,7 +210,7 @@ export const BEEF_RECIPES: MealRecipe[] = [
     type: 'beef',
     description: 'Steakhouse-quality, juicy, buttery',
     ingredients: [
-      '5 oz sirloin steak',
+      '5.5 oz sirloin steak',
       '1 tbsp butter',
       '3 cloves garlic, minced',
       'Salt, pepper',
@@ -239,7 +239,7 @@ export const BEEF_RECIPES: MealRecipe[] = [
     type: 'beef',
     description: 'Takeout-quality, savory-sweet',
     ingredients: [
-      '5 oz ground beef 93/7',
+      '5.5 oz ground beef 93/7',
       '2 tbsp low-sodium soy sauce',
       '1 tbsp honey',
       '1 tsp sesame oil',
@@ -271,7 +271,7 @@ export const BEEF_RECIPES: MealRecipe[] = [
     type: 'beef',
     description: 'Classic burger, juicy, nostalgic',
     ingredients: [
-      '5 oz ground beef 93/7',
+      '5.5 oz ground beef 93/7',
       '1 slice whole wheat bread',
       'Lettuce, tomato, mustard',
       'Salt, pepper',
@@ -301,7 +301,7 @@ export const BEEF_RECIPES: MealRecipe[] = [
     type: 'beef',
     description: 'Italian, rich, comfort food',
     ingredients: [
-      '5 oz ground beef',
+      '5.5 oz ground beef',
       '1 cup marinara sauce',
       '2 cloves garlic, minced',
       '1 tsp dried basil',
@@ -332,7 +332,7 @@ export const BEEF_RECIPES: MealRecipe[] = [
     type: 'beef',
     description: 'Sweet & savory, glazed, Asian-inspired',
     ingredients: [
-      '5 oz sirloin, sliced thin OR ground beef',
+      '5.5 oz sirloin, sliced thin OR ground beef',
       '2 tbsp low-sodium soy sauce',
       '1 tbsp honey',
       '1 tsp sesame oil',
@@ -361,57 +361,147 @@ export const BEEF_RECIPES: MealRecipe[] = [
 ];
 
 // ============================================
+// SALMON / ALTERNATIVE PROTEIN
+// ============================================
+
+export const SALMON_RECIPES: MealRecipe[] = [
+  {
+    id: 'salmon-lemon-dill',
+    name: 'Pan-Seared Salmon (Lemon + Dill)',
+    type: 'salmon',
+    description: 'Rich in omega-3s, flaky, light — great alternative to chicken/beef',
+    ingredients: [
+      '6 oz salmon fillet',
+      '½ lemon, juice',
+      '1 tsp fresh or dried dill',
+      '1 tsp olive oil',
+      'Salt, pepper',
+    ],
+    instructions: [
+      'Pat salmon dry; season with salt, pepper, dill.',
+      'Heat olive oil in pan, medium-high.',
+      'Sear skin-side down 4–5 min until skin is crispy.',
+      'Flip; cook 2–3 min on the other side.',
+      'Squeeze lemon over top and serve.',
+    ],
+    macros: {
+      protein: 42,
+      carbs: 0,
+      fat: 13,
+      calories: 281,
+    },
+    prep_time_minutes: 10,
+    difficulty: 'easy',
+    tags: ['omega-3', 'light', 'alternative'],
+  },
+];
+
+// ============================================
 // CARB SIDES
 // ============================================
 
 export const CARB_SIDES: MealRecipe[] = [
   {
-    id: 'carb-white-rice',
-    name: 'White Rice',
+    id: 'carb-white-rice-high',
+    name: 'White Rice (High Carb Day)',
     type: 'carb',
-    description: 'Classic, versatile carb side',
-    ingredients: ['1 cup white rice, cooked'],
-    instructions: ['Cook in rice cooker or pot', 'Serve'],
+    description: 'High carb day — 1.5 cups cooked · Mon/Wed/Fri (heavy lift days)',
+    ingredients: ['1.5 cups white rice, cooked'],
+    instructions: ['Cook in rice cooker or pot', 'Serve — use full 1.5 cup portion on Mon/Wed/Fri'],
     macros: {
-      protein: 4,
-      carbs: 45,
+      protein: 6,
+      carbs: 68,
       fat: 0,
-      calories: 196,
+      calories: 296,
     },
     prep_time_minutes: 20,
     difficulty: 'easy',
+    tags: ['high-carb', 'Mon/Wed/Fri'],
   },
   {
-    id: 'carb-sweet-potato',
-    name: 'Sweet Potato',
+    id: 'carb-white-rice-low',
+    name: 'White Rice (Low Carb Day)',
     type: 'carb',
-    description: 'Nutrient-dense, naturally sweet',
+    description: 'Low carb day — ¾ cup cooked · Tue/Thu (cardio/conditioning days)',
+    ingredients: ['¾ cup white rice, cooked'],
+    instructions: ['Cook in rice cooker or pot', 'Use only ¾ cup portion on Tue/Thu'],
+    macros: {
+      protein: 3,
+      carbs: 34,
+      fat: 0,
+      calories: 148,
+    },
+    prep_time_minutes: 20,
+    difficulty: 'easy',
+    tags: ['low-carb', 'Tue/Thu'],
+  },
+  {
+    id: 'carb-sweet-potato-high',
+    name: 'Sweet Potato (High Carb Day)',
+    type: 'carb',
+    description: 'High carb day — 2 medium sweet potatoes · Mon/Wed/Fri',
+    ingredients: ['2 medium sweet potatoes, baked'],
+    instructions: ['Bake at 400°F for 45–50 min', 'Serve both on Mon/Wed/Fri'],
+    macros: {
+      protein: 4,
+      carbs: 54,
+      fat: 0,
+      calories: 236,
+    },
+    prep_time_minutes: 50,
+    difficulty: 'easy',
+    tags: ['high-carb', 'Mon/Wed/Fri'],
+  },
+  {
+    id: 'carb-sweet-potato-low',
+    name: 'Sweet Potato (Low Carb Day)',
+    type: 'carb',
+    description: 'Low carb day — 1 medium sweet potato · Tue/Thu',
     ingredients: ['1 medium sweet potato, baked'],
-    instructions: ['Bake at 400°F for 45 min', 'Serve with butter if desired'],
+    instructions: ['Bake at 400°F for 45–50 min', 'Serve with butter if desired'],
     macros: {
       protein: 2,
       carbs: 27,
       fat: 0,
       calories: 118,
     },
-    prep_time_minutes: 45,
+    prep_time_minutes: 50,
     difficulty: 'easy',
+    tags: ['low-carb', 'Tue/Thu'],
   },
   {
     id: 'carb-whole-wheat-pasta',
-    name: 'Whole Wheat Pasta',
+    name: 'Whole Wheat Pasta (High Carb Day)',
     type: 'carb',
-    description: 'Fiber-rich carb option',
-    ingredients: ['1 cup whole wheat pasta, cooked'],
+    description: 'High carb day — 1.5 cups cooked, fiber-rich · Mon/Wed/Fri',
+    ingredients: ['1.5 cups whole wheat pasta, cooked'],
     instructions: ['Boil according to package directions', 'Drain and serve'],
     macros: {
-      protein: 7,
-      carbs: 43,
+      protein: 10,
+      carbs: 65,
       fat: 2,
-      calories: 218,
+      calories: 318,
     },
     prep_time_minutes: 15,
     difficulty: 'easy',
+    tags: ['high-carb', 'Mon/Wed/Fri'],
+  },
+  {
+    id: 'carb-salad-low',
+    name: 'Large Salad (Low Carb Day)',
+    type: 'carb',
+    description: 'Low carb day — no starch, just greens + olive oil + vinegar · Tue/Thu',
+    ingredients: ['Mixed greens, large portion', 'Olive oil', 'Balsamic vinegar', 'Salt, pepper'],
+    instructions: ['Toss greens in olive oil + vinegar', 'Season and serve'],
+    macros: {
+      protein: 2,
+      carbs: 8,
+      fat: 7,
+      calories: 85,
+    },
+    prep_time_minutes: 3,
+    difficulty: 'easy',
+    tags: ['low-carb', 'Tue/Thu'],
   },
 ];
 
@@ -521,100 +611,110 @@ export const VEGETABLE_SIDES: MealRecipe[] = [
 
 export const SNACK_RECIPES: MealRecipe[] = [
   {
-    id: 'snack-greek-yogurt-berries',
-    name: 'Greek Yogurt + Berries + Honey',
+    id: 'snack-greek-yogurt-banana-honey',
+    name: 'Greek Yogurt + Banana + Honey',
     type: 'snack',
-    description: 'Protein-rich, sweet',
-    ingredients: ['1 cup Greek yogurt', 'Mixed berries', '1 tbsp honey'],
-    instructions: ['Combine in bowl', 'Enjoy'],
+    description: 'High-protein, creamy, naturally sweet — 3 PM pick-me-up',
+    ingredients: ['1.5 cups Greek yogurt (0%)', '1 banana', '1 tbsp honey'],
+    instructions: ['Slice banana', 'Layer yogurt, banana, and honey in bowl', 'Enjoy'],
     macros: {
-      protein: 20,
-      carbs: 25,
-      fat: 2,
-      calories: 200,
+      protein: 22,
+      carbs: 38,
+      fat: 1,
+      calories: 270,
     },
     prep_time_minutes: 2,
     difficulty: 'easy',
+    tags: ['high-protein', 'quick'],
   },
   {
     id: 'snack-protein-shake',
-    name: 'Protein Shake',
+    name: 'Protein Shake (Shred Edition)',
     type: 'snack',
-    description: 'Quick, convenient',
-    ingredients: ['1 scoop whey protein', '1 banana', '½ cup oats', 'Milk or almond milk'],
-    instructions: ['Blend all ingredients', 'Serve immediately'],
+    description: 'High-protein shake with oats — post-workout or afternoon fuel',
+    ingredients: ['1.5 scoops whey protein', '½ cup rolled oats', '½ banana', 'Water or almond milk'],
+    instructions: ['Add all ingredients to blender', 'Blend 30 sec', 'Serve immediately'],
     macros: {
-      protein: 25,
-      carbs: 45,
-      fat: 3,
-      calories: 250,
+      protein: 35,
+      carbs: 35,
+      fat: 2,
+      calories: 290,
     },
     prep_time_minutes: 3,
     difficulty: 'easy',
+    tags: ['high-protein', 'post-workout'],
   },
   {
     id: 'snack-hard-boiled-eggs-apple',
-    name: 'Hard-Boiled Eggs + Apple',
+    name: 'Hard-Boiled Eggs (3) + Apple',
     type: 'snack',
-    description: 'Portable, satisfying',
-    ingredients: ['2 hard-boiled eggs', '1 apple'],
-    instructions: ['Grab pre-boiled eggs', 'Grab apple', 'Enjoy'],
+    description: 'Portable, satisfying — grab from meal-prepped eggs',
+    ingredients: ['3 hard-boiled eggs', '1 apple'],
+    instructions: ['Grab pre-boiled eggs (from Sunday meal prep)', 'Grab apple', 'Enjoy'],
     macros: {
-      protein: 13,
+      protein: 18,
       carbs: 25,
-      fat: 8,
-      calories: 220,
-    },
-    prep_time_minutes: 1,
-    difficulty: 'easy',
-  },
-  {
-    id: 'snack-cottage-cheese-pineapple',
-    name: 'Cottage Cheese + Pineapple + Almonds',
-    type: 'snack',
-    description: 'Protein-packed, sweet',
-    ingredients: ['1 cup cottage cheese', '½ cup pineapple', '1 oz almonds'],
-    instructions: ['Combine in bowl', 'Enjoy'],
-    macros: {
-      protein: 20,
-      carbs: 25,
-      fat: 8,
-      calories: 250,
-    },
-    prep_time_minutes: 2,
-    difficulty: 'easy',
-  },
-  {
-    id: 'snack-protein-bar-banana',
-    name: 'Protein Bar + Banana',
-    type: 'snack',
-    description: 'Convenient, quick',
-    ingredients: ['1 protein bar (Quest or Kirkland)', '1 banana'],
-    instructions: ['Grab both items', 'Enjoy'],
-    macros: {
-      protein: 20,
-      carbs: 40,
-      fat: 5,
+      fat: 15,
       calories: 280,
     },
     prep_time_minutes: 1,
     difficulty: 'easy',
+    tags: ['portable', 'no-prep'],
+  },
+  {
+    id: 'snack-cottage-cheese-blueberries-granola',
+    name: 'Cottage Cheese + Blueberries + Granola',
+    type: 'snack',
+    description: 'High-protein, creamy, with a crunch',
+    ingredients: ['1 cup cottage cheese (0%)', '½ cup blueberries', '⅓ cup low-sugar granola'],
+    instructions: ['Combine in bowl', 'Top with blueberries and granola', 'Enjoy'],
+    macros: {
+      protein: 25,
+      carbs: 35,
+      fat: 2,
+      calories: 300,
+    },
+    prep_time_minutes: 2,
+    difficulty: 'easy',
+    tags: ['high-protein', 'textured'],
+  },
+  {
+    id: 'snack-turkey-sandwich-orange',
+    name: 'Turkey Sandwich + Orange',
+    type: 'snack',
+    description: 'High-protein sandwich — great when you need a real meal-like snack',
+    ingredients: ['2 slices whole grain bread', '4 oz deli turkey', 'Mustard', '1 orange'],
+    instructions: [
+      'Layer turkey and mustard on bread',
+      'Build sandwich',
+      'Peel and serve orange on the side',
+    ],
+    macros: {
+      protein: 30,
+      carbs: 40,
+      fat: 3,
+      calories: 310,
+    },
+    prep_time_minutes: 3,
+    difficulty: 'easy',
+    tags: ['high-protein', 'filling'],
   },
   {
     id: 'snack-string-cheese-almonds-orange',
     name: 'String Cheese + Almonds + Orange',
     type: 'snack',
-    description: 'Portable, balanced',
+    description: 'Portable, balanced — zero prep, great on-the-go',
     ingredients: ['2 oz string cheese', '1 oz almonds', '1 orange'],
-    instructions: ['Combine all items', 'Enjoy'],
+    instructions: ['Grab all items', 'Enjoy'],
     macros: {
       protein: 15,
       carbs: 20,
-      fat: 9,
-      calories: 180,
+      fat: 18,
+      calories: 300,
     },
     prep_time_minutes: 1,
     difficulty: 'easy',
+    tags: ['portable', 'no-prep'],
   },
 ];
 
@@ -626,12 +726,97 @@ export const ALL_RECIPES = [
   BREAKFAST_RECIPE,
   ...CHICKEN_RECIPES,
   ...BEEF_RECIPES,
+  ...SALMON_RECIPES,
   ...CARB_SIDES,
   ...VEGETABLE_SIDES,
   ...SNACK_RECIPES,
 ];
 
-export const PROTEIN_OPTIONS = [...CHICKEN_RECIPES, ...BEEF_RECIPES];
+export const PROTEIN_OPTIONS = [...CHICKEN_RECIPES, ...BEEF_RECIPES, ...SALMON_RECIPES];
 export const CARB_OPTIONS = CARB_SIDES;
 export const VEGGIE_OPTIONS = VEGETABLE_SIDES;
 export const SNACK_OPTIONS = SNACK_RECIPES;
+
+// ============================================
+// DAILY MACRO TARGETS (Shred Edition)
+// ============================================
+
+export const DAILY_MACRO_TARGETS = {
+  protein: 175,
+  carbsAvg: 210,
+  fat: 58,
+  calories: 2150,
+};
+
+export const HIGH_CARB_DAY_TARGETS = {
+  label: 'High Carb Day (Mon/Wed/Fri)',
+  days: ['Monday', 'Wednesday', 'Friday'],
+  protein: 175,
+  carbs: 240,
+  fat: 55,
+  calories: 2170,
+  note: 'More carbs fuel your chest/arm/leg sessions',
+};
+
+export const LOW_CARB_DAY_TARGETS = {
+  label: 'Low Carb Day (Tue/Thu)',
+  days: ['Tuesday', 'Thursday'],
+  protein: 175,
+  carbs: 150,
+  fat: 62,
+  calories: 1950,
+  note: 'Lower carbs on conditioning days; less fuel needed',
+};
+
+export const WEEKLY_MEAL_PLAN = [
+  { day: 'Monday', type: 'HIGH', lunch: 'Garlic Butter Lemon Chicken (6 oz) + 1.5 cup white rice + broccoli', dinner: 'Honey Garlic Chicken (6 oz) + 2 medium sweet potatoes + spinach' },
+  { day: 'Tuesday', type: 'LOW', lunch: 'Asian Ground Beef (5.5 oz) + ¾ cup rice + snap peas', dinner: 'Garlic Butter Sirloin Steak (5.5 oz) + 1 medium sweet potato + asparagus' },
+  { day: 'Wednesday', type: 'HIGH', lunch: 'Honey Garlic Chicken (6 oz) + 1.5 cup white rice + salad', dinner: 'Teriyaki Chicken (6 oz) + 2 medium sweet potatoes + broccoli' },
+  { day: 'Thursday', type: 'LOW', lunch: 'Greek Yogurt Bowl (1.5 cup + granola + berries + banana)', dinner: 'Honey Garlic Beef Stir-Fry (5.5 oz) + ¾ cup rice + mixed veggies' },
+  { day: 'Friday', type: 'HIGH', lunch: 'Beef Marinara (5.5 oz) + 1.5 cup whole wheat pasta', dinner: 'Pan-Seared Salmon (6 oz) + 2 medium sweet potatoes + asparagus' },
+  { day: 'Saturday', type: 'FLEX', lunch: 'Eating out: grilled protein + rice/potato + veggies', dinner: 'Flexible — cook something fun' },
+  { day: 'Sunday', type: 'FLEX', lunch: 'Flexible — family meal prep', dinner: 'Flexible — family meal' },
+];
+
+export const GROCERY_LIST = {
+  proteins: [
+    { item: 'Chicken breasts, boneless skinless', qty: '4 lbs' },
+    { item: 'Ground beef (93/7 lean)', qty: '2 lbs' },
+    { item: 'Sirloin steak', qty: '1.5 lbs' },
+    { item: 'Salmon fillets', qty: '1–1.5 lbs' },
+    { item: 'Eggs, large', qty: '2 dozen' },
+    { item: 'Greek yogurt, plain 0%', qty: '48 oz' },
+    { item: 'Cottage cheese, 0%', qty: '16 oz' },
+  ],
+  carbs: [
+    { item: 'White rice (bulk, uncooked)', qty: '3–4 lbs' },
+    { item: 'Sweet potatoes', qty: '6–7 medium' },
+    { item: 'Whole wheat pasta', qty: '1–2 boxes' },
+    { item: 'Oats (rolled)', qty: '1 large container' },
+    { item: 'Whole grain bread', qty: '1 loaf' },
+    { item: 'Granola (low-sugar)', qty: '1 box' },
+  ],
+  fruits: [
+    'Apples (1 dozen)', 'Bananas (3–4 bunches)', 'Blueberries (2 containers)',
+    'Strawberries (1 lb)', 'Raspberries (1 container)', 'Grapes (1 lb)',
+    'Oranges (1 bag)', 'Pineapple (1)', 'Lemons (4–5)',
+  ],
+  vegetables: [
+    'Broccoli (3 crowns)', 'Spinach, fresh (2 bags)', 'Onions, yellow (3 lbs)',
+    'Asparagus (1.5 bunches)', 'Green beans (1 lb)', 'Mixed vegetables, frozen (2–3 bags)',
+    'Snap peas (1.5 lbs)', 'Carrots (2 lbs)', 'Cucumbers (2–3)', 'Tomatoes (3–4)',
+    'Lettuce/mixed greens (1 bag)', 'Garlic (1 bulb)', 'Ginger, fresh (1 small root)',
+  ],
+  dairyAndSupplements: [
+    'Milk (1 gallon)', 'Unsweetened almond milk (1 carton)', 'Butter (1 lb)',
+    'Shredded cheese (8 oz)', 'String cheese (1 pack)',
+    'Whey protein powder (2–3 lbs)', 'Casein protein powder (optional; 1 lb)',
+  ],
+  pantry: [
+    'Honey', 'Olive oil', 'Sesame oil', 'Low-sodium soy sauce', 'Rice vinegar',
+    'Balsamic vinegar', 'Marinara sauce (2 jars)', 'Worcestershire sauce', 'Mirin',
+    'Salt, pepper, Italian seasoning', 'Paprika, garlic powder, onion powder',
+  ],
+  bakery: ['Chocolate croissants (5–7)', 'Whole grain bread (1 loaf)'],
+  estimatedCost: '$170–220/week for 3 people',
+};

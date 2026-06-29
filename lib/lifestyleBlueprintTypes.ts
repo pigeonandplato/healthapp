@@ -15,7 +15,7 @@ export interface MealMacros {
 export interface MealRecipe {
   id: string;
   name: string;
-  type: 'chicken' | 'beef' | 'carb' | 'vegetable' | 'snack' | 'breakfast';
+  type: 'chicken' | 'beef' | 'salmon' | 'carb' | 'vegetable' | 'snack' | 'breakfast';
   category?: 'breakfast' | 'lunch' | 'dinner' | 'snack';
   description: string;
   ingredients: string[];
