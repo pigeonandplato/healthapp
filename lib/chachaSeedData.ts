@@ -387,7 +387,7 @@ const tuesdayBlocks: ExerciseBlock[] = [
         id: "chacha-15b",
         name: "Cable crunch",
         tldr: "Direct ab work with controlled spinal flexion; builds visible ab definition.",
-        videoId: "Xyd_fa5zoEU",
+        videoId: "ToJeyhydUxU",
         category: "Core",
         prescription: { sets: 3, reps: 12, description: "3 × 12 reps" },
         instructions: [
@@ -438,7 +438,7 @@ const wednesdayBicepFinisher: ExerciseBlock = {
       id: "chacha-wed-bicep-2",
       name: "Incline dumbbell curl (stretch focus)",
       tldr: "Incline position emphasizes the bicep stretch and peak; builds long head (outer bicep).",
-      videoId: "soxrZlIl35U",
+      videoId: "DCe8f6vMe9A",
       category: "Biceps",
       prescription: { sets: 3, reps: 10, description: "3 × 10 reps — feel the full stretch" },
       instructions: [
@@ -799,7 +799,7 @@ const thursdayBlocks: ExerciseBlock[] = [
         id: "chacha-thu-core-5",
         name: "Cable crunch (core circuit)",
         tldr: "Direct ab work with controlled spinal flexion — builds definition.",
-        videoId: "Xyd_fa5zoEU",
+        videoId: "ToJeyhydUxU",
         category: "Core",
         prescription: { sets: 3, reps: 12, description: "3 rounds × 12 reps" },
         instructions: [
@@ -830,7 +830,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-fri-bc-1",
         name: "Barbell curl (heavy, strength focus)",
         tldr: "Heavier weight, lower reps = bicep mass foundation. Controlled path builds size.",
-        videoId: "in1GsDUDpCc",
+        videoId: "QZEqB6wUPxQ",
         category: "Biceps",
         prescription: { sets: 4, reps: 8, description: "4 × 8 reps — strength focus, heavier weight" },
         instructions: [
@@ -957,7 +957,7 @@ const fridayBlocks: ExerciseBlock[] = [
         id: "chacha-34",
         name: "Face pull",
         tldr: "Rear delt + external rotation; very high reps for shoulder health.",
-        videoId: "rep-qVOkqgk",
+        videoId: "ljgqer1ZpXg",
         category: "Shoulders",
         prescription: { sets: 3, reps: 15, description: "3 × 15 reps" },
         instructions: [

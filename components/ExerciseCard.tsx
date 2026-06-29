@@ -331,35 +331,24 @@ export default function ExerciseCard({
                 title={exercise.media.alt}
                 onError={() => setVideoError(true)}
               />
-              <div className="absolute top-2 right-2 flex gap-2 z-10">
+              {/* Always-visible controls — Edit is prominent so broken "Video unavailable" embeds are easy to fix */}
+              <div className="absolute top-2 right-2 flex gap-1.5 z-10">
                 <button
                   onClick={handleStartEditVideo}
-                  className="bg-[#79A98C] hover:bg-[#5E8C6E] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
-                  title="Edit video"
+                  className="bg-black/60 hover:bg-[#79A98C] text-white text-xs font-semibold py-1.5 px-2.5 rounded-full transition-all flex items-center gap-1 backdrop-blur-sm"
+                  title="Replace video URL"
                 >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                   </svg>
                   Edit
                 </button>
-                <a
-                  href={getVideoUrl()!.replace("/embed/", "/watch?v=")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#79A98C] hover:bg-[#5E8C6E] text-white text-xs font-bold py-2 px-3 rounded-full transition-all transform hover:scale-105 flex items-center gap-1"
-                >
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                  </svg>
-                  YouTube
-                </a>
                 {exercise.media.src && (
                   <button
                     onClick={() => setShowVideo(false)}
-                    className="bg-[#3D3730] hover:bg-[#4A433E] text-white text-xs font-bold py-2 px-3 rounded-full transition-all"
+                    className="bg-black/60 hover:bg-[#3D3730] text-white text-xs font-semibold py-1.5 px-2.5 rounded-full transition-all backdrop-blur-sm"
                   >
-                    Show Image
+                    Image
                   </button>
                 )}
               </div>

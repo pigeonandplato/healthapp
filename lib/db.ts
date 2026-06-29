@@ -895,12 +895,21 @@ export async function getCustomExerciseVideo(exerciseId: string): Promise<string
 }
 
 export async function saveCustomExerciseVideo(exerciseId: string, videoUrl: string): Promise<void> {
-  await saveSetting(`exercise_video_${exerciseId}`, videoUrl);
+  const userId = await getUserId();
+  if (!userId) throw new Error("User not authenticated — cannot save video.");
+
+  const key = `exercise_video_${exerciseId}`;
+  const id = `${userId}-${key}`;
+  const { error } = await supabase
+    .from("settings")
+    .upsert({ id, user_id: userId, key, value: videoUrl });
+
+  if (error) throw error;
 }
 
 export async function deleteCustomExerciseVideo(exerciseId: string): Promise<void> {
   const userId = await getUserId();
-  if (!userId) return;
+  if (!userId) throw new Error("User not authenticated — cannot delete video.");
   
   const id = `${userId}-exercise_video_${exerciseId}`;
   const { error } = await supabase
@@ -908,9 +917,7 @@ export async function deleteCustomExerciseVideo(exerciseId: string): Promise<voi
     .delete()
     .eq("id", id);
   
-  if (error) {
-    console.error("Error deleting custom video:", error);
-  }
+  if (error) throw error;
 }
 
 // ============================================
@@ -918,50 +925,36 @@ export async function deleteCustomExerciseVideo(exerciseId: string): Promise<voi
 // ============================================
 
 export async function getMasterExerciseVideo(exerciseId: string): Promise<string | null> {
-  // Master videos are stored with key "master_exercise_video_{exerciseId}"
-  // Query by key to find the most recent master video (any user can have set it)
-  const { data, error } = await supabase
-    .from("settings")
-    .select("value")
-    .eq("key", `master_exercise_video_${exerciseId}`)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  
-  if (error || !data) return null;
-  return data.value;
+  // Use getSetting with the master key — works correctly under RLS for the admin user.
+  const value = await getSetting(`master_exercise_video_${exerciseId}`);
+  return value ?? null;
 }
 
 export async function saveMasterExerciseVideo(exerciseId: string, videoUrl: string): Promise<void> {
-  // Master videos are stored with the admin user's ID but with a special key
-  // This allows RLS to work while still making it accessible to all users
   const userId = await getUserId();
-  if (!userId) return;
-  
-  const id = `${userId}-master_exercise_video_${exerciseId}`;
+  if (!userId) throw new Error("User not authenticated — cannot save master video.");
+
+  const key = `master_exercise_video_${exerciseId}`;
+  const id = `${userId}-${key}`;
   const { error } = await supabase
     .from("settings")
-    .upsert({
-      id,
-      user_id: userId,
-      key: `master_exercise_video_${exerciseId}`,
-      value: videoUrl,
-    });
-  
-  if (error) {
-    console.error("Error saving master video:", error);
-  }
+    .upsert({ id, user_id: userId, key, value: videoUrl });
+
+  if (error) throw error;
 }
 
 export async function deleteMasterExerciseVideo(exerciseId: string): Promise<void> {
+  const userId = await getUserId();
+  if (!userId) throw new Error("User not authenticated — cannot delete master video.");
+
+  const key = `master_exercise_video_${exerciseId}`;
+  const id = `${userId}-${key}`;
   const { error } = await supabase
     .from("settings")
     .delete()
-    .eq("key", `master_exercise_video_${exerciseId}`);
+    .eq("id", id);
 
-  if (error) {
-    console.error("Error deleting master video:", error);
-  }
+  if (error) throw error;
 }
 
 const CHACHA_EXERCISE_COUNT = 38;
