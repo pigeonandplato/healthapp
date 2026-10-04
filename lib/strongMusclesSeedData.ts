@@ -10,8 +10,8 @@ export const STRONG_PROGRAM_ID = "strong-muscles-v1";
 
 export type StrongDayRotation = "A" | "B" | "C" | "D" | "E";
 
-/** Same clip as the Chacha "Hip and ankle mobility" card (nourishmovelove 8-min flow). */
-export const HIP_MOBILITY_VIDEO_ID = "l1FEMz2Sdco";
+/** Hip and ankle mobility flow used at the start of Mon / Wed / Fri, and in Tuesday's warm-up. */
+export const HIP_MOBILITY_VIDEO_ID = "WUKHM6-ekJM";
 
 const DEFAULT_STOP: string[] = [
   "Sharp or shooting pain in knee, back, or wrist",
