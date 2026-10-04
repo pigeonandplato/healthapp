@@ -14,6 +14,8 @@ import {
   getGymDayForDate,
   getChachaWorkoutByDate,
   getChachaDayForDate,
+  getStrongWorkoutByDate,
+  getStrongDayForDate,
   getAdhdWorkoutByDate,
   getCustomWorkoutByDate,
   getCustomProgramName,
@@ -40,6 +42,7 @@ import DayNavigator from "@/components/DayNavigator";
 import { StatsSkeleton } from "@/components/SkeletonLoader";
 import { isValidIsoDate, parseLocalDate as parseIsoDate } from "@/lib/dates";
 import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
+import { STRONG_DAY_LABELS } from "@/lib/strongMusclesSeedData";
 
 // Heavy components deferred until after first paint
 const CoachView = dynamic(() => import("@/components/CoachView"), { ssr: false });
@@ -185,6 +188,11 @@ function TodayPageContent() {
           if (cancelled) return;
           setIsRestDay(!chachaInfo.isTrainingDay);
           selectedWorkout = await getChachaWorkoutByDate(loadId);
+        } else if (currentProgram === "strong") {
+          const strongInfo = getStrongDayForDate(loadId);
+          if (cancelled) return;
+          setIsRestDay(!strongInfo.isTrainingDay);
+          selectedWorkout = await getStrongWorkoutByDate(loadId);
         } else {
           if (cancelled) return;
           setIsRestDay(false);
@@ -310,6 +318,9 @@ function TodayPageContent() {
     if (activeProgram === "chacha" && programMeta.day in CHACHA_DAY_LABELS) {
       return CHACHA_DAY_LABELS[programMeta.day as keyof typeof CHACHA_DAY_LABELS];
     }
+    if (activeProgram === "strong" && programMeta.day in STRONG_DAY_LABELS) {
+      return STRONG_DAY_LABELS[programMeta.day as keyof typeof STRONG_DAY_LABELS];
+    }
     if (activeProgram === "adhd" || activeProgram === "custom") {
       return `Week ${programMeta.week}`;
     }
@@ -323,7 +334,7 @@ function TodayPageContent() {
     for (let i = 1; i <= 7; i++) {
       d.setDate(d.getDate() + 1);
       const dow = d.getDay();
-      if (program === "chacha") {
+      if (program === "chacha" || program === "strong") {
         if (dow >= 1 && dow <= 5) {
           return {
             date: new Date(d),
@@ -354,7 +365,7 @@ function TodayPageContent() {
   }
 
   if (!workout) {
-    if ((activeProgram === "gym" || activeProgram === "custom" || activeProgram === "chacha") && isRestDay) {
+    if ((activeProgram === "gym" || activeProgram === "custom" || activeProgram === "chacha" || activeProgram === "strong") && isRestDay) {
       const selectedDateObj = parseLocalDate(selectedDate);
       const dayName = selectedDateObj.toLocaleDateString("en-US", { weekday: "long" });
       const nextDay = getNextScheduledDay(selectedDateObj, activeProgram);
@@ -390,7 +401,7 @@ function TodayPageContent() {
 
             <div className="bg-white dark:bg-[#2C2622] rounded-2xl p-5">
               <h3 className="text-sm font-semibold text-[#8A7F78] dark:text-[#8A7F78] mb-3">JUMP TO WORKOUT</h3>
-              <div className={`grid gap-2 ${activeProgram === "chacha" ? "grid-cols-5" : "grid-cols-3"}`}>
+              <div className={`grid gap-2 ${activeProgram === "chacha" || activeProgram === "strong" ? "grid-cols-5" : "grid-cols-3"}`}>
                 {(activeProgram === "chacha"
                   ? [
                       { d: 1, label: "Mon", emoji: "🦵" },
@@ -399,6 +410,14 @@ function TodayPageContent() {
                       { d: 4, label: "Thu", emoji: "🔙" },
                       { d: 5, label: "Fri", emoji: "🏋️" },
                     ]
+                  : activeProgram === "strong"
+                    ? [
+                        { d: 1, label: "Mon", emoji: "💪" },
+                        { d: 2, label: "Tue", emoji: "🦵" },
+                        { d: 3, label: "Wed", emoji: "🚴" },
+                        { d: 4, label: "Thu", emoji: "💪" },
+                        { d: 5, label: "Fri", emoji: "🦵" },
+                      ]
                   : [
                       { d: 1, label: "Mon", emoji: "💪" },
                       { d: 3, label: "Wed", emoji: "🔙" },
@@ -474,6 +493,8 @@ function TodayPageContent() {
       ? "🏋️ Gym PPL"
       : activeProgram === "chacha"
         ? "💪 Chacha Training"
+        : activeProgram === "strong"
+          ? "🦾 Strong Muscles"
         : activeProgram === "custom"
           ? `🗂️ ${customName}`
           : "🧠 ADHD Knee + Back";
@@ -504,11 +525,11 @@ function TodayPageContent() {
                 {todayDate}
                 {programMeta && (
                   <>
-                    {(activeProgram === "adhd" || activeProgram === "custom" || activeProgram === "chacha") &&
+                    {(activeProgram === "adhd" || activeProgram === "custom" || activeProgram === "chacha" || activeProgram === "strong") &&
                       ` · Week ${programMeta.week}`}
                     {activeProgram === "gym" &&
                       ` · Day ${programMeta.day}`}
-                    {activeProgram === "chacha" && programMeta.day in CHACHA_DAY_LABELS &&
+                    {(activeProgram === "chacha" || activeProgram === "strong") &&
                       ` · Day ${programMeta.day} of 5`}
                   </>
                 )}

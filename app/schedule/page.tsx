@@ -9,11 +9,13 @@ import {
   getAdhdWorkoutByDate,
   getCustomWorkoutByDate,
   getChachaWorkoutByDate,
+  getStrongWorkoutByDate,
 } from "@/lib/db";
 import { toLocalDateString, parseLocalDate } from "@/lib/dates";
 import DayNavigator from "@/components/DayNavigator";
 import CoachView from "@/components/CoachView";
 import { CHACHA_DAY_LABELS } from "@/lib/chachaSeedData";
+import { STRONG_DAY_LABELS } from "@/lib/strongMusclesSeedData";
 
 type ScheduleDay = {
   date: string;
@@ -47,6 +49,7 @@ export default function SchedulePage() {
   const loadWorkoutForDate = useCallback(async (dateStr: string, program: ProgramType) => {
     if (program === "gym") return getGymWorkoutByDate(dateStr);
     if (program === "chacha") return getChachaWorkoutByDate(dateStr);
+    if (program === "strong") return getStrongWorkoutByDate(dateStr);
     if (program === "custom") return getCustomWorkoutByDate(dateStr);
     return getAdhdWorkoutByDate(dateStr);
   }, []);
@@ -110,6 +113,9 @@ export default function SchedulePage() {
     if (activeProgram === "chacha" && browseWorkout.program.day in CHACHA_DAY_LABELS) {
       return CHACHA_DAY_LABELS[browseWorkout.program.day as keyof typeof CHACHA_DAY_LABELS];
     }
+    if (activeProgram === "strong" && browseWorkout.program.day in STRONG_DAY_LABELS) {
+      return STRONG_DAY_LABELS[browseWorkout.program.day as keyof typeof STRONG_DAY_LABELS];
+    }
     if (activeProgram === "gym") return `Day ${browseWorkout.program.day}`;
     if (activeProgram === "adhd" || activeProgram === "custom") {
       return `Week ${browseWorkout.program.week}`;
@@ -147,6 +153,8 @@ export default function SchedulePage() {
       ? "🏋️ Gym PPL"
       : activeProgram === "chacha"
         ? "💪 Chacha Training"
+        : activeProgram === "strong"
+          ? "🦾 Strong Muscles"
         : activeProgram === "custom"
           ? "🗂️ Custom Program"
           : "🧠 ADHD Knee + Back";
@@ -278,6 +286,8 @@ export default function SchedulePage() {
                                     ? "💪"
                                     : activeProgram === "chacha"
                                       ? "💪"
+                                      : activeProgram === "strong"
+                                        ? "🦾"
                                       : activeProgram === "custom"
                                         ? "🗂️"
                                         : "🧠"}

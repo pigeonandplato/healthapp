@@ -15,6 +15,8 @@ import {
   setGymProgramStartDate,
   getChachaProgramStartDate,
   setChachaProgramStartDate,
+  getStrongProgramStartDate,
+  setStrongProgramStartDate,
   getCustomProgramStartDate,
   setCustomProgramStartDate,
   getCustomProgramName,
@@ -295,6 +297,55 @@ export default function ProgramPage() {
                 title="When did you start Chacha Training?"
                 getStartDate={getChachaProgramStartDate}
                 setStartDate={setChachaProgramStartDate}
+              />
+            </div>
+          </div>
+        )}
+
+        {activeProgram === "strong" && (
+          <div className="space-y-6">
+            <div className="bg-white dark:bg-[#2C2622] rounded-2xl p-6">
+              <h2 className="text-2xl font-bold text-[#1B1714] dark:text-white mb-4">🦾 Strong Muscles</h2>
+              <p className="text-[#8A7F78] mb-6">
+                Five training days, Monday through Friday. Saturday and Sunday are rest.
+                Hip and ankle mobility — the same 8-minute flow — is the first exercise on Monday, Wednesday, and Friday.
+              </p>
+
+              <div className="space-y-3">
+                {[
+                  { emoji: "💪", day: "Monday", focus: "Upper — chest, back, shoulders, arms, grip. Starts with hip mobility." },
+                  { emoji: "🦵", day: "Tuesday", focus: "Lower — knee strength, glutes, calves, balance, easy bike." },
+                  { emoji: "🚴", day: "Wednesday", focus: "Cardio + core. Starts with hip mobility." },
+                  { emoji: "💪", day: "Thursday", focus: "Upper — press, row, pulldown, shoulders, arms." },
+                  { emoji: "🦵", day: "Friday", focus: "Lower — box squat, hip thrust, hamstrings, calves. Starts with hip mobility." },
+                ].map((d) => (
+                  <div
+                    key={d.day}
+                    className="bg-gradient-to-r from-[#79A98C]/5 to-[#9DC1A5]/5 dark:from-[#79A98C]/10 dark:to-[#9DC1A5]/10 rounded-xl p-4 border border-[#79A98C]/20 dark:border-[#79A98C]/30"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl">{d.emoji}</span>
+                      <div>
+                        <h3 className="font-bold text-[#1B1714] dark:text-white">{d.day}</h3>
+                        <p className="text-sm text-[#8A7F78]">{d.focus}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-[#F0E9CE] dark:bg-[#3D3730] rounded-2xl p-6 border-2 border-[#F0E9CE] dark:border-[#4A433E]">
+              <h3 className="font-bold text-[#1B1714] dark:text-white mb-3">Training notes</h3>
+              <ul className="text-sm text-[#3D3730] dark:text-[#D4CFC9] space-y-2">
+                <li>Rest days are Saturday and Sunday.</li>
+                <li>Pain 0–3/10 is okay. 4–5/10 means reduce range or load. 6+/10 or worse the next day means stop.</li>
+                <li>Knee work stays short of a deep bend. Leg press stops around 90 degrees.</li>
+              </ul>
+              <ProgramStartDateControl
+                title="When did you start Strong Muscles?"
+                getStartDate={getStrongProgramStartDate}
+                setStartDate={setStrongProgramStartDate}
               />
             </div>
           </div>

@@ -16,7 +16,7 @@ export type ExtendedDayRotation = DayRotation | "D" | "E";
 export type ProgramPhase = "P1" | "P2" | "P3" | "P4" | "P5";
 
 // Program types available in the app
-export type ProgramType = "gym" | "adhd" | "custom" | "chacha";
+export type ProgramType = "gym" | "adhd" | "custom" | "chacha" | "strong";
 
 // A single row of a user-imported custom program (from JSON).
 export type CustomProgramRow = {

@@ -40,7 +40,8 @@ export default function ExerciseCard({
   // Gym lifts + Chacha strength moves get weight/reps/sets logging.
   const isStrengthTrackingExercise =
     exercise.id.startsWith("gym-exercise") ||
-    (exercise.id.startsWith("chacha-") && !exercise.prescription.minutes);
+    ((exercise.id.startsWith("chacha-") || exercise.id.startsWith("strong-")) &&
+      !exercise.prescription.minutes);
   
   // Swipe gesture state
   const [swipeOffset, setSwipeOffset] = useState(0);

@@ -1,0 +1,561 @@
+{
+  "name": "Gilly Upper/Lower Shred v5 (Knee-Strong, multi-ligament safe)",
+  "weeks": [
+    {
+      "week": 1,
+      "days": [
+        {
+          "day": "A",
+          "blocks": [
+            {
+              "name": "Warm-up (~6 min)",
+              "exercises": [
+                {
+                  "id": "ua-cat",
+                  "name": "Cat-camel",
+                  "minutes": 2,
+                  "description": "Slow spine flow",
+                  "videoUrl": "https://www.youtube.com/watch?v=SZoC9aIa-gg"
+                },
+                {
+                  "id": "ua-bd",
+                  "name": "Bird dog",
+                  "sets": 1,
+                  "reps": 8,
+                  "description": "8 per side, hold 2-3 sec. Hips level",
+                  "videoUrl": "https://www.youtube.com/watch?v=pd5FnfjhNRs"
+                },
+                {
+                  "id": "ua-pa",
+                  "name": "Band pull-aparts",
+                  "sets": 1,
+                  "reps": 15,
+                  "videoUrl": "https://www.youtube.com/watch?v=fo3ogdhMFLo"
+                }
+              ]
+            },
+            {
+              "name": "Superset A (chest + back)",
+              "exercises": [
+                {
+                  "id": "ua-1",
+                  "name": "Incline dumbbell press",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. 8-10 reps",
+                  "videoUrl": "https://www.youtube.com/watch?v=6tW4LUaOxlE"
+                },
+                {
+                  "id": "ua-2",
+                  "name": "Chest-supported row",
+                  "sets": 3,
+                  "reps": 10,
+                  "videoUrl": "https://www.youtube.com/watch?v=ro2vfHfD0DQ"
+                }
+              ]
+            },
+            {
+              "name": "Superset B (chest + back)",
+              "exercises": [
+                {
+                  "id": "ua-3",
+                  "name": "Machine chest press",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. ",
+                  "videoUrl": "https://www.youtube.com/watch?v=N7DjfGB8-xY"
+                },
+                {
+                  "id": "ua-4",
+                  "name": "Lat pulldown (neutral grip)",
+                  "sets": 3,
+                  "reps": 10,
+                  "videoUrl": "https://www.youtube.com/watch?v=MfC1A3aZRro"
+                }
+              ]
+            },
+            {
+              "name": "Shoulders",
+              "exercises": [
+                {
+                  "id": "ua-5",
+                  "name": "Seated DB shoulder press",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Back supported. Rest 90 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=t-hqRPjpaw8"
+                },
+                {
+                  "id": "ua-6",
+                  "name": "Lateral raise",
+                  "sets": 4,
+                  "reps": 15,
+                  "description": "12-15 reps. Rest 60 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=3VcKaXpzqRo"
+                }
+              ]
+            },
+            {
+              "name": "Superset C (arms)",
+              "exercises": [
+                {
+                  "id": "ua-7",
+                  "name": "EZ-bar curl",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. 8-10 reps. Rest 60 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=kwG2ipFRgfo"
+                },
+                {
+                  "id": "ua-8",
+                  "name": "Cable pushdown",
+                  "sets": 2,
+                  "reps": 12,
+                  "videoUrl": "https://www.youtube.com/watch?v=2-LAMcpzODU"
+                }
+              ]
+            },
+            {
+              "name": "Grip",
+              "exercises": [
+                {
+                  "id": "ua-9",
+                  "name": "Farmer carry (moderate dumbbells)",
+                  "sets": 3,
+                  "holdSeconds": 35,
+                  "description": "30-40 sec walk, tall posture",
+                  "videoUrl": "https://www.youtube.com/watch?v=p5MZa3aN2xY"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "day": "B",
+          "blocks": [
+            {
+              "name": "Warm-up (~6 min)",
+              "exercises": [
+                {
+                  "id": "la-cat",
+                  "name": "Cat-camel",
+                  "minutes": 2,
+                  "description": "Slow spine flow",
+                  "videoUrl": "https://www.youtube.com/watch?v=SZoC9aIa-gg"
+                },
+                {
+                  "id": "la-bd",
+                  "name": "Bird dog",
+                  "sets": 1,
+                  "reps": 8,
+                  "description": "8 per side, hold 2-3 sec. Hips level",
+                  "videoUrl": "https://www.youtube.com/watch?v=pd5FnfjhNRs"
+                },
+                {
+                  "id": "la-mob",
+                  "name": "Hip and ankle mobility",
+                  "minutes": 2,
+                  "videoUrl": "https://www.youtube.com/watch?v=MInS_xI5398"
+                },
+                {
+                  "id": "la-tke",
+                  "name": "Banded terminal knee extension",
+                  "sets": 2,
+                  "reps": 15,
+                  "description": "Band behind knee, squeeze quad to fully straighten. Wakes up the quad before loading",
+                  "videoUrl": "https://www.youtube.com/watch?v=y2s1p9wB41w"
+                }
+              ]
+            },
+            {
+              "name": "Knee strength",
+              "exercises": [
+                {
+                  "id": "la-iso",
+                  "name": "Spanish squat or wall sit (isometric)",
+                  "sets": 4,
+                  "holdSeconds": 40,
+                  "description": "30-45 sec holds, rest 60 sec. Builds quad strength and often calms knee pain. Pain 0-3/10 is OK",
+                  "videoUrl": "https://www.youtube.com/watch?v=kYJ3lJ6o06k"
+                },
+                {
+                  "id": "la-1",
+                  "name": "Leg press (short range)",
+                  "sets": 3,
+                  "reps": 12,
+                  "description": "10-12 reps. Knees stop at ~90 degrees, no deeper. Rest 90 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=IZxyjW7MPJQ"
+                },
+                {
+                  "id": "la-step",
+                  "name": "Low step-up (6-8 inch box)",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "10 per leg. 3-sec controlled lowering. Knee tracks over 2nd toe",
+                  "videoUrl": "https://www.youtube.com/watch?v=dQqApCGd5Ss"
+                },
+                {
+                  "id": "la-ext",
+                  "name": "Leg extension (from ~90 degrees to straight)",
+                  "sets": 3,
+                  "reps": 12,
+                  "description": "Graft is mature, so full lockout is OK. Start light, 2-sec squeeze at top, 3-sec lowering. Add weight slowly. Back off if deep knee pain goes above 3/10",
+                  "videoUrl": "https://www.youtube.com/watch?v=YyvSfVjQeL0"
+                }
+              ]
+            },
+            {
+              "name": "Superset (glutes + calves)",
+              "exercises": [
+                {
+                  "id": "la-gb",
+                  "name": "Floor glute bridge",
+                  "sets": 3,
+                  "reps": 12,
+                  "description": "Superset: one set of each back-to-back, rest 90 sec. 1-sec pause. Builds posterior chain with little knee shear",
+                  "videoUrl": "https://www.youtube.com/watch?v=wPM8icPu6H8"
+                },
+                {
+                  "id": "la-5",
+                  "name": "Standing calf raise",
+                  "sets": 3,
+                  "reps": 15,
+                  "videoUrl": "https://www.youtube.com/watch?v=-M4-G8p8fmc"
+                }
+              ]
+            },
+            {
+              "name": "Balance",
+              "exercises": [
+                {
+                  "id": "la-bal",
+                  "name": "Single-leg balance (bad leg first)",
+                  "sets": 3,
+                  "holdSeconds": 30,
+                  "description": "Soft knee, near a rail. Progress: eyes closed, then foam pad",
+                  "videoUrl": "https://www.youtube.com/watch?v=gA_x9j0pTh0"
+                }
+              ]
+            },
+            {
+              "name": "Cardio",
+              "exercises": [
+                {
+                  "id": "la-6",
+                  "name": "Stationary bike",
+                  "minutes": 10,
+                  "description": "Easy flush for the knee",
+                  "videoUrl": "https://www.youtube.com/watch?v=r0f8I5A3kXw"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "day": "C",
+          "blocks": [
+            {
+              "name": "Cardio",
+              "exercises": [
+                {
+                  "id": "cc-1",
+                  "name": "Bike or elliptical",
+                  "minutes": 45,
+                  "description": "Pace where you can talk in short sentences",
+                  "videoUrl": "https://www.youtube.com/watch?v=r0f8I5A3kXw"
+                }
+              ]
+            },
+            {
+              "name": "Back health core",
+              "exercises": [
+                {
+                  "id": "cc-2",
+                  "name": "Cat-camel",
+                  "minutes": 2,
+                  "videoUrl": "https://www.youtube.com/watch?v=SZoC9aIa-gg"
+                },
+                {
+                  "id": "cc-3",
+                  "name": "Dead bug",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "10 per side. Low back on floor",
+                  "videoUrl": "https://www.youtube.com/watch?v=g_BYB0R-4Ws"
+                },
+                {
+                  "id": "cc-4",
+                  "name": "Bird dog",
+                  "sets": 2,
+                  "reps": 10,
+                  "description": "10 per side, hold 2-3 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=pd5FnfjhNRs"
+                },
+                {
+                  "id": "cc-5",
+                  "name": "Side plank",
+                  "sets": 3,
+                  "holdSeconds": 30,
+                  "description": "30 sec each side",
+                  "videoUrl": "https://www.youtube.com/watch?v=NXr4Fw8SrNE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "day": "D",
+          "blocks": [
+            {
+              "name": "Warm-up (~6 min)",
+              "exercises": [
+                {
+                  "id": "ub-cat",
+                  "name": "Cat-camel",
+                  "minutes": 2,
+                  "description": "Slow spine flow",
+                  "videoUrl": "https://www.youtube.com/watch?v=SZoC9aIa-gg"
+                },
+                {
+                  "id": "ub-bd",
+                  "name": "Bird dog",
+                  "sets": 1,
+                  "reps": 8,
+                  "description": "8 per side, hold 2-3 sec. Hips level",
+                  "videoUrl": "https://www.youtube.com/watch?v=pd5FnfjhNRs"
+                },
+                {
+                  "id": "ub-pa",
+                  "name": "Band pull-aparts",
+                  "sets": 1,
+                  "reps": 15,
+                  "videoUrl": "https://www.youtube.com/watch?v=fo3ogdhMFLo"
+                }
+              ]
+            },
+            {
+              "name": "Superset A (chest + back)",
+              "exercises": [
+                {
+                  "id": "ub-1",
+                  "name": "Flat dumbbell or machine chest press",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. 8-10 reps",
+                  "videoUrl": "https://www.youtube.com/watch?v=VmB1G1K7v94"
+                },
+                {
+                  "id": "ub-2",
+                  "name": "One-arm dumbbell row (bench-supported)",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "10 per arm",
+                  "videoUrl": "https://www.youtube.com/watch?v=pYcpY20QaE8"
+                }
+              ]
+            },
+            {
+              "name": "Superset B (back + chest)",
+              "exercises": [
+                {
+                  "id": "ub-3",
+                  "name": "Lat pulldown (shoulder-width grip)",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. ",
+                  "videoUrl": "https://www.youtube.com/watch?v=CAwf7n6Luuc"
+                },
+                {
+                  "id": "ub-4",
+                  "name": "Cable chest fly",
+                  "sets": 3,
+                  "reps": 12,
+                  "videoUrl": "https://www.youtube.com/watch?v=Iwe6AmxVf7o"
+                }
+              ]
+            },
+            {
+              "name": "Superset C (shoulders)",
+              "exercises": [
+                {
+                  "id": "ub-5",
+                  "name": "Lateral raise",
+                  "sets": 4,
+                  "reps": 15,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. 12-15 reps. Rest 60 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=3VcKaXpzqRo"
+                },
+                {
+                  "id": "ub-6",
+                  "name": "Face pull",
+                  "sets": 3,
+                  "reps": 15,
+                  "videoUrl": "https://www.youtube.com/watch?v=V8dZ3pyiCBo"
+                }
+              ]
+            },
+            {
+              "name": "Superset D (arms)",
+              "exercises": [
+                {
+                  "id": "ub-7",
+                  "name": "Hammer curl",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. Rest 60 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=zC3nLlEvin4"
+                },
+                {
+                  "id": "ub-8",
+                  "name": "Overhead rope extension (light)",
+                  "sets": 2,
+                  "reps": 12,
+                  "videoUrl": "https://www.youtube.com/watch?v=1u18yJQLhc0"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "day": "E",
+          "blocks": [
+            {
+              "name": "Warm-up (~6 min)",
+              "exercises": [
+                {
+                  "id": "lb-cat",
+                  "name": "Cat-camel",
+                  "minutes": 2,
+                  "description": "Slow spine flow",
+                  "videoUrl": "https://www.youtube.com/watch?v=SZoC9aIa-gg"
+                },
+                {
+                  "id": "lb-bd",
+                  "name": "Bird dog",
+                  "sets": 1,
+                  "reps": 8,
+                  "description": "8 per side, hold 2-3 sec. Hips level",
+                  "videoUrl": "https://www.youtube.com/watch?v=pd5FnfjhNRs"
+                },
+                {
+                  "id": "lb-mob",
+                  "name": "Hip and ankle mobility",
+                  "minutes": 2,
+                  "videoUrl": "https://www.youtube.com/watch?v=MInS_xI5398"
+                },
+                {
+                  "id": "lb-tke",
+                  "name": "Banded terminal knee extension",
+                  "sets": 2,
+                  "reps": 15,
+                  "description": "Band behind knee, squeeze quad to fully straighten. Wakes up the quad before loading",
+                  "videoUrl": "https://www.youtube.com/watch?v=y2s1p9wB41w"
+                }
+              ]
+            },
+            {
+              "name": "Main",
+              "exercises": [
+                {
+                  "id": "lb-1",
+                  "name": "Box squat (goblet)",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Box at knee height or higher so you never go below 90 degrees. Knees track over toes, no caving in",
+                  "videoUrl": "https://www.youtube.com/watch?v=N4In4c8d5c4"
+                },
+                {
+                  "id": "lb-sd",
+                  "name": "Slow step-down (4-6 inch box)",
+                  "sets": 2,
+                  "reps": 8,
+                  "description": "8 per leg, 3-4 sec lowering, light heel tap. Knee control",
+                  "videoUrl": "https://www.youtube.com/watch?v=dQqApCGd5Ss"
+                }
+              ]
+            },
+            {
+              "name": "Superset A (glutes + hamstrings)",
+              "exercises": [
+                {
+                  "id": "lb-2",
+                  "name": "Hip thrust",
+                  "sets": 3,
+                  "reps": 10,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. ",
+                  "videoUrl": "https://www.youtube.com/watch?v=SEdqd1n0cvg"
+                },
+                {
+                  "id": "lb-3",
+                  "name": "Lying hamstring curl (machine)",
+                  "sets": 3,
+                  "reps": 12,
+                  "description": "Light-moderate only, slow and controlled. Stop if you feel the back of the knee (PCL)",
+                  "videoUrl": "https://www.youtube.com/watch?v=1Tq3QdYUuHs"
+                }
+              ]
+            },
+            {
+              "name": "Superset B (hips + calves)",
+              "exercises": [
+                {
+                  "id": "lb-4",
+                  "name": "Lateral band walks",
+                  "sets": 3,
+                  "reps": 12,
+                  "description": "Superset: do one set of each back-to-back, then rest 90 sec. 12 steps each way. Rest 60 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=34XpWwO4_4I"
+                },
+                {
+                  "id": "lb-5",
+                  "name": "Seated calf raise",
+                  "sets": 3,
+                  "reps": 15,
+                  "videoUrl": "https://www.youtube.com/watch?v=JbyjNymZOt0"
+                }
+              ]
+            },
+            {
+              "name": "Grip",
+              "exercises": [
+                {
+                  "id": "lb-7",
+                  "name": "Supported dead hang (feet on box)",
+                  "sets": 2,
+                  "holdSeconds": 25,
+                  "description": "20-30 sec",
+                  "videoUrl": "https://www.youtube.com/watch?v=g0I7Jv3oqKw"
+                }
+              ]
+            },
+            {
+              "name": "Balance",
+              "exercises": [
+                {
+                  "id": "lb-bal",
+                  "name": "Single-leg balance (bad leg first)",
+                  "sets": 3,
+                  "holdSeconds": 30,
+                  "description": "Soft knee, near a rail. Progress: eyes closed, then foam pad",
+                  "videoUrl": "https://www.youtube.com/watch?v=gA_x9j0pTh0"
+                }
+              ]
+            },
+            {
+              "name": "Cardio",
+              "exercises": [
+                {
+                  "id": "lb-8",
+                  "name": "Stationary bike",
+                  "minutes": 10,
+                  "description": "Easy flush",
+                  "videoUrl": "https://www.youtube.com/watch?v=r0f8I5A3kXw"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import { addDays, parseLocalDate, toLocalDateString } from "./dates";
 
 /** Weekdays with scheduled training (0=Sun … 6=Sat). ADHD has content every day. */
 export function getTrainingWeekdays(program: ProgramType): number[] {
-  if (program === "chacha") return [1, 2, 3, 4, 5];
+  if (program === "chacha" || program === "strong") return [1, 2, 3, 4, 5];
   if (program === "gym" || program === "custom") return [1, 3, 5];
   return [0, 1, 2, 3, 4, 5, 6];
 }

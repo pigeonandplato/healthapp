@@ -22,6 +22,12 @@ import {
   ChachaDayRotation,
 } from "./chachaSeedData";
 import {
+  allStrongExercises,
+  getStrongBlocksForDay,
+  STRONG_PROGRAM_ID,
+  StrongDayRotation,
+} from "./strongMusclesSeedData";
+import {
   allAdhdExercises,
   getAdhdBlocksForWeekAndKneeDay,
   adhdPhaseForWeek,
@@ -55,6 +61,13 @@ export const AVAILABLE_PROGRAMS: ProgramInfo[] = [
     name: "Chacha Training",
     description: "5-day knee/back-friendly split · Mon–Fri",
     icon: "💪",
+  },
+  {
+    id: STRONG_PROGRAM_ID,
+    type: "strong",
+    name: "Strong Muscles",
+    description: "5-day upper/lower shred · Mon–Fri · hip mobility Mon/Wed/Fri",
+    icon: "🦾",
   },
 ];
 
@@ -399,7 +412,13 @@ export async function pushToTomorrow(exerciseIds: string[]): Promise<void> {
 // ============================================
 
 export async function getAllExercises(): Promise<Exercise[]> {
-  const base = [...allExercises, ...allGymExercises, ...allAdhdExercises, ...allChachaExercises];
+  const base = [
+    ...allExercises,
+    ...allGymExercises,
+    ...allAdhdExercises,
+    ...allChachaExercises,
+    ...allStrongExercises,
+  ];
   const customRows = await getCustomProgram();
   if (customRows) {
     const seen = new Set<string>();
@@ -419,7 +438,8 @@ export async function getExerciseById(id: string): Promise<Exercise | undefined>
     allExercises.find((ex) => ex.id === id) ||
     allGymExercises.find((ex) => ex.id === id) ||
     allAdhdExercises.find((ex) => ex.id === id) ||
-    allChachaExercises.find((ex) => ex.id === id)
+    allChachaExercises.find((ex) => ex.id === id) ||
+    allStrongExercises.find((ex) => ex.id === id)
   );
 }
 
@@ -452,6 +472,7 @@ export function getDayRotation(date?: string): 'A' | 'B' | 'C' {
 const ACTIVE_PROGRAM_KEY = "activeProgram";
 const GYM_PROGRAM_START_DATE_KEY = "gymProgramStartDate";
 const CHACHA_PROGRAM_START_DATE_KEY = "chachaProgramStartDate";
+const STRONG_PROGRAM_START_DATE_KEY = "strongProgramStartDate";
 const ADHD_PROGRAM_START_DATE_KEY = "adhdProgramStartDate";
 const CUSTOM_PROGRAM_KEY = "custom_program";
 const CUSTOM_PROGRAM_NAME_KEY = "custom_program_name";
@@ -461,7 +482,7 @@ export async function getActiveProgram(): Promise<ProgramType> {
   const value = await getSetting(ACTIVE_PROGRAM_KEY);
   let resolved: ProgramType = "adhd";
 
-  if (value === "gym" || value === "adhd" || value === "chacha") {
+  if (value === "gym" || value === "adhd" || value === "chacha" || value === "strong") {
     resolved = value;
   } else if (value === "custom") {
     resolved = (await hasCustomProgram()) ? "custom" : "adhd";
@@ -516,6 +537,19 @@ export async function getChachaProgramStartDate(): Promise<string> {
 
 export async function setChachaProgramStartDate(startDate: string): Promise<void> {
   await saveSetting(CHACHA_PROGRAM_START_DATE_KEY, startDate);
+  await clearWorkoutCache();
+}
+
+export async function getStrongProgramStartDate(): Promise<string> {
+  const existing = await getSetting(STRONG_PROGRAM_START_DATE_KEY);
+  if (existing) return existing;
+  const today = toLocalDateString(new Date());
+  await saveSetting(STRONG_PROGRAM_START_DATE_KEY, today);
+  return today;
+}
+
+export async function setStrongProgramStartDate(startDate: string): Promise<void> {
+  await saveSetting(STRONG_PROGRAM_START_DATE_KEY, startDate);
   await clearWorkoutCache();
 }
 
@@ -631,6 +665,56 @@ export async function getChachaWorkoutByDate(date: string): Promise<WorkoutDay |
     date,
     blocks,
     program: chachaMeta,
+  };
+}
+
+export function getStrongDayForDate(dateIso: string): {
+  isTrainingDay: boolean;
+  day: StrongDayRotation;
+  dayName: string;
+} {
+  const parts = dateIso.split("-");
+  const year = parseInt(parts[0], 10);
+  const month = parseInt(parts[1], 10);
+  const dayNum = parseInt(parts[2], 10);
+  const date = new Date(year, month - 1, dayNum);
+  const dayOfWeek = date.getDay();
+
+  if (dayOfWeek === 1) return { isTrainingDay: true, day: "A", dayName: "Monday" };
+  if (dayOfWeek === 2) return { isTrainingDay: true, day: "B", dayName: "Tuesday" };
+  if (dayOfWeek === 3) return { isTrainingDay: true, day: "C", dayName: "Wednesday" };
+  if (dayOfWeek === 4) return { isTrainingDay: true, day: "D", dayName: "Thursday" };
+  if (dayOfWeek === 5) return { isTrainingDay: true, day: "E", dayName: "Friday" };
+
+  return { isTrainingDay: false, day: "A", dayName: "" };
+}
+
+export async function getStrongWorkoutByDate(date: string): Promise<WorkoutDay | null> {
+  const { isTrainingDay, day: dayRotation } = getStrongDayForDate(date);
+  if (!isTrainingDay) return null;
+
+  const startDate = await getStrongProgramStartDate();
+  const blocks = getStrongBlocksForDay(dayRotation);
+
+  const [y1, m1, d1] = date.split("-").map(Number);
+  const [y2, m2, d2] = startDate.split("-").map(Number);
+  const targetDate = new Date(y1, m1 - 1, d1);
+  const start = new Date(y2, m2 - 1, d2);
+
+  const strongMeta: ProgramMeta = {
+    planId: STRONG_PROGRAM_ID,
+    startDate,
+    week: Math.floor((targetDate.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7)) + 1,
+    phase: "P1",
+    phaseWeek: 1,
+    day: dayRotation,
+  };
+
+  return {
+    id: `strong-workout-${date}`,
+    date,
+    blocks,
+    program: strongMeta,
   };
 }
 
@@ -819,7 +903,7 @@ export async function getAllProgramInfos(): Promise<ProgramInfo[]> {
 
 const ARCHIVED_PROGRAMS_KEY = "archived_programs";
 
-const VALID_PROGRAM_TYPES: ProgramType[] = ["gym", "adhd", "custom", "chacha"];
+const VALID_PROGRAM_TYPES: ProgramType[] = ["gym", "adhd", "custom", "chacha", "strong"];
 
 export async function getArchivedProgramTypes(): Promise<ProgramType[]> {
   const v = await getSetting(ARCHIVED_PROGRAMS_KEY);
